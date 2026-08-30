@@ -15,4 +15,4 @@ def calcula_resto(x,y):
   return x % y
 
 def calcula_percentual(x,y):
-  return x * y / 100
+  return x / 100 * y 
