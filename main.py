@@ -16,3 +16,6 @@ def calcula_resto(x,y):
 
 def calcula_percentual(x,y):
   return x / 100 * y 
+
+def calcula_divisao_inteira(x,y):
+  return x//y
