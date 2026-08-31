@@ -17,13 +17,13 @@ def calcula_resto(x,y):
 def calcula_percentual(x,y):
   return x / 100 * y 
 
-def calcula_divisao_inteira(x,y):
+def calcula_divisão_inteira(x,y):
   return x//y
 
-def calcula_potenciacao(x,y):
+def calcula_potenciação(x,y):
   return x**y
 
-def calcula_radiciacao(x,y):
+def calcula_radiciação(x,y):
   return x**(1/y)
 
 
