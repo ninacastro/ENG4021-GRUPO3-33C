@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>PUC Campus Guia - Cadastro</title>
+<!-- Tailwind CSS v3 CDN with forms and container queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            puc: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              200: '#bfdbfe',
+              500: '#1d4ed8',
+              600: '#1e40af',
+              700: '#1e3a8a',
+              800: '#172554',
+              900: '#0f172a',
+            }
+          },
+          fontFamily: {
+            sans: ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+<!-- Google Fonts: Inter for refined mobile UI -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<style data-purpose="custom-typography">
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+  </style>
+<style data-purpose="mobile-frame-effects">
+    /* Subtle scrollbar hiding for native mobile app feel */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="bg-slate-900 min-h-screen flex items-center justify-center p-0 sm:p-4 text-slate-800 antialiased selection:bg-blue-100 selection:text-blue-700">
+<!-- BEGIN: MobileDeviceWrapper -->
+<!-- Container simulated as an iOS mobile device viewport -->
+<div class="w-full max-w-[420px] bg-slate-50 min-h-screen sm:min-h-[880px] sm:max-h-[920px] sm:rounded-[44px] shadow-2xl overflow-hidden flex flex-col relative border-0 sm:border-[8px] sm:border-slate-800" data-purpose="mobile-screen-container">
+<!-- BEGIN: iOSStatusBar -->
+<header class="w-full pt-3 px-7 pb-2 flex justify-between items-center bg-white/80 backdrop-blur-md sticky top-0 z-30 select-none border-b border-slate-100" data-purpose="ios-status-bar">
+<!-- Time -->
+<span class="text-[15px] font-semibold tracking-tight text-slate-900">09:41</span>
+<!-- iOS Dynamic Island / Speaker notch hint for subtle realism -->
+<div class="w-24 h-4 bg-slate-950 rounded-full hidden sm:block"></div>
+<!-- Status Icons: Signal, WiFi, Battery -->
+<div class="flex items-center space-x-2 text-slate-900">
+<!-- Cellular Signal Icon -->
+<svg class="w-4 h-4 fill-current" viewbox="0 0 24 24">
+<path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 18.25A9.97 9.97 0 0 1 2 12C2 6.48 6.48 2 12 2s10 4.48 10 10c0 2.32-.79 4.46-2.12 6.16l-.63-.63A8.96 8.96 0 0 0 21 12c0-4.97-4.03-9-9-9z"></path>
+<circle cx="12" cy="12" r="2.5"></circle>
+<path d="M5 19h2v2H5zm4-3h2v5H9zm4-4h2v9h-2zm4-4h2v13h-2z"></path>
+</svg>
+<!-- WiFi Icon -->
+<svg class="w-4 h-4 fill-current" viewbox="0 0 24 24">
+<path d="M12 4C7.31 4 3.07 5.9 0 8.98L12 21 24 8.98A17.9 17.9 0 0 0 12 4zm0 3.25c3.84 0 7.34 1.44 10.02 3.82L12 18.23 1.98 11.07A14.9 14.9 0 0 1 12 7.25z"></path>
+</svg>
+<!-- Battery Icon -->
+<div class="flex items-center">
+<div class="w-5 h-2.5 border border-slate-900 rounded-sm p-0.5 flex items-center">
+<div class="w-3.5 h-full bg-slate-900 rounded-[1px]"></div>
+</div>
+<div class="w-0.5 h-1 bg-slate-900 rounded-r-sm"></div>
+</div>
+</div>
+</header>
+<!-- END: iOSStatusBar -->
+<!-- BEGIN: TopNavigationBar -->
+<nav class="px-5 py-3 flex items-center justify-between bg-white border-b border-slate-100/80" data-purpose="top-navigation">
+<button aria-label="Voltar" class="inline-flex items-center justify-center w-9 h-9 rounded-full text-slate-600 hover:bg-slate-100 active:scale-95 transition-all" type="button">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewbox="0 0 24 24">
+<path d="M15.75 19.5L8.25 12l7.5-7.5" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</button>
+<!-- App Brand Logo Pill -->
+<div class="flex items-center space-x-1.5 px-3 py-1 bg-blue-50/80 border border-blue-100 rounded-full" data-purpose="brand-badge">
+<svg class="w-4 h-4 text-puc-700" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.313a2.25 2.25 0 00-2.006 0L2.622 5.75c-.381.19-.622.58-.622 1.006v11.432c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span class="text-xs font-bold text-puc-800 tracking-wide">PUC MAPA GUIA</span>
+</div>
+<!-- Help/Info icon placeholder for navigation balance -->
+<button class="w-9 h-9 rounded-full flex items-center justify-center text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors" title="Ajuda" type="button">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M12 18h.01" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</button>
+</nav>
+<!-- END: TopNavigationBar -->
+<!-- BEGIN: MainContentScrollableArea -->
+<main class="flex-1 overflow-y-auto px-5 pt-5 pb-6 no-scrollbar" data-purpose="registration-content">
+<!-- BEGIN: HeaderIntro -->
+<section class="mb-6" data-purpose="screen-title-section">
+<div class="inline-flex items-center space-x-1.5 text-xs font-semibold uppercase tracking-wider text-blue-700 bg-blue-50 px-2.5 py-0.5 rounded-md mb-2">
+<span>Campus Wayfinding</span>
+</div>
+<!-- Title directly from wireframe: "NUNCA SE CADASTROU?" -->
+<h1 class="text-2xl font-extrabold text-slate-900 tracking-tight leading-tight">
+          Nunca se cadastrou?
+        </h1>
+<!-- Subtitle directly from wireframe: "Junte-se ao nosso app!" -->
+<p class="text-lg font-bold text-puc-700 mt-0.5">
+          Junte-se ao nosso app!
+        </p>
+<p class="text-xs text-slate-500 mt-1 font-normal leading-relaxed">
+          Navegue facilmente pelas salas, auditórios, blocos e serviços da universidade direto no mapa interativo.
+        </p>
+</section>
+<!-- END: HeaderIntro -->
+<!-- BEGIN: RegistrationForm -->
+<form class="space-y-4" data-purpose="student-registration-form" id="register-form" onsubmit="event.preventDefault();">
+<!-- Field 1: Nome Completo * -->
+<div class="space-y-1.5" data-purpose="input-nome-completo">
+<label class="block text-xs font-bold text-slate-700 uppercase tracking-wider" for="nome-completo">
+            Nome Completo <span class="text-rose-500">*</span>
+</label>
+<div class="relative rounded-xl shadow-sm">
+<div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<input class="block w-full pl-10 pr-3.5 py-2.5 text-sm bg-white border border-slate-200 rounded-xl placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-puc-600 focus:border-transparent transition-all" id="nome-completo" name="nome_completo" placeholder="Ex: Mariana Silva e Souza" required="" type="text"/>
+</div>
+</div>
+<!-- Field 2: Email * -->
+<div class="space-y-1.5" data-purpose="input-email">
+<div class="flex justify-between items-center">
+<label class="block text-xs font-bold text-slate-700 uppercase tracking-wider" for="email">
+              Email <span class="text-rose-500">*</span>
+</label>
+<span class="text-[11px] text-slate-400">Preferência institucional</span>
+</div>
+<div class="relative rounded-xl shadow-sm">
+<div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<input class="block w-full pl-10 pr-3.5 py-2.5 text-sm bg-white border border-slate-200 rounded-xl placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-puc-600 focus:border-transparent transition-all" id="email" name="email" placeholder="aluno@puc.br ou seu email" required="" type="email"/>
+</div>
+</div>
+<!-- Field 3 & 4: Two-column grid for CEP and Curso -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5" data-purpose="address-academic-row">
+<!-- CEP Field (from sketch: CEP) -->
+<div class="space-y-1.5" data-purpose="input-cep">
+<label class="block text-xs font-bold text-slate-700 uppercase tracking-wider" for="cep">
+              CEP
+            </label>
+<div class="relative rounded-xl shadow-sm">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round"></path>
+<path d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<input class="block w-full pl-9 pr-3 py-2.5 text-sm bg-white border border-slate-200 rounded-xl placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-puc-600 focus:border-transparent transition-all" id="cep" inputmode="numeric" maxlength="9" name="cep" placeholder="00000-000" type="text"/>
+</div>
+</div>
+<!-- Curso Field (from sketch: CURSO) -->
+<div class="space-y-1.5" data-purpose="input-curso">
+<label class="block text-xs font-bold text-slate-700 uppercase tracking-wider" for="curso">
+              Curso
+            </label>
+<div class="relative rounded-xl shadow-sm">
+<select class="block w-full pl-3 pr-8 py-2.5 text-sm bg-white border border-slate-200 rounded-xl text-slate-700 focus:outline-none focus:ring-2 focus:ring-puc-600 focus:border-transparent appearance-none transition-all" id="curso" name="curso">
+<option disabled="" selected="" value="">Selecione seu curso...</option>
+<option value="cc">Ciência da Computação</option>
+<option value="si">Sistemas de Informação</option>
+<option value="eng_soft">Engenharia de Software</option>
+<option value="dir">Direito</option>
+<option value="med">Medicina</option>
+<option value="adm">Administração</option>
+<option value="psi">Psicologia</option>
+<option value="outro">Outro / Visitante</option>
+</select>
+<div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-slate-400">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M19.5 8.25l-7.5 7.5-7.5-7.5" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+</div>
+</div>
+</div>
+<!-- Field 5: Matrícula * (from sketch: MATRICULA*) -->
+<div class="space-y-1.5" data-purpose="input-matricula">
+<label class="block text-xs font-bold text-slate-700 uppercase tracking-wider" for="matricula">
+            Matrícula <span class="text-rose-500">*</span>
+</label>
+<div class="relative rounded-xl shadow-sm">
+<div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 013.75 9.375v-4.5zM3.75 14.625c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 01-1.125-1.125v-4.5zM13.5 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0113.5 9.375v-4.5z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<input class="block w-full pl-10 pr-3.5 py-2.5 text-sm bg-white border border-slate-200 rounded-xl placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-puc-600 focus:border-transparent transition-all font-mono" id="matricula" name="matricula" placeholder="Ex: 2024108849" required="" type="text"/>
+</div>
+</div>
+<!-- Field 6: Senha * (from sketch: SENHA*) -->
+<div class="space-y-1.5" data-purpose="input-senha">
+<label class="block text-xs font-bold text-slate-700 uppercase tracking-wider" for="senha">
+            Senha <span class="text-rose-500">*</span>
+</label>
+<div class="relative rounded-xl shadow-sm">
+<div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<input class="block w-full pl-10 pr-10 py-2.5 text-sm bg-white border border-slate-200 rounded-xl placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-puc-600 focus:border-transparent transition-all" id="senha" name="senha" placeholder="Crie sua senha segura" required="" type="password"/>
+<button aria-label="Alternar visualização da senha" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600" onclick="togglePasswordVisibility('senha')" type="button">
+<svg class="w-4 h-4" fill="none" id="senha-eye" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" stroke-linecap="round" stroke-linejoin="round"></path>
+<path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</button>
+</div>
+<!-- Password Requirement Rules (from wireframe notes) -->
+<!-- "MINIMO 8 CARACTERES / MINIMO 2 SIMBOLOS / MINIMO 1 NUMERO" -->
+<div class="bg-blue-50/70 border border-blue-100 rounded-lg p-2.5 mt-1.5" data-purpose="password-requirements-box">
+<p class="text-[11px] font-semibold text-puc-800 uppercase tracking-wide mb-1 flex items-center gap-1">
+<svg class="w-3.5 h-3.5 text-puc-600" fill="none" stroke="currentColor" stroke-width="2.2" viewbox="0 0 24 24">
+<path d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+              Critérios de segurança:
+            </p>
+<div class="flex flex-wrap gap-1.5 text-[11px] text-slate-600">
+<span class="inline-flex items-center px-2 py-0.5 rounded bg-white text-slate-700 border border-blue-100">
+<span class="w-1.5 h-1.5 rounded-full bg-blue-500 mr-1.5"></span>
+                Mínimo 8 caracteres
+              </span>
+<span class="inline-flex items-center px-2 py-0.5 rounded bg-white text-slate-700 border border-blue-100">
+<span class="w-1.5 h-1.5 rounded-full bg-blue-500 mr-1.5"></span>
+                Mínimo 2 símbolos
+              </span>
+<span class="inline-flex items-center px-2 py-0.5 rounded bg-white text-slate-700 border border-blue-100">
+<span class="w-1.5 h-1.5 rounded-full bg-blue-500 mr-1.5"></span>
+                Mínimo 1 número
+              </span>
+</div>
+</div>
+</div>
+<!-- Field 7: Confirmar Senha * (from sketch: CONFIRMAR SENHA*) -->
+<div class="space-y-1.5" data-purpose="input-confirmar-senha">
+<label class="block text-xs font-bold text-slate-700 uppercase tracking-wider" for="confirmar-senha">
+            Confirmar Senha <span class="text-rose-500">*</span>
+</label>
+<div class="relative rounded-xl shadow-sm">
+<div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M9 12.75L11.25 15 15 9.75m-6.75 6.5h13.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H5.25a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<input class="block w-full pl-10 pr-10 py-2.5 text-sm bg-white border border-slate-200 rounded-xl placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-puc-600 focus:border-transparent transition-all" id="confirmar-senha" name="confirmar_senha" placeholder="Digite a senha novamente" required="" type="password"/>
+<button aria-label="Alternar confirmação de senha" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600" onclick="togglePasswordVisibility('confirmar-senha')" type="button">
+<svg class="w-4 h-4" fill="none" id="confirmar-senha-eye" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" stroke-linecap="round" stroke-linejoin="round"></path>
+<path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</button>
+</div>
+</div>
+<!-- BEGIN: ConsentCheckboxes -->
+<!-- Matches wireframe checkboxes at bottom -->
+<div class="pt-2 space-y-3" data-purpose="terms-and-news-consents">
+<!-- Checkbox 1: RECEBER NOTICIAS, AVISOS, ATUALIZACOES -->
+<label class="flex items-start cursor-pointer group select-none">
+<div class="flex items-center h-5">
+<input class="w-4 h-4 text-blue-600 border-slate-300 rounded focus:ring-blue-500 transition cursor-pointer" id="noticias-checkbox" name="noticias" type="checkbox"/>
+</div>
+<div class="ml-2.5 text-xs text-slate-700 leading-snug group-hover:text-slate-900">
+              Receber notícias, avisos, atualizações
+            </div>
+</label>
+<!-- Checkbox 2: CONCORDAR COM NOSSA POLITICA DE USO E PRIVACIDADE -->
+<label class="flex items-start cursor-pointer group select-none">
+<div class="flex items-center h-5">
+<input class="w-4 h-4 text-blue-600 border-slate-300 rounded focus:ring-blue-500 transition cursor-pointer" id="termos-checkbox" name="termos" required="" type="checkbox"/>
+</div>
+<div class="ml-2.5 text-xs text-slate-700 leading-snug group-hover:text-slate-900">
+              Concordar com nossa 
+              <a class="font-semibold text-puc-700 underline underline-offset-2 hover:text-puc-900" href="#">
+                Política de Uso e Privacidade
+              </a>
+</div>
+</label>
+</div>
+<!-- END: ConsentCheckboxes -->
+<!-- BEGIN: BottomActionButtons -->
+<!-- Buttons directly from wireframe: "SAIR" and "PROXIMO" -->
+<div class="pt-4 pb-2 grid grid-cols-12 gap-3" data-purpose="form-actions">
+<!-- SAIR Button (Secondary Outline) -->
+<button class="col-span-4 w-full py-3 px-3 text-xs sm:text-sm font-bold tracking-wider uppercase text-slate-700 bg-white border border-slate-300 rounded-xl hover:bg-slate-100 hover:border-slate-400 active:scale-[0.98] transition shadow-sm text-center" data-purpose="action-sair-button" type="button">
+            Sair
+          </button>
+<!-- PROXIMO Button (Primary PUC Navy Blue) -->
+<button class="col-span-8 w-full py-3 px-4 text-xs sm:text-sm font-extrabold tracking-wider uppercase text-white bg-puc-700 hover:bg-puc-800 active:bg-puc-900 rounded-xl shadow-md shadow-blue-900/20 active:scale-[0.98] transition flex items-center justify-center space-x-2" data-purpose="action-proximo-button" type="submit">
+<span>Próximo</span>
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24">
+<path d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</button>
+</div>
+<!-- END: BottomActionButtons -->
+</form>
+<!-- END: RegistrationForm -->
+<!-- Subtle campus help note -->
+<footer class="mt-4 pt-4 border-t border-slate-200/80 text-center" data-purpose="campus-footer-note">
+<p class="text-[11px] text-slate-400">
+          Campus Wayfinding PUC • Prédios, Laboratórios e Salas
+        </p>
+</footer>
+</main>
+<!-- END: MainContentScrollableArea -->
+<!-- BEGIN: iOSHomeIndicator -->
+<!-- Native iOS swipe bar at bottom -->
+<div class="w-full flex justify-center py-2 bg-slate-50 border-t border-slate-100 sm:border-0" data-purpose="ios-home-indicator">
+<div class="w-32 h-1 bg-slate-300 rounded-full"></div>
+</div>
+<!-- END: iOSHomeIndicator -->
+</div>
+<!-- END: MobileDeviceWrapper -->
+<!-- BEGIN: InteractiveScripts -->
+<script data-purpose="password-toggle-script">
+    /**
+     * Toggles visibility for password input fields
+     * @param {string} fieldId - ID of the input field
+     */
+    function togglePasswordVisibility(fieldId) {
+      const input = document.getElementById(fieldId);
+      if (!input) return;
+
+      if (input.type === 'password') {
+        input.type = 'text';
+      } else {
+        input.type = 'password';
+      }
+    }
+  </script>
+<script data-purpose="cep-mask-script">
+    /**
+     * Simple automatic formatter for Brazilian CEP input (00000-000)
+     */
+    const cepInput = document.getElementById('cep');
+    if (cepInput) {
+      cepInput.addEventListener('input', function (e) {
+        let value = e.target.value.replace(/\D/g, '');
+        if (value.length > 8) value = value.slice(0, 8);
+        if (value.length > 5) {
+          e.target.value = value.slice(0, 5) + '-' + value.slice(5);
+        } else {
+          e.target.value = value;
+        }
+      });
+    }
+  </script>
+<!-- END: InteractiveScripts -->
+</body></html>
