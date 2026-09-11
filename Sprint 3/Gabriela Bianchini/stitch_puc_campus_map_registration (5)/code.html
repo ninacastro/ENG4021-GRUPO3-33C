@@ -1,0 +1,266 @@
+<!DOCTYPE html><html lang="pt-BR" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Tela de Início - MaPUC</title>
+<!-- Tailwind CSS v3 with plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              navy: '#0E2E54',
+              navyDark: '#081D37',
+              teal: '#2E938A',
+              tealDark: '#22746D',
+              tealLight: '#E8F5F4',
+              surface: '#F8FAFC',
+              card: '#FFFFFF'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif']
+          },
+          boxShadow: {
+            'card-subtle': '0 4px 20px -2px rgba(14, 46, 84, 0.06)',
+            'nav-elevated': '0 -4px 16px rgba(14, 46, 84, 0.05)'
+          }
+        }
+      }
+    }
+  </script>
+<style data-purpose="custom-scrollbars-and-reset">
+    /* Reset & smooth layout styles */
+    * {
+      -webkit-tap-highlight-color: transparent;
+    }
+    body {
+      background-color: #ECEFF3;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+  </style>
+</head>
+<body class="p-0 sm:p-4 text-slate-800 antialiased selection:bg-teal-100 selection:text-teal-900">
+<!-- BEGIN: MobileDeviceFrame -->
+<!-- Container configurado para o padrão exato mobile 390px x 844px -->
+<div class="relative w-[390px] h-[844px] bg-slate-50 flex flex-col justify-between overflow-hidden shadow-2xl rounded-[44px] border-[7px] border-slate-900/90 select-none">
+<!-- BEGIN: TopBarAndContentWrapper -->
+<div class="flex-1 flex flex-col overflow-hidden">
+<!-- BEGIN: StatusBar -->
+<!-- Barra de status superior padrão iOS (Horário, Sinal, Wi-Fi e Bateria) -->
+<div class="h-11 px-7 pt-2 flex items-center justify-between text-slate-800 text-xs font-semibold tracking-tight z-30 shrink-0" data-purpose="status-bar">
+<span class="font-medium tracking-normal text-[14px]">09:41</span>
+<div class="flex items-center space-x-1.5 text-slate-800">
+<!-- Sinal de celular -->
+<svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+<path d="M2 17h3v4H2v-4zm5-4h3v8H7v-8zm5-4h3v12h-3V9zm5-4h3v16h-3V5z"></path>
+</svg>
+<!-- Wi-Fi -->
+<svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+<path d="M12 4C7.31 4 3.07 5.9 0 8.98L12 21 24 8.98C20.93 5.9 16.69 4 12 4zm0 3.5c3.73 0 7.12 1.48 9.61 3.9L12 19.12 2.39 11.4C4.88 8.98 8.27 7.5 12 7.5z"></path>
+</svg>
+<!-- Bateria -->
+<div class="w-5 h-2.5 border border-slate-700 rounded-sm p-0.5 flex items-center">
+<div class="h-full w-full bg-slate-800 rounded-2xs"></div>
+</div>
+</div>
+</div>
+<!-- END: StatusBar -->
+<!-- BEGIN: MainContentWithDock -->
+<!-- Estrutura do wireframe: Barra de menu vertical à esquerda e corpo central -->
+<div class="flex flex-1 overflow-hidden relative">
+<!-- BEGIN: LeftMenuDock -->
+<!-- Barra vertical de menu colapsável conforme desenhado no wireframe (ícone + texto MENU) -->
+<aside class="w-16 bg-white border-r border-slate-200/90 flex flex-col items-center py-3.5 z-20 shrink-0 shadow-sm justify-between" data-purpose="side-menu-rail">
+<!-- Top: Botão de Menu com texto e hambúrguer -->
+<div class="flex flex-col items-center space-y-4 w-full">
+<button aria-label="Abrir Menu Lateral" class="flex flex-col items-center justify-center p-2 rounded-xl text-brand-navy hover:bg-slate-100 transition-colors group" type="button">
+<!-- Ícone de hambúrguer com visual do wireframe -->
+<div class="flex flex-col justify-center items-center space-y-1 w-6 h-5">
+<span class="w-5 h-[2.5px] bg-brand-navy rounded-full group-hover:bg-brand-teal transition-colors"></span>
+<span class="w-4 h-[2.5px] bg-brand-navy rounded-full group-hover:bg-brand-teal transition-colors self-start ml-0.5"></span>
+<span class="w-5 h-[2.5px] bg-brand-navy rounded-full group-hover:bg-brand-teal transition-colors"></span>
+</div>
+<span class="text-[9px] font-black uppercase tracking-wider text-brand-navy group-hover:text-brand-teal mt-1">MENU</span>
+</button>
+<div class="w-8 h-[1px] bg-slate-200"></div>
+<!-- Ícones de Atalhos Rápidos da Barra Lateral -->
+<div class="flex flex-col space-y-3 items-center">
+<!-- Pontos de Interesse -->
+<button class="w-10 h-10 rounded-xl flex items-center justify-center text-slate-500 hover:text-brand-navy hover:bg-slate-100 transition" title="Locais e Prédios" type="button">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+<path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</button>
+<!-- Favoritos -->
+<button class="w-10 h-10 rounded-xl flex items-center justify-center text-slate-500 hover:text-brand-navy hover:bg-slate-100 transition" title="Salas Favoritas" type="button">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+<path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</button>
+<!-- Central de Ajuda -->
+<button class="w-10 h-10 rounded-xl flex items-center justify-center text-slate-500 hover:text-brand-navy hover:bg-slate-100 transition" title="Ajuda &amp; Dúvidas" type="button">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+<path d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</button>
+</div>
+</div>
+<!-- Bottom da Barra Lateral: Versão sutil -->
+<div class="flex flex-col items-center">
+<span class="text-[8px] font-semibold text-slate-300 tracking-tighter">v2.4.1</span>
+</div>
+</aside>
+<!-- END: LeftMenuDock -->
+<!-- BEGIN: CentralCanvas -->
+<!-- Conteúdo principal centralizado com scroll seguro -->
+<main class="flex-1 flex flex-col px-4 pt-1 pb-3 overflow-y-auto" data-purpose="home-main-view">
+<!-- Header do Canvas com Avatar de Perfil -->
+<header class="flex justify-end items-center mb-1">
+<!-- Botão circular de Avatar de Usuário (conforme wireframe top-right) -->
+<a aria-label="Perfil do Usuário" class="flex items-center space-x-2 bg-white/80 p-1 pl-2.5 rounded-full border border-slate-200/90 shadow-sm active:scale-95 transition" href="#">
+<span class="text-[11px] font-medium text-slate-600">Mariana</span>
+<div class="w-8 h-8 rounded-full bg-brand-teal/10 border-2 border-brand-navy/30 flex items-center justify-center text-brand-navy relative">
+<svg class="w-4 h-4 text-brand-navy" fill="currentColor" viewBox="0 0 24 24">
+<path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path>
+</svg>
+<span class="absolute bottom-0 right-0 w-2 h-2 bg-emerald-500 rounded-full border border-white"></span>
+</div>
+</a>
+</header>
+<!-- Central Branding Block (Identidade MaPUC) -->
+<section class="flex flex-col items-center text-center mt-1 mb-3" data-purpose="branding-identity">
+<!-- Logo Oficial MaPUC extraída do arquivo original -->
+<div class="relative w-44 h-24 flex items-center justify-center overflow-hidden drop-shadow-sm">
+<img alt="Logo MaPUC - Encontre seu caminho na PUC-Rio" class="w-full h-full object-contain mix-blend-multiply" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKLRAuTpsxclEQ9-jl2l8OZrqi7yUYCgfrs0yKb4-eKIdDBBb890RHF2EqJ5rqAQMLwl5IbF5GatxN9m-lg8kZZZepQ7mLl4qCSiFXNveM2QK4RBIKNPuGo3nmZSjhHhUvukfp4TeA6CRQx3UXEotsgfq6B2NuRBSuOVWdyMUR93gIZsA_7vcuwSpU_VjjcWDQl4HemfFaNGaMceG7RpV3XI-SnFgE5gE3-H4z68TSN84hmPwIh3CvXw">
+</div>
+<!-- Título & Subtítulo exatamente conforme wireframe "TELA DE INICIO" -->
+<div class="mt-1">
+<div class="inline-block px-2.5 py-0.5 mb-1 bg-brand-teal/10 text-brand-tealDark text-[10px] font-bold uppercase tracking-wider rounded-full"></div>
+<h1 class="text-[20px] font-black tracking-tight text-brand-navy uppercase">
+                Tela de Início
+              </h1>
+<p class="text-xs text-slate-500 max-w-[250px] mx-auto mt-0.5 leading-snug">
+                Se encontre pelos blocos, salas e pilotis da PUC-Rio.
+              </p>
+</div>
+</section>
+<!-- Campo de Busca Rápida no Campus -->
+<section class="mb-3" data-purpose="quick-search-box">
+<div class="relative flex items-center">
+<input class="w-full bg-white border border-slate-200 text-xs text-slate-700 pl-9 pr-8 py-2.5 rounded-2xl shadow-sm focus:outline-none placeholder:text-slate-400" placeholder="Buscar sala, bloco ou serviço (ex: L318)..." readonly="" type="text">
+<svg class="w-4 h-4 text-slate-400 absolute left-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+<path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<div class="absolute right-2.5 bg-slate-100 px-1.5 py-0.5 rounded text-[9px] font-medium text-slate-400 border border-slate-200">
+                PUC
+              </div>
+</div>
+</section>
+<!-- Card Dinâmico: Aula de Hoje (Conectado com Tela de Horários) -->
+<section class="bg-gradient-to-br from-brand-navy to-brand-navyDark rounded-2xl p-3.5 text-white shadow-card-subtle mb-3" data-purpose="next-class-card">
+<div class="flex items-center justify-between mb-1.5">
+<span class="text-[10px] font-bold tracking-wider uppercase text-teal-300 flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse"></span>
+                Próxima Aula Hoje
+              </span>
+<span class="text-[10px] bg-white/10 px-2 py-0.5 rounded-full text-slate-200 font-medium">09:00</span>
+</div>
+<div class="flex justify-between items-center">
+<div>
+<h2 class="text-sm font-bold text-white tracking-tight">ENG1000 • Sala F402</h2>
+<p class="text-[11px] text-slate-300">Prédio Cardeal Frings — 4º Andar</p>
+</div>
+<button class="bg-brand-teal hover:bg-teal-600 active:scale-95 transition text-white px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1 shadow-sm" type="button">
+<span class="">Rotear</span>
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+<path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</button>
+</div>
+</section>
+<!-- Atalhos Rápidos no Campus -->
+<section class="grid grid-cols-2 gap-2" data-purpose="quick-actions">
+<!-- Card Atalho 1: Pilotis & Restaurantes -->
+<div class="bg-white border border-slate-200/80 rounded-xl p-2.5 flex items-center space-x-2.5 shadow-2xs">
+<div class="w-8 h-8 rounded-lg bg-teal-50 text-brand-teal flex items-center justify-center shrink-0">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+<path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<div class="overflow-hidden">
+<h3 class="text-xs font-semibold text-slate-800 leading-none">Biblioteca</h3>
+<p class="text-[10px] text-slate-400 mt-0.5 truncate">Acervo &amp; Estudo</p>
+</div>
+</div>
+<!-- Card Atalho 2: Pilotis & Bandejão -->
+<div class="bg-white border border-slate-200/80 rounded-xl p-2.5 flex items-center space-x-2.5 shadow-2xs">
+<div class="w-8 h-8 rounded-lg bg-blue-50 text-brand-navy flex items-center justify-center shrink-0">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+<path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<div class="overflow-hidden">
+<h3 class="text-xs font-semibold text-slate-800 leading-none">Alimentação</h3>
+<p class="text-[10px] text-slate-400 mt-0.5 truncate">Vila dos Diretórios</p>
+</div>
+</div>
+</section>
+</main>
+<!-- END: CentralCanvas -->
+</div>
+<!-- END: MainContentWithDock -->
+</div>
+<!-- END: TopBarAndContentWrapper -->
+<!-- BEGIN: BottomNavigationWireframe -->
+<!-- Barra inferior conforme o wireframe: Divisão binária grande em MAPA e HORÁRIO -->
+<footer class="w-full bg-white border-t border-slate-200 shadow-nav-elevated shrink-0 z-30" data-purpose="bottom-navigation">
+<!-- Grid com os dois botões primários desenhados na base do wireframe -->
+<nav aria-label="Navegação Principal" class="grid grid-cols-2 divide-x divide-slate-200 h-[72px]">
+<!-- Botão MAPA -->
+<button class="flex flex-col items-center justify-center space-y-1 group active:bg-slate-50 transition" type="button">
+<div class="flex items-center space-x-1.5 text-brand-navy group-hover:text-brand-teal transition">
+<!-- Ícone de Mapa Dobrável -->
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+<path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<span class="text-xs font-black uppercase tracking-wider text-brand-navy group-hover:text-brand-teal">
+            MAPA
+          </span>
+</button>
+<!-- Botão HORÁRIO -->
+<button class="flex flex-col items-center justify-center space-y-1 group active:bg-slate-50 transition relative" type="button">
+<!-- Indicador sutil de aula pendente -->
+<span class="absolute top-3 right-10 w-2 h-2 rounded-full bg-brand-teal"></span>
+<div class="flex items-center space-x-1.5 text-slate-600 group-hover:text-brand-teal transition">
+<!-- Ícone de Calendário / Grade Horária -->
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+<path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<span class="text-xs font-bold uppercase tracking-wider text-slate-600 group-hover:text-brand-teal">
+            HORÁRIO
+          </span>
+</button>
+</nav>
+<!-- Indicador Home Bar inferior do iOS -->
+<div class="w-full flex justify-center pb-2 pt-1">
+<div class="w-36 h-1 bg-slate-300 rounded-full"></div>
+</div>
+</footer>
+<!-- END: BottomNavigationWireframe -->
+</div>
+<!-- END: MobileDeviceFrame -->
+
+
+
+
+</body></html>
