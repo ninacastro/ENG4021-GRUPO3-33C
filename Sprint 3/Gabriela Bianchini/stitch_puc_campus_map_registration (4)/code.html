@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>MaPUC - Grade Horária</title>
+<!-- Tailwind CSS v3 -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            pucNavy: '#0B2545',
+            pucNavyDark: '#07182d',
+            pucTeal: '#2A9D8F',
+            pucTealLight: '#E8F5F4',
+            pucTealDark: '#1E7268',
+            pucBg: '#F8FAFC',
+            pucCardBg: '#FFFFFF',
+            pucBorder: '#E2E8F0',
+            pucGray: '#64748B'
+          },
+          fontFamily: {
+            sans: ['-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', 'Inter', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+<style data-purpose="custom-scrollbar">
+    /* Ocultar barra de scroll padrão mantendo a fluidez no mobile */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+<style data-purpose="ios-tap-optimizations">
+    /* Efeitos de toque nativo iOS */
+    button, [role="button"] {
+      -webkit-tap-highlight-color: transparent;
+    }
+  </style>
+</head>
+<body class="bg-slate-100 font-sans text-slate-800 antialiased min-h-screen flex items-center justify-center p-0 sm:p-4">
+<!-- BEGIN: MobileContainer -->
+<!-- Container que simula tela de iPhone 14 / iPhone 15 Pro (390 x 844 px) -->
+<main class="w-full max-w-[420px] h-[100dvh] sm:h-[870px] bg-pucBg flex flex-col justify-between relative shadow-2xl overflow-hidden sm:rounded-[44px] border border-slate-200">
+<!-- BEGIN: TopAppHeaderSection -->
+<header class="bg-white border-b border-slate-100 flex-shrink-0 z-20">
+<!-- iOS Status Bar -->
+<!-- Componente nativo iOS com relógio e ícones de status -->
+<div class="w-full px-6 pt-3 pb-1 flex justify-between items-center text-xs font-semibold text-slate-800" data-purpose="ios-status-bar">
+<span class="tracking-tight">09:41</span>
+<div class="flex items-center space-x-2">
+<!-- Sinal de Rede Celular -->
+<svg class="w-4 h-3.5 fill-current" viewbox="0 0 24 24">
+<path d="M2 17h3v4H2v-4zm5-4h3v8H7v-8zm5-5h3v13h-3V8zm5-5h3v18h-3V3z"></path>
+</svg>
+<!-- Wi-Fi -->
+<svg class="w-4 h-3.5 fill-current" viewbox="0 0 24 24">
+<path d="M12 4C7.31 4 3.07 5.9 0 8.98L12 21 24 8.98A16.88 16.88 0 0 0 12 4zm0 2.22c3.84 0 7.34 1.44 10.02 3.84L12 18.25 1.98 10.06C4.66 7.66 8.16 6.22 12 6.22z"></path>
+</svg>
+<!-- Bateria iOS -->
+<div class="flex items-center">
+<div class="w-5 h-2.5 border border-slate-700 rounded-sm p-0.5 flex items-center">
+<div class="bg-slate-800 h-full w-3.5 rounded-2xs"></div>
+</div>
+<div class="w-0.5 h-1 bg-slate-700 rounded-r-xs ml-px"></div>
+</div>
+</div>
+</div>
+<!-- App Title & User Profile Bar -->
+<!-- Barra superior contendo marca MaPUC, semestre atual e atalho do perfil -->
+<div class="px-5 py-3 flex items-center justify-between" data-purpose="app-top-nav">
+<div class="flex items-center space-x-2.5">
+<!-- Miniatura do Logotipo MaPUC -->
+<div class="w-9 h-9 rounded-xl bg-pucNavy flex items-center justify-center shadow-md shadow-pucNavy/20">
+<svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" stroke-linecap="round" stroke-linejoin="round"></path>
+<path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<div>
+<div class="flex items-center space-x-1">
+<span class="font-extrabold text-lg tracking-tight text-pucTeal leading-none">Ma</span>
+<span class="font-black text-lg tracking-tight text-pucNavy leading-none">PUC</span>
+</div>
+<p class="text-[11px] font-medium text-pucGray mt-0.5">Grade Semestral • 2025.1</p>
+</div>
+</div>
+<!-- Botão Perfil do Usuário (conforme wireframe) -->
+<button class="w-10 h-10 rounded-full bg-slate-100 hover:bg-slate-200 border-2 border-slate-200 flex items-center justify-center text-pucNavy transition-colors active:scale-95 focus:outline-none" data-purpose="user-profile-trigger" id="profile-button" onclick="alert('Abrindo perfil do estudante da PUC-Rio')" title="Ver perfil do aluno">
+<svg class="w-6 h-6 text-pucNavy" fill="currentColor" viewbox="0 0 24 24">
+<path clip-rule="evenodd" d="M18.685 19.097A9.723 9.723 0 0021.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 003.065 7.097A9.716 9.716 0 0012 21.75a9.716 9.716 0 006.685-2.653zm-12.54-1.285A7.486 7.486 0 0112 15a7.486 7.486 0 015.855 2.812A8.224 8.224 0 0112 20.25a8.224 8.224 0 01-5.855-2.438zM15.75 9a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" fill-rule="evenodd"></path>
+</svg>
+</button>
+</div>
+</header>
+<!-- END: TopAppHeaderSection -->
+<!-- BEGIN: MainContentScrollableArea -->
+<!-- Conteúdo rolável contendo a grade horária semanal e o callout de rota -->
+<div class="flex-1 overflow-y-auto no-scrollbar px-3 py-3 space-y-3">
+<!-- Título de Contexto -->
+<div class="flex items-center justify-between px-2 pt-1">
+<h1 class="text-sm font-bold uppercase tracking-wider text-pucNavy flex items-center gap-1.5">
+<svg class="w-4 h-4 text-pucTeal" fill="none" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24">
+<path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+          Horário de Aulas
+        </h1>
+<span class="text-[11px] font-semibold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full border border-emerald-200">
+          5 Disciplinas
+        </span>
+</div>
+<!-- BEGIN: WeeklyScheduleGrid -->
+<!-- Grade da Semana: 5 colunas (Segunda a Sexta) conforme wireframe anotado -->
+<section class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden" data-purpose="weekly-schedule-table">
+<!-- Cabeçalho dos Dias da Semana -->
+<div class="grid grid-cols-5 bg-slate-50 border-b border-slate-200 text-center">
+<div class="py-2.5 px-1 border-r border-slate-100">
+<span class="block text-xs font-black text-pucNavy">SEG</span>
+<span class="block text-[9px] text-slate-600 font-bold">2ª feira</span>
+</div>
+<div class="py-2.5 px-1 border-r border-slate-100">
+<span class="block text-xs font-black text-pucNavy">TER</span>
+<span class="block text-[9px] text-slate-600 font-bold">3ª feira</span>
+</div>
+<div class="py-2.5 px-1 border-r border-slate-100">
+<span class="block text-xs font-black text-pucNavy">QUA</span>
+<span class="block text-[9px] text-slate-600 font-bold">4ª feira</span>
+</div>
+<div class="py-2.5 px-1 border-r border-slate-100">
+<span class="block text-xs font-black text-pucNavy">QUI</span>
+<span class="block text-[9px] text-slate-600 font-bold">5ª feira</span>
+</div>
+<div class="py-2.5 px-1">
+<span class="block text-xs font-black text-slate-500">SEX</span>
+<span class="block text-[9px] text-slate-500 font-semibold">6ª feira</span>
+</div>
+</div>
+<!-- Grade com 5 linhas horárias correspondendo aos blocos da PUC-Rio e marcações do wireframe -->
+<div class="grid grid-cols-5 divide-x divide-slate-100 min-h-[350px]">
+<!-- COLUNA 1: SEGUNDA-FEIRA (SEG) -->
+<!-- Wireframe: aula no primeiro bloco (07h-09h) -->
+<div class="flex flex-col space-y-1 p-1 bg-slate-50/40">
+<!-- Bloco 1: INF1005 (Ativo no Wireframe) -->
+<button class="w-full text-left bg-gradient-to-b from-teal-50 to-white hover:from-teal-100 border border-pucTeal/40 rounded-xl p-1.5 shadow-sm transition-transform active:scale-95 group focus:outline-none" onclick="showNavigationModal('INF1005 - Programação', 'L318', 'Edifício Cardeal Leme - 3º Andar')">
+<span class="block text-[10px] font-black text-pucNavy truncate tracking-tight">INF1005</span>
+<span class="block text-[8.5px] font-semibold text-pucTealDark leading-tight">07:00-09:00</span>
+<div class="mt-1 flex items-center text-[9px] font-bold text-slate-700 bg-teal-100/60 rounded px-1 py-0.5 truncate">
+<svg class="w-2.5 h-2.5 mr-0.5 text-pucTeal flex-shrink-0" fill="currentColor" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" fill-rule="evenodd"></path>
+</svg>
+<span class="truncate">L318</span>
+</div>
+</button>
+<!-- Células Vazias (Segunda) -->
+<div class="h-14 border border-dashed border-slate-200/70 rounded-lg flex items-center justify-center">
+<span class="text-[8px] text-slate-300">09-11</span>
+</div>
+<div class="h-14 border border-dashed border-slate-200/70 rounded-lg flex items-center justify-center">
+<span class="text-[8px] text-slate-300">11-13</span>
+</div>
+<div class="h-14 border border-dashed border-slate-200/70 rounded-lg flex items-center justify-center">
+<span class="text-[8px] text-slate-300">14-16</span>
+</div>
+<div class="h-14 border border-dashed border-slate-200/70 rounded-lg flex items-center justify-center">
+<span class="text-[8px] text-slate-300">16-18</span>
+</div>
+</div>
+<!-- COLUNA 2: TERÇA-FEIRA (TER) -->
+<!-- Wireframe: aula no segundo bloco (09h-11h) -->
+<div class="flex flex-col space-y-1 p-1">
+<div class="h-16 border border-dashed border-slate-200/70 rounded-lg flex items-center justify-center">
+<span class="text-[8px] text-slate-300">07-09</span>
+</div>
+<!-- Bloco 2: MAT1161 (Ativo no Wireframe) -->
+<button class="w-full text-left bg-gradient-to-b from-blue-50 to-white hover:from-blue-100 border border-sky-300 rounded-xl p-1.5 shadow-sm transition-transform active:scale-95 group focus:outline-none" onclick="showNavigationModal('MAT1161 - Cálculo Diferencial', 'K102', 'Edifício Kennedy - 1º Andar')">
+<span class="block text-[10px] font-black text-pucNavy truncate tracking-tight">MAT1161</span>
+<span class="block text-[8.5px] font-semibold text-blue-700 leading-tight">09:00-11:00</span>
+<div class="mt-1 flex items-center text-[9px] font-bold text-slate-700 bg-sky-100 rounded px-1 py-0.5 truncate">
+<svg class="w-2.5 h-2.5 mr-0.5 text-blue-600 flex-shrink-0" fill="currentColor" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" fill-rule="evenodd"></path>
+</svg>
+<span class="truncate">K102</span>
+</div>
+</button>
+<!-- Células Vazias (Terça) -->
+<div class="h-14 border border-dashed border-slate-200/70 rounded-lg flex items-center justify-center">
+<span class="text-[8px] text-slate-300">11-13</span>
+</div>
+<div class="h-14 border border-dashed border-slate-200/70 rounded-lg flex items-center justify-center">
+<span class="text-[8px] text-slate-300">14-16</span>
+</div>
+<div class="h-14 border border-dashed border-slate-200/70 rounded-lg flex items-center justify-center">
+<span class="text-[8px] text-slate-300">16-18</span>
+</div>
+</div>
+<!-- COLUNA 3: QUARTA-FEIRA (QUA) -->
+<!-- Wireframe: aulas nos blocos 2 (09h-11h) e 3 (11h-13h) -->
+<div class="flex flex-col space-y-1 p-1 bg-slate-50/40">
+<div class="h-16 border border-dashed border-slate-200/70 rounded-lg flex items-center justify-center">
+<span class="text-[8px] text-slate-300">07-09</span>
+</div>
+<!-- Bloco 2: ENG1000 (Ativo no Wireframe) -->
+<button class="w-full text-left bg-gradient-to-b from-teal-50 to-white hover:from-teal-100 border border-pucTeal/40 rounded-xl p-1.5 shadow-sm transition-transform active:scale-95 group focus:outline-none" onclick="showNavigationModal('ENG1000 - Introd. à Engenharia', 'F402', 'Edifício Cardeal Frings - 4º Andar')">
+<span class="block text-[10px] font-black text-pucNavy truncate tracking-tight">ENG1000</span>
+<span class="block text-[8.5px] font-semibold text-pucTealDark leading-tight">09:00-11:00</span>
+<div class="mt-1 flex items-center text-[9px] font-bold text-slate-700 bg-teal-100/60 rounded px-1 py-0.5 truncate">
+<svg class="w-2.5 h-2.5 mr-0.5 text-pucTeal flex-shrink-0" fill="currentColor" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" fill-rule="evenodd"></path>
+</svg>
+<span class="truncate">F402</span>
+</div>
+</button>
+<!-- Bloco 3: FIS1025 (Ativo no Wireframe) -->
+<button class="w-full text-left bg-gradient-to-b from-emerald-50 to-white hover:from-emerald-100 border border-emerald-300 rounded-xl p-1.5 shadow-sm transition-transform active:scale-95 group focus:outline-none" onclick="showNavigationModal('FIS1025 - Física Experimental', 'L112', 'Edifício Cardeal Leme - 1º Andar')">
+<span class="block text-[10px] font-black text-pucNavy truncate tracking-tight">FIS1025</span>
+<span class="block text-[8.5px] font-semibold text-emerald-700 leading-tight">11:00-13:00</span>
+<div class="mt-1 flex items-center text-[9px] font-bold text-slate-700 bg-emerald-100 rounded px-1 py-0.5 truncate">
+<svg class="w-2.5 h-2.5 mr-0.5 text-emerald-600 flex-shrink-0" fill="currentColor" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" fill-rule="evenodd"></path>
+</svg>
+<span class="truncate">L112</span>
+</div>
+</button>
+<!-- Células Vazias (Quarta) -->
+<div class="h-14 border border-dashed border-slate-200/70 rounded-lg flex items-center justify-center">
+<span class="text-[8px] text-slate-300">14-16</span>
+</div>
+<div class="h-14 border border-dashed border-slate-200/70 rounded-lg flex items-center justify-center">
+<span class="text-[8px] text-slate-300">16-18</span>
+</div>
+</div>
+<!-- COLUNA 4: QUINTA-FEIRA (QUI) -->
+<!-- Wireframe: aulas no bloco 1 (07h-09h) e bloco 4 (14h-16h) -->
+<div class="flex flex-col space-y-1 p-1">
+<!-- Bloco 1: LET1010 (Ativo no Wireframe) -->
+<button class="w-full text-left bg-gradient-to-b from-indigo-50 to-white hover:from-indigo-100 border border-indigo-200 rounded-xl p-1.5 shadow-sm transition-transform active:scale-95 group focus:outline-none" onclick="showNavigationModal('LET1010 - Produção Textual', 'R204', 'Edifício Pe. Leonel Franca - 2º Andar')">
+<span class="block text-[10px] font-black text-pucNavy truncate tracking-tight">LET1010</span>
+<span class="block text-[8.5px] font-semibold text-indigo-700 leading-tight">07:00-09:00</span>
+<div class="mt-1 flex items-center text-[9px] font-bold text-slate-700 bg-indigo-100/70 rounded px-1 py-0.5 truncate">
+<svg class="w-2.5 h-2.5 mr-0.5 text-indigo-600 flex-shrink-0" fill="currentColor" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" fill-rule="evenodd"></path>
+</svg>
+<span class="truncate">R204</span>
+</div>
+</button>
+<!-- Células Vazias (Quinta) -->
+<div class="h-14 border border-dashed border-slate-200/70 rounded-lg flex items-center justify-center">
+<span class="text-[8px] text-slate-300">09-11</span>
+</div>
+<div class="h-14 border border-dashed border-slate-200/70 rounded-lg flex items-center justify-center">
+<span class="text-[8px] text-slate-300">11-13</span>
+</div>
+<!-- Bloco 4: MAT1161 Lab (Ativo no Wireframe) -->
+<button class="w-full text-left bg-gradient-to-b from-sky-50 to-white hover:from-sky-100 border border-sky-300 rounded-xl p-1.5 shadow-sm transition-transform active:scale-95 group focus:outline-none" onclick="showNavigationModal('MAT1161 - Monitoria Cálculo', 'L206', 'Edifício Cardeal Leme - 2º Andar')">
+<span class="block text-[10px] font-black text-pucNavy truncate tracking-tight">MAT1161</span>
+<span class="block text-[8.5px] font-semibold text-sky-700 leading-tight">14:00-16:00</span>
+<div class="mt-1 flex items-center text-[9px] font-bold text-slate-700 bg-sky-100 rounded px-1 py-0.5 truncate">
+<svg class="w-2.5 h-2.5 mr-0.5 text-sky-600 flex-shrink-0" fill="currentColor" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" fill-rule="evenodd"></path>
+</svg>
+<span class="truncate">L206</span>
+</div>
+</button>
+<div class="h-14 border border-dashed border-slate-200/70 rounded-lg flex items-center justify-center">
+<span class="text-[8px] text-slate-300">16-18</span>
+</div>
+</div>
+<!-- COLUNA 5: SEXTA-FEIRA (SEX) -->
+<!-- Dia livre no wireframe -->
+<div class="flex flex-col space-y-1 p-1 bg-slate-50/40">
+<div class="h-16 border border-dashed border-slate-200/60 rounded-lg flex items-center justify-center">
+<span class="text-[8px] text-slate-300">Livre</span>
+</div>
+<div class="h-14 border border-dashed border-slate-200/60 rounded-lg flex items-center justify-center">
+<span class="text-[8px] text-slate-300">Livre</span>
+</div>
+<div class="h-14 border border-dashed border-slate-200/60 rounded-lg flex items-center justify-center">
+<span class="text-[8px] text-slate-300">Livre</span>
+</div>
+<div class="h-14 border border-dashed border-slate-200/60 rounded-lg flex items-center justify-center">
+<span class="text-[8px] text-slate-300">Livre</span>
+</div>
+<div class="h-14 border border-dashed border-slate-200/60 rounded-lg flex items-center justify-center">
+<span class="text-[8px] text-slate-300">Livre</span>
+</div>
+</div>
+</div>
+</section>
+<!-- END: WeeklyScheduleGrid -->
+<!-- BEGIN: InstructionBanner -->
+<!-- Caixa de instrução conforme o wireframe: "CLIQUE NA SALA DESEJADA / REDIRECIONAMENTO AUTOMATICO AO MAPA" -->
+<section class="bg-white rounded-2xl p-3.5 border border-pucTeal/30 shadow-sm flex items-start space-x-3 relative overflow-hidden group" data-purpose="interactive-help-card">
+<div class="absolute -right-4 -bottom-4 w-20 h-20 bg-pucTeal/5 rounded-full pointer-events-none"></div>
+<!-- Ícone Dinâmico de Navegação -->
+<div class="w-10 h-10 rounded-xl bg-pucTealLight border border-pucTeal/20 flex-shrink-0 flex items-center justify-center text-pucTeal">
+<svg class="w-6 h-6 animate-pulse" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" stroke-linecap="round" stroke-linejoin="round"></path>
+<path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<div class="flex-1 pr-1">
+<p class="text-[11px] font-black tracking-wider uppercase text-pucNavy flex items-center gap-1">
+            Clique na sala desejada
+            <span class="inline-block w-1.5 h-1.5 rounded-full bg-pucTeal"></span>
+</p>
+<p class="text-xs text-slate-600 mt-0.5 leading-snug font-medium">
+            Redirecionamento automático ao mapa para traçar a melhor rota a pé pelo campus da PUC-Rio.
+          </p>
+</div>
+</section>
+<!-- END: InstructionBanner -->
+<!-- Próxima Aula Card Rápido -->
+<div class="bg-gradient-to-r from-pucNavy to-slate-800 text-white rounded-2xl p-3.5 shadow-md flex items-center justify-between">
+<div class="space-y-0.5">
+<span class="text-[10px] font-bold text-pucTeal tracking-wide uppercase">Aula Hoje (Quarta)</span>
+<h4 class="text-sm font-black text-white">ENG1000 • Sala F402</h4>
+<p class="text-[11px] text-slate-300 font-medium">Cardeal Frings — Início às 09:00</p>
+</div>
+<button class="px-3 py-2 bg-pucTeal hover:bg-pucTealDark text-white text-xs font-bold rounded-xl transition active:scale-95 shadow flex items-center gap-1" onclick="showNavigationModal('ENG1000 - Introd. à Engenharia', 'F402', 'Edifício Cardeal Frings - 4º Andar')">
+<span>Ir Agora</span>
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24">
+<path d="M13 7l5 5m0 0l-5 5m5-5H6" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</button>
+</div>
+</div>
+<!-- END: MainContentScrollableArea -->
+<!-- BEGIN: BottomNavigation -->
+<!-- Barra inferior fiel ao wireframe: abas "Mapa" e "Horário" -->
+<nav class="bg-white border-t border-slate-200 px-6 py-2 flex items-center justify-around flex-shrink-0 shadow-lg z-30" data-purpose="mobile-bottom-tabs">
+<!-- Aba 1: MAPA (Inativa / Secundária) -->
+<button class="flex-1 py-1.5 px-3 flex flex-col items-center justify-center rounded-xl text-slate-400 hover:text-pucNavy transition-colors group focus:outline-none" id="tab-mapa" onclick="simulateTabSwitch('mapa')">
+<svg class="w-6 h-6 mb-1 text-slate-400 group-hover:text-pucNavy transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24">
+<path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span class="text-xs font-semibold tracking-tight uppercase">Mapa</span>
+</button>
+<!-- Divisor sutil entre as abas -->
+<div class="h-8 w-px bg-slate-200 mx-2"></div>
+<!-- Aba 2: HORÁRIO (Ativa / Selecionada conforme wireframe) -->
+<button class="flex-1 py-1.5 px-3 flex flex-col items-center justify-center rounded-xl text-pucNavy bg-slate-50 border border-slate-200/80 shadow-xs focus:outline-none" id="tab-horario">
+<div class="relative">
+<svg class="w-6 h-6 mb-1 text-pucNavy" fill="currentColor" viewbox="0 0 24 24">
+<path clip-rule="evenodd" d="M6.75 2.25A.75.75 0 017.5 3v1.5h9V3A.75.75 0 0118 3v1.5h.75a3 3 0 013 3v11.25a3 3 0 01-3 3H5.25a3 3 0 01-3-3V7.5a3 3 0 013-3H6V3a.75.75 0 01.75-.75zm13.5 9a1.5 1.5 0 00-1.5-1.5H5.25a1.5 1.5 0 00-1.5 1.5v7.5a1.5 1.5 0 001.5 1.5h13.5a1.5 1.5 0 001.5-1.5v-7.5z" fill-rule="evenodd"></path>
+</svg>
+<span class="w-1.5 h-1.5 bg-pucTeal rounded-full absolute -top-0.5 -right-1 ring-2 ring-white"></span>
+</div>
+<span class="text-xs font-extrabold tracking-tight uppercase text-pucNavy">Horário</span>
+</button>
+</nav>
+<!-- END: BottomNavigation -->
+<!-- iOS Home Indicator -->
+<div class="w-full bg-white pb-2 flex justify-center flex-shrink-0">
+<div class="w-32 h-1 bg-slate-300 rounded-full"></div>
+</div>
+<!-- BEGIN: NavigationFeedbackModal -->
+<!-- Modal/Toast simulando redirecionamento para o mapa conforme prometido na instrução -->
+<div class="hidden fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-end sm:items-center justify-center p-4 transition-opacity" id="route-modal">
+<div class="bg-white w-full max-w-sm rounded-3xl p-5 shadow-2xl border border-slate-100 transform transition-all">
+<div class="flex items-center space-x-3 mb-3">
+<div class="w-10 h-10 rounded-2xl bg-pucTeal/10 flex items-center justify-center text-pucTeal">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<div>
+<span class="text-[10px] font-bold text-pucTeal uppercase tracking-wider">Redirecionando ao Mapa</span>
+<h3 class="text-sm font-black text-pucNavy" id="modal-discipline">INF1005</h3>
+</div>
+</div>
+<div class="bg-slate-50 p-3 rounded-2xl border border-slate-100 mb-4">
+<div class="flex items-center space-x-2 text-xs font-bold text-slate-700">
+<span class="px-2 py-0.5 bg-white border border-slate-200 rounded-lg text-pucNavy" id="modal-room">L318</span>
+<span class="text-slate-500 font-medium" id="modal-building">Edifício Cardeal Leme</span>
+</div>
+<p class="text-[11px] text-slate-400 mt-2 flex items-center gap-1">
+<svg class="w-3.5 h-3.5 text-pucTeal" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M13 10V3L4 14h7v7l9-11h-7z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+            Calculando trajeto mais rápido da sua posição atual...
+          </p>
+</div>
+<div class="flex space-x-2">
+<button class="flex-1 py-2.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-600 hover:bg-slate-100 transition" onclick="closeModal()">
+            Fechar
+          </button>
+<button class="flex-1 py-2.5 rounded-xl bg-pucNavy text-white text-xs font-bold hover:bg-pucNavyDark transition shadow-md shadow-pucNavy/30 flex items-center justify-center gap-1.5" onclick="confirmOpenMap()">
+<span>Ver no Mapa</span>
+<svg class="w-4 h-4 text-pucTeal" fill="none" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24">
+<path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</button>
+</div>
+</div>
+</div>
+<!-- END: NavigationFeedbackModal -->
+</main>
+<!-- END: MobileContainer -->
+<!-- BEGIN: InteractiveScripts -->
+<script data-purpose="user-interactions">
+    // Simula abertura e dados do modal de rota
+    function showNavigationModal(discipline, room, building) {
+      document.getElementById('modal-discipline').innerText = discipline;
+      document.getElementById('modal-room').innerText = room;
+      document.getElementById('modal-building').innerText = building;
+      
+      const modal = document.getElementById('route-modal');
+      modal.classList.remove('hidden');
+    }
+
+    // Fechar modal
+    function closeModal() {
+      const modal = document.getElementById('route-modal');
+      modal.classList.add('hidden');
+    }
+
+    // Confirmação para ir para aba de mapa
+    function confirmOpenMap() {
+      closeModal();
+      simulateTabSwitch('mapa');
+    }
+
+    // Transição de abas
+    function simulateTabSwitch(tabName) {
+      if(tabName === 'mapa') {
+        alert('MaPUC: Abrindo mapa interativo do campus da PUC-Rio e traçando sua rota pedagógica!');
+      }
+    }
+  </script>
+<!-- END: InteractiveScripts -->
+</body></html>
