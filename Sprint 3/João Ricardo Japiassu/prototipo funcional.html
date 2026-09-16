@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MaPUC - App Completo (9 Telas)</title>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    :root {
+      --primary: #0A2240;
+      --teal: #40C0A8;
+      --teal-light: #E6F7F4;
+      --danger: #E53935;
+      --danger-light: #FDE8E8;
+      --bg: #F8FAF9;
+      --card: #FFFFFF;
+      --text-main: #0A2240;
+      --text-sec: #6B7280;
+      --text-muted: #9CA3AF;
+      --border: #E5E7EB;
+      --input-bg: #F9FAFB;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { background-color: #121212; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+    
+    .phone { width: 390px; height: 844px; background: var(--bg); border-radius: 40px; border: 12px solid #222; position: relative; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 25px 50px rgba(0,0,0,0.5); }
+    .status-bar { height: 44px; display: flex; justify-content: space-between; align-items: center; padding: 0 24px; font-size: 14px; font-weight: 600; color: var(--text-main); z-index: 10; background: transparent; }
+    .app-content { flex: 1; overflow-y: auto; position: relative; background: var(--bg); }
+    .screen { display: none; padding: 20px 24px; flex-direction: column; min-height: 100%; animation: fadeIn 0.3s ease; }
+    .screen.active { display: flex; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Menu Lateral (Drawer) */
+    .side-menu-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.4); z-index: 200; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+    .side-menu-overlay.active { opacity: 1; pointer-events: auto; }
+    .side-menu { position: absolute; top: 0; left: -90px; width: 85px; height: 100%; background: var(--card); z-index: 201; display: flex; flex-direction: column; align-items: center; padding: 44px 0 24px 0; transition: left 0.3s ease; box-shadow: 4px 0 15px rgba(0,0,0,0.1); border-right: 1px solid var(--border); }
+    .side-menu.active { left: 0; }
+    .menu-nav-item { display: flex; flex-direction: column; align-items: center; gap: 6px; margin-bottom: 32px; color: var(--text-sec); cursor: pointer; }
+    .menu-nav-item.active-item { color: var(--primary); }
+    .menu-nav-item span { font-size: 10px; font-weight: 800; letter-spacing: 0.5px; }
+
+    /* Tipografia e Textos */
+    h1 { font-size: 24px; font-weight: 800; color: var(--primary); margin-bottom: 8px; }
+    p { font-size: 14px; color: var(--text-sec); margin-bottom: 24px; line-height: 1.4; }
+    .badge { font-size: 11px; font-weight: 700; color: var(--teal); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+    
+    /* Inputs e Botões */
+    .input-group { margin-bottom: 16px; width: 100%; }
+    .label-row { display: flex; justify-content: space-between; font-size: 13px; font-weight: 700; color: var(--text-main); margin-bottom: 6px; }
+    .label-sub { color: var(--text-muted); font-weight: 400; font-size: 11px; }
+    .input-box { width: 100%; height: 50px; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 0 16px; font-size: 14px; color: var(--text-main); display: flex; align-items: center; gap: 10px; }
+    .input-box input { border: none; background: transparent; flex: 1; height: 100%; outline: none; color: var(--text-main); font-size: 14px; }
+    .input-box.readonly { background: var(--input-bg); color: var(--text-muted); }
+    
+    .btn { height: 50px; border-radius: 14px; border: none; font-size: 16px; font-weight: 700; display: flex; justify-content: center; align-items: center; gap: 8px; cursor: pointer; width: 100%; transition: opacity 0.2s; }
+    .btn:active { opacity: 0.8; }
+    .btn-primary { background: var(--primary); color: #FFF; }
+    .btn-teal { background: var(--teal); color: #FFF; }
+    .btn-danger { background: var(--danger); color: #FFF; }
+    .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text-main); }
+    .btn-text { background: transparent; border: none; color: var(--text-sec); font-size: 12px; font-weight: 600; text-transform: uppercase; cursor: pointer; }
+    
+    .header-nav { display: flex; align-items: center; margin-bottom: 24px; gap: 16px; }
+    .header-nav i { cursor: pointer; color: var(--primary); }
+    .header-nav h2 { font-size: 18px; font-weight: 800; color: var(--primary); flex: 1; }
+    .card { background: var(--card); border-radius: 16px; padding: 16px; border: 1px solid var(--border); margin-bottom: 16px; }
+    .card-dark { background: var(--primary); border-radius: 20px; padding: 20px; color: #FFF; margin-bottom: 16px; }
+    
+    /* Tab Bar */
+    .tab-bar { height: 80px; background: var(--card); border-top: 1px solid var(--border); display: flex; padding-bottom: 20px; z-index: 50; }
+    .tab-item { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px; color: var(--text-muted); font-size: 11px; font-weight: 700; cursor: pointer; }
+    .tab-item.active { color: var(--primary); }
+    .tab-item.active i { color: var(--teal); }
+
+    /* Específicos do Perfil / Grade */
+    .profile-avatar { width: 80px; height: 80px; border-radius: 40px; background: var(--primary); color: #FFF; display: flex; justify-content: center; align-items: center; font-size: 32px; font-weight: 800; margin: 0 auto 8px; position: relative; }
+    .camera-badge { position: absolute; bottom: 0; right: 0; background: var(--teal); width: 28px; height: 28px; border-radius: 14px; display: flex; justify-content: center; align-items: center; border: 2px solid #FFF; }
+    .menu-item { display: flex; align-items: center; justify-content: space-between; padding: 16px; background: var(--card); border: 1px solid var(--border); border-radius: 16px; margin-bottom: 12px; cursor: pointer; }
+    .grid-week { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; text-align: center; font-size: 10px; font-weight: 700; color: var(--text-sec); margin-bottom: 16px; }
+
+    /* Checkbox Customizada */
+    .checkbox-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+    .checkbox-box { width: 18px; height: 18px; border: 1px solid var(--border); border-radius: 4px; display: flex; justify-content: center; align-items: center; cursor: pointer; }
+    .checkbox-text { font-size: 13px; color: var(--text-sec); }
+    .checkbox-text a { color: var(--primary); font-weight: 700; text-decoration: underline; }
+
+    /* Modal */
+    .overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 100; padding: 24px; }
+    .overlay.active { display: flex; }
+    .modal { background: var(--card); border-radius: 24px; padding: 32px 24px; width: 100%; text-align: center; display: flex; flex-direction: column; align-items: center;}
+
+    /* Elementos do Mapa Simulado */
+    #map-view { padding: 0 !important; position: relative; background: #E8F0EA; }
+    .map-pin { position: absolute; display: flex; flex-direction: column; align-items: center; transform: translate(-50%, -100%); z-index: 10; animation: bounceIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+    .pin-icon { background: var(--teal); width: 36px; height: 36px; border-radius: 18px; display: flex; justify-content: center; align-items: center; border: 3px solid #FFF; box-shadow: 0 4px 10px rgba(0,0,0,0.2); position: relative; }
+    .pin-icon::after { content: ''; position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%); border-width: 8px 6px 0; border-style: solid; border-color: var(--teal) transparent transparent transparent; }
+    .pin-icon.primary { background: var(--primary); }
+    .pin-icon.primary::after { border-color: var(--primary) transparent transparent transparent; }
+    .pin-label { background: var(--card); color: var(--primary); font-size: 12px; font-weight: 700; padding: 6px 10px; border-radius: 8px; margin-top: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); white-space: nowrap; border: 1px solid var(--border); }
+    
+    @keyframes bounceIn { from { opacity: 0; transform: translate(-50%, -50%) scale(0.5); } to { opacity: 1; transform: translate(-50%, -100%) scale(1); } }
+    @keyframes routeDash { to { stroke-dashoffset: -30; } }
+    
+    .map-header { position: absolute; top: 20px; left: 20px; right: 20px; z-index: 20; display: flex; align-items: center; gap: 12px; }
+    .btn-map-back { background: var(--card); width: 44px; height: 44px; border-radius: 22px; display: flex; justify-content: center; align-items: center; box-shadow: 0 4px 12px rgba(0,0,0,0.1); cursor: pointer; }
+    .map-title-card { background: var(--card); height: 44px; border-radius: 22px; flex: 1; box-shadow: 0 4px 12px rgba(0,0,0,0.1); display: flex; align-items: center; padding: 0 16px; gap: 8px; font-weight: 800; color: var(--primary); font-size: 15px; }
+
+  </style>
+</head>
+<body>
+  <div class="phone">
+    
+    <!-- OVERLAY E MENU LATERAL -->
+    <div id="side-menu-overlay" class="side-menu-overlay" onclick="toggleMenu()"></div>
+    <div id="side-menu" class="side-menu">
+       <div class="menu-nav-item active-item" onclick="toggleMenu()" style="margin-bottom: 48px;">
+         <i data-lucide="menu" size="24"></i>
+         <span>MENU</span>
+       </div>
+       <div class="menu-nav-item" onclick="toggleMenu('home')"><i data-lucide="building" size="24"></i></div>
+       <div class="menu-nav-item" onclick="toggleMenu('home')"><i data-lucide="star" size="24"></i></div>
+       <div class="menu-nav-item" onclick="toggleMenu('profile-menu')"><i data-lucide="help-circle" size="24"></i></div>
+       <div style="margin-top: auto; font-size: 10px; color: var(--text-muted); font-weight: 600;">v2.4.1</div>
+    </div>
+
+    <div class="status-bar">
+      <span>09:41</span>
+      <div style="display: flex; gap: 4px;">
+        <i data-lucide="wifi" size="14"></i>
+        <i data-lucide="battery" size="14"></i>
+      </div>
+    </div>
+
+    <div class="app-content">
+
+      <!-- TELA 4: LOGIN -->
+      <div id="login" class="screen active" style="justify-content: center; padding-bottom: 60px;">
+        <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 32px;">
+          <svg width="100" height="120" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg" style="margin-bottom: -10px;">
+            <path d="M50 0 C22.4 0 0 22.4 0 50 C0 87.5 50 120 50 120 C50 120 100 87.5 100 50 C100 22.4 77.6 0 50 0 Z" fill="#0A2240"/>
+            <path d="M50 120 C50 120 100 87.5 100 50 C100 40 98 32 94 25 L50 90 Z" fill="#40C0A8"/>
+            <path d="M40 35 L50 20 L60 35 V75 H40 Z" fill="#FFFFFF"/>
+            <rect x="45" y="55" width="10" height="20" fill="#0A2240" rx="3"/>
+            <rect x="48.5" y="25" width="3" height="10" fill="#0A2240"/>
+            <rect x="45" y="28" width="10" height="3" fill="#0A2240"/>
+          </svg>
+          <div style="font-size: 38px; font-weight: 800; display: flex; align-items: center; letter-spacing: -1px;">
+            <span style="color: var(--teal);">Ma</span><span style="color: var(--primary);">PUC</span>
+          </div>
+          <div style="width: 140px; height: 1px; background: var(--teal); margin: 4px 0 8px 0;"></div>
+          <p style="font-size: 13px; text-align: center; margin-bottom: 0;">Acesse com as credenciais acadêmicas da PUC-Rio</p>
+        </div>
+
+        <div class="input-group">
+          <div class="label-row">Cadastro <span class="label-sub">Matrícula / E-mail</span></div>
+          <div class="input-box">
+            <i data-lucide="user" size="18" color="var(--text-muted)"></i>
+            <input type="text" placeholder="Ex: 2410849" value="2110482">
+          </div>
+        </div>
+        <div class="input-group">
+          <div class="label-row">Senha</div>
+          <div class="input-box">
+            <i data-lucide="lock" size="18" color="var(--text-muted)"></i>
+            <input type="password" value="12345678">
+            <i data-lucide="eye-off" size="18" color="var(--text-muted)"></i>
+          </div>
+        </div>
+        <button class="btn btn-primary" style="margin-top: 8px;" onclick="nav('home', true)">Acessar Mapa <i data-lucide="arrow-right" size="18"></i></button>
+        <div style="margin-top: 32px; display: flex; flex-direction: column; gap: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; color: var(--text-sec); font-size: 14px; padding: 0 8px;">
+            <span>Esqueceu sua senha?</span> <i data-lucide="external-link" size="16"></i>
+          </div>
+          <div class="card" style="background: var(--teal-light); border-color: var(--teal-light); display: flex; justify-content: space-between; align-items: center; cursor: pointer; padding: 18px;" onclick="nav('register')">
+            <div style="display: flex; align-items: center; gap: 8px; color: var(--teal); font-weight: 700;">
+              <i data-lucide="user-plus" size="18"></i> Não tem cadastro?
+            </div>
+            <i data-lucide="external-link" size="16" color="var(--teal)"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- TELA 8: CADASTRO -->
+      <div id="register" class="screen">
+        <div class="header-nav">
+          <div style="background: var(--input-bg); padding: 8px 16px; border-radius: 20px; display: flex; align-items: center; gap: 8px; flex: 1; justify-content: center; cursor: pointer;" onclick="nav('login')">
+            <i data-lucide="map" size="16" color="var(--primary)"></i> <span style="font-weight: 700; color: var(--primary); font-size: 12px;">PUC MAPA GUIA</span>
+          </div>
+        </div>
+        <div class="badge">CAMPUS WAYFINDING</div>
+        <h1 style="font-size: 22px;">Nunca se cadastrou?</h1>
+        <p style="color: var(--primary); font-size: 16px; font-weight: 600;">Junte-se ao nosso app!</p>
+        
+        <div class="input-group"><div class="label-row">NOME COMPLETO *</div><div class="input-box"><i data-lucide="user" size="18" color="var(--text-muted)"></i><input type="text" placeholder="Ex: Lucas Silveira de Alencar"></div></div>
+        <div class="input-group"><div class="label-row">EMAIL * <span class="label-sub">Preferência institucional</span></div><div class="input-box"><i data-lucide="mail" size="18" color="var(--text-muted)"></i><input type="email" placeholder="aluno@puc.br ou seu email"></div></div>
+        <div class="input-group"><div class="label-row">CEP</div><div class="input-box"><i data-lucide="map-pin" size="18" color="var(--text-muted)"></i><input type="text" placeholder="00000-000"></div></div>
+        <div class="input-group">
+          <div class="label-row">CURSO</div>
+          <div class="input-box">
+             <input type="text" placeholder="Selecione seu curso..." readonly>
+             <i data-lucide="chevron-down" size="18" color="var(--text-muted)"></i>
+          </div>
+        </div>
+        <div class="input-group"><div class="label-row">MATRÍCULA *</div><div class="input-box"><i data-lucide="hash" size="18" color="var(--text-muted)"></i><input type="text" placeholder="Ex: 2110482"></div></div>
+        <div class="input-group"><div class="label-row">SENHA *</div><div class="input-box"><i data-lucide="lock" size="18" color="var(--text-muted)"></i><input type="password" placeholder="Crie sua senha segura"><i data-lucide="eye" size="18" color="var(--text-muted)"></i></div></div>
+        
+        <!-- Critérios de Segurança -->
+        <div style="background: var(--input-bg); border: 1px solid #BEE3F8; border-radius: 12px; padding: 12px; margin-bottom: 16px; margin-top: -8px;">
+          <div style="font-size: 11px; font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 6px; margin-bottom: 8px;">
+            <i data-lucide="shield-check" size="14" color="#3182CE"></i> CRITÉRIOS DE SEGURANÇA:
+          </div>
+          <div style="display: flex; flex-wrap: wrap; gap: 8px 16px;">
+            <span style="font-size: 11px; color: var(--primary); display: flex; align-items: center; gap: 6px;"><div style="width: 6px; height: 6px; background: #3182CE; border-radius: 3px;"></div> Mínimo 8 caracteres</span>
+            <span style="font-size: 11px; color: var(--primary); display: flex; align-items: center; gap: 6px;"><div style="width: 6px; height: 6px; background: #3182CE; border-radius: 3px;"></div> Mínimo 2 símbolos</span>
+            <span style="font-size: 11px; color: var(--primary); display: flex; align-items: center; gap: 6px;"><div style="width: 6px; height: 6px; background: #3182CE; border-radius: 3px;"></div> Mínimo 1 número</span>
+          </div>
+        </div>
+
+        <div class="input-group"><div class="label-row">CONFIRMAR SENHA *</div><div class="input-box"><i data-lucide="lock" size="18" color="var(--text-muted)"></i><input type="password" placeholder="Digite a senha novamente"><i data-lucide="eye" size="18" color="var(--text-muted)"></i></div></div>
+        
+        <!-- Checkboxes -->
+        <div class="checkbox-row">
+           <div class="checkbox-box"></div>
+           <div class="checkbox-text">Receber notícias, avisos, atualizações</div>
+        </div>
+        <div class="checkbox-row" style="margin-bottom: 24px;">
+           <div class="checkbox-box"></div>
+           <div class="checkbox-text">Concordar com nossa <a href="#">Política de Uso e Privacidade</a></div>
+        </div>
+
+        <div style="display: flex; gap: 12px; padding-bottom: 40px;">
+          <button class="btn btn-outline" style="flex: 1;" onclick="nav('login')">SAIR</button>
+          <button class="btn btn-primary" style="flex: 1;" onclick="showModal('code-modal')">PRÓXIMO <i data-lucide="arrow-right" size="16"></i></button>
+        </div>
+      </div>
+
+      <!-- TELA 6: HOME / MAPA -->
+      <div id="home" class="screen">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <i data-lucide="menu" size="24" color="var(--primary)" style="cursor: pointer;" onclick="toggleMenu()"></i>
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <svg width="24" height="28" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+                <path d="M50 0 C22.4 0 0 22.4 0 50 C0 87.5 50 120 50 120 C50 120 100 87.5 100 50 C100 22.4 77.6 0 50 0 Z" fill="#0A2240"/>
+                <path d="M50 120 C50 120 100 87.5 100 50 C100 40 98 32 94 25 L50 90 Z" fill="#40C0A8"/>
+                <path d="M40 35 L50 20 L60 35 V75 H40 Z" fill="#FFFFFF"/>
+                <rect x="45" y="55" width="10" height="20" fill="#0A2240" rx="3"/>
+                <rect x="48.5" y="25" width="3" height="10" fill="#0A2240"/>
+                <rect x="45" y="28" width="10" height="3" fill="#0A2240"/>
+              </svg>
+              <span style="font-weight: 800; font-size: 20px; color: var(--teal); letter-spacing: -0.5px;">Ma<span style="color: var(--primary)">PUC</span></span>
+            </div>
+          </div>
+          <div style="background: var(--input-bg); border-radius: 20px; padding: 4px 12px 4px 4px; display: flex; align-items: center; gap: 8px; cursor: pointer;" onclick="nav('profile-menu')">
+            <span style="font-size: 12px; font-weight: 600; padding-left: 8px;">Lucas</span>
+            <div style="width: 28px; height: 28px; border-radius: 14px; background: var(--primary); color: #FFF; display: flex; justify-content: center; align-items: center; font-size: 10px; font-weight: bold;">LA</div>
+          </div>
+        </div>
+        
+        <h1 style="text-align: center;">TELA DE INÍCIO</h1>
+        <p style="text-align: center;">Se encontre pelos blocos, salas e pilotis da PUC-Rio.</p>
+        
+        <div class="input-box" style="margin-bottom: 24px; border-radius: 20px;">
+          <i data-lucide="search" size="18" color="var(--text-muted)"></i>
+          <input type="text" placeholder="Buscar sala, bloco ou serviço (ex: L318)">
+        </div>
+
+        <div class="card-dark">
+          <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px;">
+            <div style="width: 6px; height: 6px; background: var(--teal); border-radius: 3px;"></div>
+            <span style="font-size: 11px; font-weight: 700; color: var(--teal);">PRÓXIMA AULA HOJE</span>
+            <span style="margin-left: auto; font-size: 12px; font-weight: 600; background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 10px;">09:00</span>
+          </div>
+          <h2 style="font-size: 20px; font-weight: 800; margin-bottom: 4px;">ENG1000 • Sala F402</h2>
+          <p style="color: rgba(255,255,255,0.7); font-size: 13px; margin-bottom: 16px;">Prédio Cardeal Frings — 4º Andar</p>
+          <button class="btn btn-teal" style="width: 120px; height: 40px; font-size: 14px; border-radius: 20px;" onclick="openMap('rota')">Rotear <i data-lucide="arrow-right" size="16"></i></button>
+        </div>
+
+        <!-- Botões de Navegação Direta pro Mapa -->
+        <div style="display: flex; gap: 12px;">
+          <div class="card" style="flex: 1; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; cursor: pointer;" onclick="openMap('biblioteca')">
+            <div style="background: var(--teal-light); padding: 8px; border-radius: 8px;"><i data-lucide="book-open" size="20" color="var(--teal)"></i></div>
+            <span style="font-weight: 700; color: var(--primary);">Biblioteca</span>
+            <span style="font-size: 11px; color: var(--text-muted);">Acervo & Estudos</span>
+          </div>
+          <div class="card" style="flex: 1; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; cursor: pointer;" onclick="openMap('alimentacao')">
+            <div style="background: var(--teal-light); padding: 8px; border-radius: 8px;"><i data-lucide="shopping-cart" size="20" color="var(--teal)"></i></div>
+            <span style="font-weight: 700; color: var(--primary);">Alimentação</span>
+            <span style="font-size: 11px; color: var(--text-muted);">Vila dos Diretórios</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- TELA: MAPA INTERATIVO SIMULADO -->
+      <div id="map-view" class="screen">
+        <div class="map-header">
+           <div class="btn-map-back" onclick="nav('home', true)">
+             <i data-lucide="arrow-left" size="20" color="var(--primary)"></i>
+           </div>
+           <div class="map-title-card">
+             <span id="map-icon-container"><i data-lucide="map-pin" size="18" color="var(--teal)"></i></span>
+             <span id="map-title">Mapa</span>
+           </div>
+        </div>
+  
+        <div style="width: 100%; height: 100%; position: absolute; top:0; left:0; overflow: hidden;">
+           <svg width="100%" height="100%">
+              <!-- Ruas principais -->
+              <path d="M-50,200 L450,150 M150,-50 L200,900 M-50,600 L450,500 M300,-50 L250,900" stroke="#FFF" stroke-width="26" fill="none"/>
+              <path d="M-50,400 L450,300 M50,-50 L100,900" stroke="#FFF" stroke-width="14" fill="none"/>
+              <!-- Blocos/Prédios -->
+              <rect x="220" y="200" width="80" height="60" fill="#D1E2D6" rx="8"/>
+              <rect x="60" y="220" width="70" height="100" fill="#D1E2D6" rx="8"/>
+              <rect x="260" y="360" width="100" height="120" fill="#D1E2D6" rx="8"/>
+              <rect x="80" y="520" width="90" height="60" fill="#D1E2D6" rx="8"/>
+              <rect x="220" y="600" width="120" height="80" fill="#D1E2D6" rx="8"/>
+              
+              <!-- Linha de Rota -->
+              <path id="map-route-line" d="M140,650 L140,550 L240,530 L280,450" stroke="var(--teal)" stroke-width="6" stroke-dasharray="10,8" fill="none" style="display:none; animation: routeDash 1s linear infinite;"/>
+           </svg>
+  
+           <!-- PINOS: Bibliotecas -->
+           <div class="map-layer layer-biblioteca" style="display:none;">
+              <div class="map-pin" style="top: 240px; left: 260px;">
+                 <div class="pin-icon"><i data-lucide="book-open" size="18" color="#FFF"></i></div>
+                 <div class="pin-label">Biblioteca Central</div>
+              </div>
+              <div class="map-pin" style="top: 400px; left: 310px;">
+                 <div class="pin-icon"><i data-lucide="book-open" size="18" color="#FFF"></i></div>
+                 <div class="pin-label">Biblioteca CTC</div>
+              </div>
+           </div>
+  
+           <!-- PINOS: Alimentação -->
+           <div class="map-layer layer-alimentacao" style="display:none;">
+              <div class="map-pin" style="top: 280px; left: 95px;">
+                 <div class="pin-icon"><i data-lucide="shopping-cart" size="18" color="#FFF"></i></div>
+                 <div class="pin-label">Vila dos Diretórios</div>
+              </div>
+              <div class="map-pin" style="top: 550px; left: 125px;">
+                 <div class="pin-icon"><i data-lucide="shopping-cart" size="18" color="#FFF"></i></div>
+                 <div class="pin-label">Bandejão</div>
+              </div>
+           </div>
+  
+           <!-- PINOS: Rota de Sala -->
+           <div class="map-layer layer-rota" style="display:none;">
+              <div class="map-pin" style="top: 650px; left: 140px;">
+                 <div class="pin-icon primary"><i data-lucide="user" size="18" color="#FFF"></i></div>
+                 <div class="pin-label" style="color: var(--primary);">Você está aqui</div>
+              </div>
+              <div class="map-pin" style="top: 450px; left: 280px;">
+                 <div class="pin-icon"><i data-lucide="map-pin" size="18" color="#FFF"></i></div>
+                 <div class="pin-label">Sala F402</div>
+              </div>
+           </div>
+        </div>
+      </div>
+
+      <!-- TELA 5: HORÁRIO -->
+      <div id="schedule" class="screen">
+        <div class="header-nav" style="justify-content: space-between;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <i data-lucide="calendar" size="20" color="var(--teal)"></i>
+            <h2 style="margin: 0; font-size: 16px;">HORÁRIO DE AULAS</h2>
+          </div>
+          <span style="background: var(--teal-light); color: var(--teal); padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 700;">4 Disciplinas</span>
+        </div>
+        <div class="grid-week">
+          <div>SEG<br><span style="font-weight: 400;">2ª feira</span></div>
+          <div>TER<br><span style="font-weight: 400;">3ª feira</span></div>
+          <div>QUA<br><span style="font-weight: 400;">4ª feira</span></div>
+          <div>QUI<br><span style="font-weight: 400;">5ª feira</span></div>
+          <div>SEX<br><span style="font-weight: 400;">6ª feira</span></div>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; flex: 1;">
+          <div style="background: var(--teal-light); border: 1px solid var(--teal); border-radius: 8px; padding: 6px; height: 80px;">
+            <div style="font-size: 10px; font-weight: 700; color: var(--primary);">INF1005</div><div style="font-size: 9px; color: var(--teal);">07:00-09:00</div>
+            <div style="font-size: 8px; font-weight: bold; color: var(--teal); margin-top: 4px; display: flex; align-items: center; gap: 2px;"><i data-lucide="map-pin" size="8"></i> L318</div>
+          </div>
+          <div></div><div></div>
+          <div style="background: #EBF4FF; border: 1px solid #7C3AED; border-radius: 8px; padding: 6px; height: 80px;">
+            <div style="font-size: 10px; font-weight: 700; color: var(--primary);">LET1010</div><div style="font-size: 9px; color: #7C3AED;">07:00-09:00</div>
+            <div style="font-size: 8px; font-weight: bold; color: #7C3AED; margin-top: 4px; display: flex; align-items: center; gap: 2px;"><i data-lucide="map-pin" size="8"></i> R204</div>
+          </div>
+          <div></div>
+          <div></div>
+          <div style="background: #EFF6FF; border: 1px solid #3B82F6; border-radius: 8px; padding: 6px; height: 80px; margin-top: -20px;">
+            <div style="font-size: 10px; font-weight: 700; color: var(--primary);">MAT1161</div><div style="font-size: 9px; color: #3B82F6;">09:00-11:00</div>
+            <div style="font-size: 8px; font-weight: bold; color: #3B82F6; margin-top: 4px; display: flex; align-items: center; gap: 2px;"><i data-lucide="map-pin" size="8"></i> K102</div>
+          </div>
+          <div style="background: var(--teal-light); border: 1px solid var(--teal); border-radius: 8px; padding: 6px; height: 80px; margin-top: -20px; cursor: pointer;" onclick="nav('class-details')">
+            <div style="font-size: 10px; font-weight: 700; color: var(--primary);">ENG1000</div><div style="font-size: 9px; color: var(--teal);">09:00-11:00</div>
+            <div style="font-size: 8px; font-weight: bold; color: var(--teal); margin-top: 4px; display: flex; align-items: center; gap: 2px;"><i data-lucide="map-pin" size="8"></i> F402</div>
+          </div>
+          <div></div><div></div>
+        </div>
+        
+        <div class="card-dark" style="margin-top: auto; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-size: 10px; color: var(--teal); font-weight: 700; margin-bottom: 4px;">AULA HOJE (QUARTA)</div>
+            <div style="font-weight: 800; font-size: 16px;">ENG1000 • Sala F402</div>
+          </div>
+          <button class="btn btn-teal" style="width: auto; height: 36px; padding: 0 16px; font-size: 12px; border-radius: 18px;" onclick="openMap('rota')">Ir Agora <i data-lucide="arrow-right" size="14"></i></button>
+        </div>
+      </div>
+
+      <!-- TELA 2: DETALHES DA AULA -->
+      <div id="class-details" class="screen">
+        <div class="header-nav">
+          <i data-lucide="arrow-left" size="24" onclick="nav('schedule', true)"></i>
+          <h2>Detalhes da aula</h2>
+        </div>
+        <div class="card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <div style="display: flex; gap: 8px; align-items: center; color: var(--primary); font-weight: 700; font-size: 14px;">
+              <i data-lucide="book" size="16"></i> ENG4021
+            </div>
+            <span style="font-size: 12px; color: var(--text-muted);">Obrigatória</span>
+          </div>
+          <h2 style="font-size: 16px; font-weight: 800; color: var(--primary);">PROJETO INTEGRADO - SOFTWARE</h2>
+        </div>
+        <div class="card" style="display: flex; flex-direction: column; gap: 20px;">
+          <div style="display: flex; gap: 16px; align-items: center;">
+            <div style="background: var(--input-bg); padding: 10px; border-radius: 12px;"><i data-lucide="clock" size="20" color="var(--primary)"></i></div>
+            <div><div style="font-size: 10px; font-weight: 700; color: var(--text-muted);">HORÁRIO</div><div style="font-size: 14px; font-weight: 600; color: var(--primary);">Sexta-feira, 11:00 - 13:00</div></div>
+          </div>
+          <hr style="border: none; border-top: 1px solid var(--border);">
+          <div style="display: flex; gap: 16px; align-items: center;">
+            <div style="background: var(--input-bg); padding: 10px; border-radius: 12px;"><i data-lucide="users" size="20" color="var(--teal)"></i></div>
+            <div><div style="font-size: 10px; font-weight: 700; color: var(--text-muted);">TURMA</div><div style="font-size: 14px; font-weight: 600; color: var(--primary);">33C</div></div>
+          </div>
+          <hr style="border: none; border-top: 1px solid var(--border);">
+          <div style="display: flex; gap: 16px; align-items: center;">
+            <div style="background: var(--input-bg); padding: 10px; border-radius: 12px;"><i data-lucide="user" size="20" color="var(--primary)"></i></div>
+            <div><div style="font-size: 10px; font-weight: 700; color: var(--text-muted);">PROFESSOR</div><div style="font-size: 14px; font-weight: 600; color: var(--primary);">Luís Fernando Bicalho</div></div>
+          </div>
+          <hr style="border: none; border-top: 1px solid var(--border);">
+          <div style="display: flex; gap: 16px; align-items: center;">
+            <div style="background: var(--teal-light); padding: 10px; border-radius: 12px;"><i data-lucide="map-pin" size="20" color="var(--teal)"></i></div>
+            <div><div style="font-size: 10px; font-weight: 700; color: var(--text-muted);">SALA</div><div style="font-size: 14px; font-weight: 600; color: var(--primary);">LIENG <span style="font-weight: 400; color: var(--text-sec);">(Laboratório de Informática)</span></div></div>
+          </div>
+        </div>
+        <button class="btn btn-teal" style="margin-top: auto;" onclick="openMap('rota')"><i data-lucide="navigation" size="18"></i> Ver rota até a sala</button>
+      </div>
+
+      <!-- TELA 9: MENU DO PERFIL -->
+      <div id="profile-menu" class="screen">
+        <div class="header-nav" style="justify-content: center; position: relative;">
+          <i data-lucide="chevron-left" size="24" style="position: absolute; left: 0;" onclick="nav('home', true)"></i>
+          <div style="background: var(--input-bg); padding: 8px 16px; border-radius: 20px; display: flex; align-items: center; gap: 8px; font-weight: 700; color: var(--primary); font-size: 12px;"><i data-lucide="map" size="16" color="var(--primary)"></i> PUC MAPA GUIA</div>
+          <i data-lucide="help-circle" size="20" color="var(--text-muted)" style="position: absolute; right: 0;"></i>
+        </div>
+        
+        <div class="card" style="display: flex; align-items: center; justify-content: space-between;">
+          <div>
+            <div class="badge" style="background: var(--input-bg); padding: 4px 8px; border-radius: 8px; display: inline-block; color: #3182CE;">CONTA ACADÊMICA</div>
+            <h2 style="font-size: 24px; font-weight: 800; color: var(--primary); margin: 4px 0;">PERFIL</h2>
+            <div style="font-size: 13px; color: var(--text-sec);">Lucas Silveira de Alencar</div>
+            <div style="font-size: 12px; color: var(--text-muted);">Matrícula: 2110482</div>
+          </div>
+          <div style="width: 70px; height: 70px; border-radius: 35px; background: var(--input-bg); display: flex; justify-content: center; align-items: center; border: 2px solid var(--primary); position: relative;">
+            <span style="color: var(--primary); font-size: 28px; font-weight: 800;">LA</span>
+            <div style="width: 14px; height: 14px; background: var(--teal); border-radius: 7px; border: 2px solid #FFF; position: absolute; bottom: 0; right: 0;"></div>
+          </div>
+        </div>
+        
+        <div class="menu-item" onclick="nav('profile-edit')">
+          <div style="display: flex; gap: 16px; align-items: center;">
+            <div style="background: var(--input-bg); padding: 12px; border-radius: 12px;"><i data-lucide="edit" size="20" color="var(--primary)"></i></div>
+            <div><div style="font-weight: 800; color: var(--primary);">ALTERAR DADOS</div><div style="font-size: 12px; color: var(--text-muted);">Nome, e-mail, senha e curso</div></div>
+          </div>
+          <i data-lucide="chevron-right" size="20" color="var(--text-muted)"></i>
+        </div>
+
+        <div class="menu-item">
+          <div style="display: flex; gap: 16px; align-items: center;">
+            <div style="background: var(--input-bg); padding: 12px; border-radius: 12px;"><i data-lucide="shield-check" size="20" color="var(--primary)"></i></div>
+            <div><div style="font-weight: 800; color: var(--primary);">POLÍTICA DE PRIVACIDADE</div><div style="font-size: 12px; color: var(--text-muted);">Proteção de dados e localização</div></div>
+          </div>
+          <i data-lucide="chevron-right" size="20" color="var(--text-muted)"></i>
+        </div>
+        
+        <div class="menu-item" style="border-color: var(--danger-light); background: #FFFBFB;" onclick="nav('logout')">
+          <div style="display: flex; gap: 16px; align-items: center;">
+            <div style="background: var(--danger-light); padding: 12px; border-radius: 12px;"><i data-lucide="log-out" size="20" color="var(--danger)"></i></div>
+            <div><div style="font-weight: 800; color: var(--danger);">DESLOGAR</div><div style="font-size: 12px; color: var(--text-muted);">Encerrar sessão no dispositivo</div></div>
+          </div>
+          <i data-lucide="chevron-right" size="20" color="var(--danger)"></i>
+        </div>
+
+        <div class="menu-item">
+          <div style="display: flex; gap: 16px; align-items: center;">
+            <div style="background: #FFF9E6; padding: 12px; border-radius: 12px;"><i data-lucide="help-circle" size="20" color="#D97706"></i></div>
+            <div>
+              <div style="font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 6px;">AJUDA <div style="background: var(--input-bg); padding: 2px 6px; border-radius: 10px;"><i data-lucide="help-circle" size="12" color="#3182CE"></i></div></div>
+              <div style="font-size: 12px; color: var(--text-muted);">Dúvidas frequentes e suporte do campus</div>
+            </div>
+          </div>
+          <i data-lucide="chevron-right" size="20" color="var(--text-muted)"></i>
+        </div>
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: auto;">
+          <button class="btn btn-outline" style="border-radius: 20px; width: 120px;" onclick="nav('home', true)"><i data-lucide="arrow-left" size="18"></i> VOLTAR</button>
+          <span style="font-size: 12px; color: var(--text-muted);">Versão 2.4.1 (Campus)</span>
+        </div>
+      </div>
+
+      <!-- TELA 1: DADOS DO PERFIL -->
+      <div id="profile-edit" class="screen">
+        <div class="header-nav">
+          <i data-lucide="arrow-left" size="24" onclick="nav('profile-menu')"></i>
+          <h2>Dados do perfil</h2>
+        </div>
+        <div class="profile-avatar">
+          LA
+          <div class="camera-badge"><i data-lucide="camera" size="14" color="#FFF"></i></div>
+        </div>
+        <div style="text-align: center; color: #3182CE; font-size: 12px; font-weight: 700; margin-bottom: 24px;">Alterar foto do perfil</div>
+        
+        <div class="input-group"><div class="label-row">Nome</div><div class="input-box"><i data-lucide="user" size="18" color="var(--text-muted)"></i><input type="text" value="Lucas Silveira de Alencar"></div></div>
+        <div class="input-group"><div class="label-row">Matrícula <span class="label-sub">Somente leitura</span></div><div class="input-box readonly"><i data-lucide="hash" size="18" color="var(--text-muted)"></i><input type="text" value="2110482" readonly></div></div>
+        <div class="input-group"><div class="label-row">Curso</div><div class="input-box"><i data-lucide="graduation-cap" size="18" color="var(--text-muted)"></i><input type="text" value="Engenharia de Computação"></div></div>
+        
+        <div class="input-group"><div class="label-row">E-mail</div><div class="input-box"><i data-lucide="mail" size="18" color="var(--text-muted)"></i><input type="text" value="lucas.alencar@aluno.puc-rio.br"></div></div>
+        
+        <div style="font-size: 13px; font-weight: 700; color: var(--text-main); margin-bottom: 6px; margin-top: 10px;">Senha</div>
+        <div class="card" style="display: flex; justify-content: space-between; align-items: center; border-color: #BEE3F8; background: #EBF8FF; margin-bottom: 20px; padding: 12px 16px;">
+          <div style="display: flex; gap: 12px; align-items: center;">
+            <div style="background: #D8EEFE; padding: 10px; border-radius: 10px;"><i data-lucide="key" size="18" color="#3182CE"></i></div>
+            <div><div style="font-weight: 700; color: var(--primary); font-size: 14px;">Alterar senha</div><div style="font-size: 11px; color: var(--text-sec);">Atualizada há 3 meses</div></div>
+          </div>
+          <i data-lucide="chevron-right" size="18" color="#3182CE"></i>
+        </div>
+
+        <button class="btn btn-teal" style="margin-top: auto;"><i data-lucide="check" size="18"></i> Salvar alterações</button>
+      </div>
+
+      <!-- TELA 3: DESLOGAR -->
+      <div id="logout" class="screen">
+        <div class="header-nav">
+          <i data-lucide="arrow-left" size="24" onclick="nav('profile-menu')"></i>
+          <h2>Deslogar</h2>
+        </div>
+        
+        <div class="card" style="display: flex; align-items: center; gap: 16px; margin-bottom: 32px;">
+          <div class="profile-avatar" style="width: 50px; height: 50px; margin: 0; font-size: 20px;">LA<div style="width: 12px; height: 12px; background: var(--teal); border-radius: 6px; border: 2px solid #FFF; position: absolute; bottom: 0; right: 0;"></div></div>
+          <div>
+            <div style="font-weight: 800; color: var(--primary);">Lucas Silveira de Alencar</div>
+            <div style="font-size: 11px; color: var(--text-sec);">Matrícula: 2110482</div>
+            <div style="font-size: 10px; background: var(--input-bg); display: inline-block; padding: 2px 8px; border-radius: 4px; margin-top: 4px;">Engenharia de Computação</div>
+          </div>
+        </div>
+
+        <div style="text-align: center; margin-bottom: 32px;">
+          <div style="width: 60px; height: 60px; background: var(--danger-light); border-radius: 16px; display: flex; justify-content: center; align-items: center; margin: 0 auto 24px;">
+            <i data-lucide="log-out" size="28" color="var(--danger)"></i>
+          </div>
+          <h2 style="font-size: 18px; font-weight: 800; color: var(--primary); margin-bottom: 16px; padding: 0 16px;">Tem certeza que deseja sair da sua conta?</h2>
+          <p style="font-size: 13px;">Você será desconectado e precisará informar seu cadastro e senha para acessar o MaPUC novamente.</p>
+        </div>
+
+        <div style="margin-top: auto; display: flex; flex-direction: column; gap: 12px;">
+          <button class="btn btn-danger" onclick="nav('login')"><i data-lucide="log-out" size="18"></i> Sair</button>
+          <button class="btn btn-outline" onclick="nav('profile-menu')">Cancelar</button>
+        </div>
+      </div>
+
+      <!-- TELA 7: MODAL CÓDIGO (CÓDIGO ENVIADO POR E-MAIL) -->
+      <div id="code-modal" class="overlay">
+        <div class="modal">
+          <div style="width: 60px; height: 60px; background: var(--input-bg); border-radius: 30px; display: flex; justify-content: center; align-items: center; margin: 0 auto 16px;">
+            <i data-lucide="mail" size="28" color="#3182CE"></i>
+          </div>
+          <h2 style="font-size: 18px; font-weight: 800; color: var(--primary); margin-bottom: 8px;">CÓDIGO ENVIADO<br>POR E-MAIL</h2>
+          <p style="font-size: 12px;">Insira o código de 4 dígitos enviado para<br><span style="background: var(--input-bg); padding: 2px 6px; border-radius: 4px; font-weight: 600; color: #3182CE;">aluno@puc.br</span></p>
+          
+          <div style="display: flex; gap: 8px; justify-content: center; margin: 24px 0;">
+            <input type="text" value="4" style="width: 45px; height: 50px; text-align: center; font-size: 20px; font-weight: 800; border-radius: 12px; border: 2px solid #3182CE; color: var(--primary); outline: none;">
+            <input type="text" value="8" style="width: 45px; height: 50px; text-align: center; font-size: 20px; font-weight: 800; border-radius: 12px; border: 2px solid #3182CE; color: var(--primary); outline: none;">
+            <input type="text" style="width: 45px; height: 50px; text-align: center; font-size: 20px; font-weight: 800; border-radius: 12px; border: 1px solid var(--border); outline: none;">
+            <input type="text" style="width: 45px; height: 50px; text-align: center; font-size: 20px; font-weight: 800; border-radius: 12px; border: 1px solid var(--border); outline: none;">
+          </div>
+          
+          <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 12px;">
+            <span style="font-size: 13px; color: var(--text-sec); display: flex; align-items: center; gap: 4px; background: var(--input-bg); padding: 4px 12px; border-radius: 12px;">
+              <i data-lucide="clock" size="14"></i> 55 segundos
+            </span>
+          </div>
+          
+          <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 24px;">
+            Não recebeu? <span style="color: #3182CE; font-weight: 700; cursor: pointer;">Reenviar código</span>
+          </div>
+
+          <button class="btn btn-primary" onclick="hideModal('code-modal'); nav('home', true)" style="margin-bottom: 16px;">CONFIRMAR CÓDIGO <i data-lucide="arrow-right" size="16"></i></button>
+          
+          <button class="btn-text" onclick="hideModal('code-modal')">ALTERAR E-MAIL INFORMADO</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- TAB BAR FIXO -->
+    <div id="tab-bar" class="tab-bar" style="display: none;">
+      <div id="tab-home" class="tab-item active" onclick="nav('home', true)">
+        <i data-lucide="map" size="22"></i> MAPA
+      </div>
+      <div id="tab-schedule" class="tab-item" onclick="nav('schedule', true)">
+        <i data-lucide="calendar" size="22"></i> HORÁRIO
+      </div>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    function toggleMenu(destino = null) {
+        const menu = document.getElementById('side-menu');
+        const overlay = document.getElementById('side-menu-overlay');
+        
+        if (menu.classList.contains('active')) {
+            menu.classList.remove('active');
+            overlay.classList.remove('active');
+        } else {
+            menu.classList.add('active');
+            overlay.classList.add('active');
+        }
+
+        if (destino) {
+            setTimeout(() => nav(destino, true), 300);
+        }
+    }
+
+    function nav(screenId, showTabs = false) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(screenId).classList.add('active');
+      
+      const tabBar = document.getElementById('tab-bar');
+      tabBar.style.display = showTabs ? 'flex' : 'none';
+
+      if (showTabs) {
+        document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+        if(screenId === 'home' || screenId === 'map-view') {
+            document.getElementById('tab-home').classList.add('active');
+        }
+        if(screenId === 'schedule') {
+            document.getElementById('tab-schedule').classList.add('active');
+        }
+      }
+    }
+
+    function openMap(type) {
+      nav('map-view', true);
+      
+      document.querySelectorAll('.map-layer').forEach(l => l.style.display = 'none');
+      document.getElementById('map-route-line').style.display = 'none';
+      
+      const titleEl = document.getElementById('map-title');
+      const iconContainer = document.getElementById('map-icon-container');
+      
+      if (type === 'biblioteca') {
+         titleEl.innerText = 'Bibliotecas';
+         iconContainer.innerHTML = '<i data-lucide="book-open" size="18" color="var(--teal)"></i>';
+         document.querySelector('.layer-biblioteca').style.display = 'block';
+      } else if (type === 'alimentacao') {
+         titleEl.innerText = 'Alimentação';
+         iconContainer.innerHTML = '<i data-lucide="shopping-cart" size="18" color="var(--teal)"></i>';
+         document.querySelector('.layer-alimentacao').style.display = 'block';
+      } else if (type === 'rota') {
+         titleEl.innerText = 'Rota para F402';
+         iconContainer.innerHTML = '<i data-lucide="navigation" size="18" color="var(--teal)"></i>';
+         document.querySelector('.layer-rota').style.display = 'block';
+         document.getElementById('map-route-line').style.display = 'block';
+      }
+      
+      lucide.createIcons();
+    }
+
+    function showModal(id) { document.getElementById(id).classList.add('active'); }
+    function hideModal(id) { document.getElementById(id).classList.remove('active'); }
+  </script>
+</body>
+</html>
