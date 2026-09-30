@@ -1,0 +1,80 @@
+.caixa-texto {
+  width: 280px;
+  height: 45px;
+  border-radius: 10px;
+  border: 1px solid #E5E7EB;
+  padding-left: 16px;
+  margin-top: 4px;
+  margin-bottom: 20px;
+}
+
+body {
+  background-color: #f0f4f8;
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.container-celular {
+  background-color: #ffffff;
+  width: 100%;
+  max-width: 380px;
+  height: 720px;
+  border-radius: 35px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  padding: 40px 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.botao-entrar {
+  background-color: #0A2240;
+  color: white;
+  width: 280px;
+  height: 45px;
+  border-radius: 10px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.botao-secundario {
+  background-color: #40C0A8 ;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 8px;
+  padding: 5px;
+}
+
+.titulo-logo {
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  margin-top: 4px;
+}
+
+.imagem-logo {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.imagem-logo img {
+  width: 150px;
+  height: auto;
+  display: block;
+}
