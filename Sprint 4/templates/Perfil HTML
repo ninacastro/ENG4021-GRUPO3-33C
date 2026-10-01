@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8">
+    <title>Perfil - MaPUC</title>
+    <link rel="stylesheet" href="../static/css/perfil.css">
+  </head>
+  <body>
+    <div class="container-celular">
+
+      <a href="#">← Voltar</a>
+      <h3>PUC MAPA GUIA</h3>
+
+      <div class="cartao">
+        <p>CONTA ACADÊMICA</p>
+        <h1>PERFIL</h1>
+        <p>Lucas Silveira de Alencar</p>
+        <p>Matrícula: 2110482</p>
+        <div class="avatar">LA</div>
+      </div>
+
+      <a class="opcao" href="#">
+        <b>ALTERAR DADOS</b>
+        <p>Nome, e-mail, senha e curso</p>
+      </a>
+
+      <a class="opcao" href="#">
+        <b>POLÍTICA DE PRIVACIDADE</b>
+        <p>Proteção de dados e localização</p>
+      </a>
+
+      <a class="opcao vermelho" href="#">
+        <b>DESLOGAR</b>
+        <p>Encerrar sessão no dispositivo</p>
+      </a>
+
+    </div>
+  </body>
+</html>
