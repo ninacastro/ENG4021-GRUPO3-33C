@@ -15,26 +15,11 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
   margin: 0;
 }
 
-.container-celular {
-  background-color: #ffffff;
-  width: 100%;
-  max-width: 380px;
-  height: 720px;
-  border-radius: 35px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-  padding: 40px 25px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  box-sizing: border-box;
-}
 
-.botao-entrar {
+.botao {
   background-color: #0A2240;
   color: white;
   width: 280px;
@@ -46,23 +31,13 @@ body {
   margin-top: 10px;
 }
 
-.botao-secundario {
-  background-color: #40C0A8 ;
-  border: none;
-  border-radius: 10px;
-  color: white;
-  font-size: 13px;
-  font-weight: bold;
-  cursor: pointer;
-  margin-top: 8px;
-  padding: 5px;
-}
 
 .titulo-logo {
   font-size: 32px;
   font-weight: 800;
-  letter-spacing: -1px;
   margin-top: 4px;
+  display: flex;
+  justify-content: center;
 }
 
 .imagem-logo {
@@ -75,6 +50,5 @@ body {
 
 .imagem-logo img {
   width: 150px;
-  height: auto;
-  display: block;
+  height: 100%;
 }
