@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="utf-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>MaPuc</title>
+
+<link href= "bibliotecas.css" rel="stylesheet" type="text/css" />
+
+<head>
+
+
+
+<body>
+
+<div class= "container-celular">
+
+<header class=" top-bar">
+
+    <button class=" back-btn" aria-label="Voltar" >
+
+        <svg class="icon-voltar" src="https://cdn-icons-png.flaticon.com/512/93/93634.png" alt="Voltar"></svg>
+
+        </svg>
+
+    </button>
+
+</header>
+
+
+
+<div class="page-title-box">
+
+    <img class="icon-livro" src="https://www.magnific.com/br/fotos-vetores-gratis/livro-desenho-preto-branco" alt="Icone do Livro">
+
+    <div class="titulo-pagina">Bibliotecas
+
+    </div>
+
+</div>
+
+
+
+<div class="map-view">
+
+    <img class="map-bg" src="https://www.dreamstime.com/stock-images-city-seamless-vector-wallpaper-image5056574" alt="Mapa">
+
+</div>
+
+
+
+<div class="marker central-marker">
+
+    <div class=" pin">
+
+        <div class="pin-icon" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkvmuyIniV43iNNQSixnINLLh6-pgR0VT0xXlVMzQiMg&s=10" alt="Pin Biblioteca Central">
+
+        <div class="label-box">Biblioteca Central</div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="marker central-marker">
+
+    <div class=" pin">
+
+        <div class="pin-icon" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkvmuyIniV43iNNQSixnINLLh6-pgR0VT0xXlVMzQiMg&s=10" alt="Pin Biblioteca CTC">
+
+        <div class="label-box">Biblioteca CTC</div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="bottom nav"^>
+
+    <button class="nav-item activite">
+
+        <img class="nav-icon" src="https://www.pngegg.com/pt/png-tbjkk" alt="Mapa">
+
+        <div>MAPA</div>
+
+    </button>
+
+    <button class="nav-item">
+
+        <img class="nav-icon" src="https://cdn-icons-png.flaticon.com/512/2838/2838779.png" alt="Horário">
+
+        <div>HORARIO</div>
+
+
+
+</div>
+
+</body>
+
+<html>
+
