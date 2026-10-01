@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8">
+    <title>Alterar Dados - MaPUC</title>
+    <link rel="stylesheet" href="../static/css/alterar-dados.css">
+  </head>
+  <body>
+    <div class="container-celular">
+
+      <a href="#">← Voltar</a>
+      <h2>ALTERAR DADOS</h2>
+
+      <div class="avatar">LA</div>
+      <p class="centro"><a href="#">Alterar foto do perfil</a></p>
+
+      <p>Nome</p>
+      <input type="text" value="Lucas Silveira de Alencar">
+
+      <p>Matrícula (somente leitura)</p>
+      <input type="text" value="2110482" readonly>
+
+      <p>Curso</p>
+      <input type="text" value="Engenharia de Computação">
+
+      <p>E-mail</p>
+      <input type="text" value="lucas.alencar@aluno.puc-rio.br">
+
+      <p>Senha</p>
+      <a class="cartao-senha" href="#">
+        <b>Alterar senha</b>
+        <p>Atualizada há 3 meses</p>
+      </a>
+
+      <button>Salvar alterações</button>
+
+    </div>
+  </body>
+</html>
