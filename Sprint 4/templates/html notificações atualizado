@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>MaPUC</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+     <header class="topbar">
+      <div class="topbar-left">
+        <h1>Avisos e Recados</h1>
+      </div>
+      <button class="marcar-tudo">Marcar tudo</button>
+     </header>
+      <div class="linha">
+        <div class="caixa">
+          <span class="etiqueta">Mudança de sala</span>
+          <h3>Mudança de sala- ENG1000</h3>
+          <h5>A aula de hoje foi transferida da sala F402 para a sala F309, no 3º andar do Cardeal Frings.</h5>
+          <p class="meta">Há 12 minutos • Cláudia Menezes</p>
+          <button class="botao">Atualizar rota auomaticamente</button>
+        </div>
+        <div class="caixa cancelamento">
+          <span class="etiqueta etiqueta-cancelamento">Cancelamento</span>
+          <h3>Aula Cancelada - LET1010</h3>
+          <p>A aula de quinta-feira (07:00) está cancelada. Reposição será marcada pelo professor.</p>
+          <p class="meta">Há 2 horas • Beatriz Lins</p>
+        </div>
+      </div>
+       <div class="linha">
+        <div class="caixa recado">
+          <span class="etiqueta etiqueta-recado">Recado</span>
+          <h3>Recado do professor — ENG4021
+</h3>
+<p>A aula de hoje foi transferida da sala F402 para a sala F309, no 3º andar do Cardeal Frings.</p>
+          <p class="meta">Ontem, 18:30 • Luís Fernando Bicalho</p>
+        </div>
+      
+      </div>
+      <footer class="rodape">
+        <span class="rodape-item">MAPA</span>
+        <span class="rodape-item">HORÁRIO</span>
+      </footer>
+  </body>
+</html>
