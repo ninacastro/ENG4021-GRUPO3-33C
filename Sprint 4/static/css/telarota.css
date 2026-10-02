@@ -1,0 +1,168 @@
+body {
+  background-color: #222222;
+  font-family: Arial, sans-serif;
+  margin: 0;
+}
+
+.celular {
+  width: 360px;
+  height: 640px;
+  background-color: white;
+  margin: 20px auto;
+  position: relative;
+  overflow: hidden;
+}
+
+
+.barra-status {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 360px;
+  height: 40px;
+  background-color: #f8faf9;
+  z-index: 10;
+}
+
+.hora {
+  position: absolute;
+  left: 20px;
+  top: 12px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #333333;
+}
+
+.icones {
+  position: absolute;
+  right: 20px;
+  top: 12px;
+  font-size: 14px;
+}
+
+.topo {
+  position: absolute;
+  top: 55px;
+  left: 15px;
+  z-index: 10;
+}
+
+.botao-voltar {
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background-color: white;
+  font-size: 20px;
+  color: #0A2240;
+}
+
+.titulo {
+  display: inline-block;
+  background-color: white;
+  color: #0A2240;
+  font-weight: bold;
+  font-size: 16px;
+  padding: 10px 70px 10px 15px;
+  border-radius: 20px;
+  margin-left: 10px;
+}
+
+.seta {
+  color: #40C0A8;
+}
+
+
+.mapa {
+  position: relative;
+  width: 360px;
+  height: 560px;
+  background-color: #e8efe9;
+}
+
+.rua-horizontal {
+  position: absolute;
+  left: 0;
+  width: 360px;
+  height: 28px;
+  background-color: white;
+}
+
+.rua-vertical {
+  position: absolute;
+  top: 0;
+  width: 25px;
+  height: 560px;
+  background-color: white;
+}
+
+.quarteirao {
+  position: absolute;
+  background-color: #d0e1d6;
+  border-radius: 8px;
+}
+
+
+.linha-vertical {
+  position: absolute;
+  width: 0;
+  border-left: 5px dashed #40C0A8;
+}
+
+.linha-horizontal {
+  position: absolute;
+  height: 0;
+  border-top: 5px dashed #40C0A8;
+}
+
+
+.marcador {
+  position: absolute;
+  width: 120px;
+  text-align: center;
+}
+
+.pino {
+  width: 35px;
+  height: 35px;
+  background-color: #40C0A8;
+  border: 3px solid white;
+  border-radius: 50%;
+  margin: 0 auto;
+  line-height: 35px;
+}
+
+.pino-escuro {
+  background-color: #0A2240;   
+}
+
+.etiqueta {
+  display: inline-block;
+  background-color: white;
+  color: #0A2240;
+  font-size: 13px;
+  font-weight: bold;
+  padding: 6px 10px;
+  border-radius: 8px;
+  margin-top: 5px;
+}
+
+.menu {
+  height: 80px;
+  background-color: white;
+  border-top: 1px solid #dddddd;
+}
+
+.item-menu {
+  float: left;
+  width: 50%;
+  text-align: center;
+  padding-top: 15px;
+  font-size: 12px;
+  font-weight: bold;
+  color: gray;
+}
+
+.ativo {
+  color: #0A2240;
+}
