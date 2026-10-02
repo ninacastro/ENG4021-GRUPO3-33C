@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>MaPUC - Perfil</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <span class="titulo-topo">PUC MAPA GUIA</span>
+    </header>
+
+
+    <div class="linha">
+      <div class="caixa perfil">
+        <span class="etiqueta">CONTA ACADÊMICA</span>
+        <h1>PERFIL</h1>
+        <h4>Lucas Silveira de Alencar</h4>
+        <p class="matricula">Matrícula: 2110482</p>
+      </div>
+    </div>
+
+    <div class="linha">
+      <div class="caixa opcao">
+        <div class="texto-opcao">
+          <h3>ALTERAR DADOS</h3>
+          <p class="meta">Nome, e-mail, senha e curso</p>
+        </div>
+        <span class="seta">›</span>
+      </div>
+      <div class="caixa opcao">
+        <div class="texto-opcao">
+          <h3>POLÍTICA DE PRIVACIDADE</h3>
+          <p class="meta">Proteção de dados e localização</p>
+        </div>
+        <span class="seta">›</span>
+      </div>
+    </div>
+
+    <div class="linha">
+      <div class="caixa opcao">
+        <div class="texto-opcao">
+          <h3 class="vermelho">DESLOGAR</h3>
+          <p class="meta">Encerrar sessão no dispositivo</p>
+        </div>
+        <span class="seta">›</span>
+      </div>
+      <div class="caixa opcao">
+        <div class="texto-opcao">
+          <h3>AJUDA</h3>
+          <p class="meta">Dúvidas frequentes e suporte do campus</p>
+        </div>
+        <span class="seta">›</span>
+      </div>
+    </div>
+
+    <footer class="rodape">
+      <button class="voltar-rodape">← VOLTAR</button>
+    </footer>
+  </body>
+</html>
