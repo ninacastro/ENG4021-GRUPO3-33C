@@ -76,7 +76,7 @@ body {
 .mapa {
   position: relative;
   width: 360px;
-  height: 560px;            /* 640 da tela - 80 do menu */
+  height: 560px;
   background-color: #e8efe9;
 }
 
