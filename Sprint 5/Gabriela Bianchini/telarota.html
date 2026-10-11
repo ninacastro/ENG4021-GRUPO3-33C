@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rota - MaPUC</title>
+  <link rel="stylesheet" href="../static/css/telarota.css">
+</head>
+<body>
+  <div class="celular">
+
+    <div class="barra-status" aria-hidden="true">
+      <span>09:41</span>
+      <span>📶 🔋</span>
+    </div>
+
+    <header class="topo">
+      <a href="telainicio.html" class="botao-voltar" aria-label="Voltar">←</a>
+      <h1 class="titulo"><span class="seta" aria-hidden="true">➤</span> Rota para F402</h1>
+    </header>
+
+    <main class="mapa">
+      <div class="rua rua--horizontal" style="--pos: 60px"></div>
+      <div class="rua rua--horizontal" style="--pos: 190px"></div>
+      <div class="rua rua--horizontal" style="--pos: 452px"></div>
+      <div class="rua rua--vertical" style="--pos: 55px"></div>
+      <div class="rua rua--vertical" style="--pos: 150px"></div>
+      <div class="rua rua--vertical" style="--pos: 265px"></div>
+
+      <div class="quarteirao" style="--top: 90px; --left: 60px; --w: 68px; --h: 98px"></div>
+      <div class="quarteirao" style="--top: 70px; --left: 216px; --w: 78px; --h: 58px"></div>
+      <div class="quarteirao" style="--top: 229px; --left: 256px; --w: 97px; --h: 117px"></div>
+      <div class="quarteirao" style="--top: 386px; --left: 79px; --w: 88px; --h: 60px"></div>
+      <div class="quarteirao" style="--top: 490px; --left: 216px; --w: 118px; --h: 60px"></div>
+
+      <div class="trajeto trajeto--vertical" style="--top: 320px; --left: 272px; --size: 86px"></div>
+      <div class="trajeto trajeto--horizontal" style="--top: 404px; --left: 137px; --size: 137px"></div>
+      <div class="trajeto trajeto--vertical" style="--top: 406px; --left: 135px; --size: 34px"></div>
+
+      <div class="marcador" style="--top: 240px; --left: 214px">
+        <div class="pino" aria-hidden="true">📍</div>
+        <div class="etiqueta">Sala F402</div>
+      </div>
+
+      <div class="marcador" style="--top: 435px; --left: 77px">
+        <div class="pino pino--escuro" aria-hidden="true">👤</div>
+        <div class="etiqueta">Você está aqui</div>
+      </div>
+    </main>
+
+    <nav class="menu">
+      <a href="mapa.html" class="item-menu ativo" aria-current="page">
+        <span aria-hidden="true">🗺️</span>
+        Mapa
+      </a>
+      <a href="horario.html" class="item-menu">
+        <span aria-hidden="true">📅</span>
+        Horário
+      </a>
+    </nav>
+
+  </div>
+</body>
+</html>
