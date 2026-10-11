@@ -1,0 +1,56 @@
+body {
+  background-color: #f4f6f8;
+  font-family: Arial, sans-serif;
+}
+
+.container-celular {
+  width: 350px;
+  margin: 0 auto;
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  line-height: 80px;
+  text-align: center;
+  border: 3px solid #0b1f3a;
+  border-radius: 50%;
+  font-size: 28px;
+  font-weight: bold;
+  margin: 0 auto;
+}
+
+.centro {
+  text-align: center;
+}
+
+input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 14px;
+  border: 1px solid #dddddd;
+  border-radius: 15px;
+  font-size: 16px;
+}
+
+.cartao-senha {
+  display: block;
+  background-color: #eaf5fd;
+  border: 1px solid #cfe6f8;
+  border-radius: 15px;
+  padding: 15px;
+  color: #0b1f3a;
+  text-decoration: none;
+}
+
+button {
+  width: 100%;
+  background-color: #3fbfa5;
+  color: white;
+  font-size: 17px;
+  font-weight: bold;
+  border: none;
+  border-radius: 15px;
+  padding: 16px;
+  margin-top: 30px;
+}
