@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mapa - MaPUC</title>
+  <link rel="stylesheet" href="../static/css/bibliotecas.css">
+</head>
+<body>
+  <div class="celular">
+
+    <header class="topo">
+      <a href="telainicio.html" class="botao-voltar" aria-label="Voltar">←</a>
+      <h1 class="titulo"><span aria-hidden="true">📖</span> Bibliotecas</h1>
+    </header>
+
+    <main class="mapa">
+      <div class="rua rua--horizontal" style="--pos: 120px"></div>
+      <div class="rua rua--horizontal" style="--pos: 330px"></div>
+      <div class="rua rua--vertical" style="--pos: 80px"></div>
+      <div class="rua rua--vertical" style="--pos: 180px"></div>
+      <div class="rua rua--vertical" style="--pos: 280px"></div>
+
+      <div class="quarteirao" style="--top: 160px; --left: 100px; --w: 60px; --h: 80px"></div>
+      <div class="quarteirao" style="--top: 400px; --left: 100px; --w: 70px; --h: 50px"></div>
+
+      <div class="marcador" style="--top: 70px; --left: 200px">
+        <div class="pino" aria-hidden="true">📖</div>
+        <div class="etiqueta">Biblioteca Central</div>
+      </div>
+
+      <div class="marcador" style="--top: 260px; --left: 230px">
+        <div class="pino" aria-hidden="true">📖</div>
+        <div class="etiqueta">Biblioteca CTC</div>
+      </div>
+    </main>
+
+    <nav class="menu">
+      <a href="mapa.html" class="item-menu ativo" aria-current="page">
+        <span class="icone" aria-hidden="true">🗺️</span>
+        Mapa
+      </a>
+      <a href="horario.html" class="item-menu">
+        <span class="icone" aria-hidden="true">📅</span>
+        Horário
+      </a>
+    </nav>
+
+  </div>
+</body>
+</html>
