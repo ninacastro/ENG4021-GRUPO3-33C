@@ -1,0 +1,119 @@
+body {
+    margin: 0;
+    padding: 15px;
+    font-family: Arial, sans-serif;
+    background-color: #f6f6f7;
+    color: #193653;
+}
+
+.topbar {
+    text-align: center;
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+.titulo-topo {
+    color: #41508c;
+    font-size: 20px;
+    margin: 0;
+}
+
+.conteudo {
+    width: 100%;
+    max-width: 430px;
+    margin: 20px auto;
+    padding-bottom: 80px;
+}
+
+.caixa {
+    background-color: white;
+    border: 1px solid #e3e3e8;
+    border-radius: 12px;
+    padding: 18px;
+    margin-bottom: 12px;
+}
+
+.perfil {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.etiqueta {
+    color: #41508c;
+    background-color: #e8ecfb;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 12px;
+}
+
+.foto-perfil {
+    width: 60px;
+    height: 60px;
+    margin: 20px auto 10px;
+    border-radius: 50%;
+    background-color: #e8ecfb;
+    color: #41508c;
+    text-align: center;
+    line-height: 60px;
+    font-weight: bold;
+}
+
+.perfil h1 {
+    font-size: 23px;
+}
+
+.perfil h2 {
+    font-size: 16px;
+    overflow-wrap: anywhere;
+}
+
+.matricula,
+.meta {
+    color: #8a8a8a;
+    font-size: 13px;
+}
+
+.titulo-secao {
+    font-size: 16px;
+}
+
+.opcao {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.texto-opcao h3 {
+    font-size: 14px;
+    margin: 0;
+}
+
+.meta {
+    line-height: 1.4;
+}
+
+.seta {
+    font-size: 24px;
+    color: #41508c;
+}
+
+.vermelho {
+    color: #d64545;
+}
+
+.rodape {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding: 12px;
+    background-color: #f6f6f7;
+}
+
+.voltar-rodape {
+    padding: 12px;
+    background-color: #41508c;
+    color: white;
+    border: none;
+    border-radius: 8px;
+}
