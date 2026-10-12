@@ -1,13 +1,35 @@
 from django.shortcuts import render
+from .models import *
 
 def inicio(request):
-    return render(request,"telainicio-melhorada.html")
+    predios = Predio.objects.all()
+    salas = Sala.objects.all()
+    
+    context = {
+        'predios': predios,
+        'salas': salas,
+    }
+    return render(request, "telainicio-melhorada.html", context)
 
 def bibliotecas(request):
-    return render(request,"bibliotecas.html")
+    bibliotecas = Sala.objects.filter(tipo_sala__icontains="Biblioteca")
+    
+    context = {
+        'bibliotecas': bibliotecas,
+    }
+    return render(request, "bibliotecas.html", context)
 
 def perfil(request):
-    return render(request,"telaperfilmelhorado.html")
+    aluno = Aluno.objects.first()
+    turmas = None
+    if aluno:
+        turmas = aluno.turmas.all()
+        
+    context = {
+        'aluno': aluno,
+        'turmas': turmas,
+    }
+    return render(request, "telaperfilmelhorado.html", context)
 
 def login(request):
     return render(request,"loginmelhorado.html")

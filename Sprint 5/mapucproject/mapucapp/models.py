@@ -67,6 +67,5 @@ class Turma(models.Model):
     periodo = models.CharField(max_length=50)
     quantidade_alunos = models.IntegerField()
     horario = models.CharField(max_length=100)
-    
     salas = models.ManyToManyField(Sala, related_name='turmas')
     alunos = models.ManyToManyField(Aluno, related_name='turmas')
