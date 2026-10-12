@@ -1,0 +1,109 @@
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f3f6fa;
+    color: #102044;
+}
+
+.topo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background-color: white;
+}
+
+.cabecalho h1 {
+    font-size: 28px;
+}
+
+.botao-seta {
+    width: 45px;
+    height: 45px;
+    border: 1px solid #dce3ec;
+    border-radius: 50%;
+    background-color: white;
+    font-size: 28px;
+    color: #102044;
+    cursor: pointer;
+}
+
+.geral {
+    max-width: 800px;
+    margin: 50px auto;
+    text-align: center;
+}
+
+
+
+.circulo-iniciais {
+    background-color: #102044;
+    color: white;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    margin: auto;
+    line-height: 70px;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.perfil h2 {
+    font-size: 22px;
+}
+
+.perfil p {
+    color: #64748b;
+}
+
+
+.icone-saida {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    margin: 50px auto 20px;
+    border-radius: 30px;
+    background-color: #ffebea;
+    color: red;
+    font-size: 48px;
+}
+
+.pergunta {
+    color: #102044;
+    font-size: 24px;
+}
+
+.descricao {
+    color: #64748b;
+    font-size: 17px;
+}
+
+
+.botoes {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+
+.botao-sair {
+    padding: 20px;
+    border-radius: 35px;
+    background-color: red;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.botao-cancelar {
+    padding: 20px;
+    border-radius: 35px;
+    background-color: white;
+    color: #102044;
+    font-size: 18px;
+    cursor: pointer;
+}
+
