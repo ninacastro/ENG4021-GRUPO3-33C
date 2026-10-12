@@ -57,3 +57,6 @@ def aula(request):
         'salas': salas_da_turma,
     }
     return render(request,"aula.html")
+
+def deslogar(request):
+    return render(request,"deslogar.html")

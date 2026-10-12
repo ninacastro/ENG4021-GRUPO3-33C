@@ -26,5 +26,6 @@ urlpatterns = [
     path('login/', login),
     path('grade/', grade),
     path('detalhes-aula/', aula),
+    path('deslogar/',deslogar),
 
 ]
