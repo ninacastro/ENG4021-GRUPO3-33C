@@ -9,7 +9,7 @@ def inicio(request):
         'predios': predios,
         'salas': salas,
     }
-    return render(request, "telainicio-melhorada.html", context)
+    return render(request, "telainiciomelhorada.html", context)
 
 def bibliotecas(request):
     bibliotecas = Sala.objects.filter(tipo_sala__icontains="Biblioteca")
