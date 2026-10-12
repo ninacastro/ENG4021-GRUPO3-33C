@@ -11,3 +11,9 @@ def perfil(request):
 
 def login(request):
     return render(request,"loginmelhorado.html")
+
+def grade(request):
+    return render(request,"telaaulas.html")
+
+def aula(request):
+    return render(request,"aula.html")

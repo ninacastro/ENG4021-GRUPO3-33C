@@ -24,5 +24,7 @@ urlpatterns = [
     path('bibliotecas/', bibliotecas),
     path('perfil/', perfil),
     path('login/', login),
+    path('grade/', grade),
+    path('detalhes-aula/', aula),
 
 ]
