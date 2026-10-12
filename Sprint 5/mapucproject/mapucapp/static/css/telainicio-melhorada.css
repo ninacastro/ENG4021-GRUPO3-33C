@@ -1,0 +1,86 @@
+body {
+  background-color: #f0f4f8;
+  font-family: Arial, sans-serif;
+  color: #0A2240;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.area-perfil {
+    align-self: flex-end;
+    margin: 0px 50px;
+}
+
+.botao-perfil {
+  width: 70px;
+  height: 40px;
+  background-color: #0A2240;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+
+.caixa-texto {
+  width: 570px;
+  height: 45px;
+  border-radius: 25px;
+  border: 1px solid #E5E7EB;
+  padding: 0 15px;
+  font-size: 15px;
+  margin: 15px;
+}
+
+
+.mini-mapa {
+  width: 600px;
+  height: 350px;
+  background-color: white;
+  border-radius: 15px;
+}
+
+.mini-mapa img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+
+.atalhos {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin: 20px 0px 0px;
+  width: 800px;
+}
+
+.botao-p {
+  width: 290px;
+  height: 45px;
+  background-color: #0A2240;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.botao-g {
+  width: 600px;
+  height: 45px;
+  background-color: #0A2240;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+
+
