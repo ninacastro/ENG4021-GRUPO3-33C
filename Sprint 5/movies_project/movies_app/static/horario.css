@@ -1,0 +1,188 @@
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 25px;
+  background-color: #f6f6f7;
+  font-family: system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  color: #2b2b33;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 4px 16px;
+  border-bottom: 1px solid rgb(158, 148, 177);
+}
+
+.topbar h1 {
+  margin: 0;
+  font-size: 24px;
+  color: #16384a;
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.badge-disciplinas {
+  border: 1px solid #a5dec4;
+  background-color: #eafaf1;
+  color: #1f9d6b;
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.conteudo {
+  max-width: 920px;
+  margin: 20px auto 0;
+}
+
+.grade-wrapper {
+  overflow-x: auto;
+}
+
+.grade {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+  min-width: 760px;
+  background-color: #fff;
+  border: 1px solid #e3e3e8;
+  border-radius: 14px;
+  padding: 20px;
+}
+
+.dia-cabecalho {
+  text-align: center;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.dia-cabecalho strong {
+  display: block;
+  font-size: 14px;
+  color: #1b2a4a;
+}
+
+.dia-cabecalho span {
+  font-size: 12px;
+  color: #8a8a8a;
+}
+
+.celula {
+  min-height: 92px;
+  border: 1px dashed #dcdce4;
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.celula.vazia {
+  align-items: center;
+  justify-content: center;
+  color: #a0a0aa;
+  font-size: 13px;
+}
+
+.celula.aula {
+  border-style: solid;
+}
+
+.aula-codigo {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.aula-hora {
+  font-size: 12px;
+}
+
+.sala {
+  margin-top: auto;
+  align-self: flex-start;
+  background-color: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  padding: 3px 8px;
+  font-size: 12px;
+  color: #4a4a52;
+}
+
+.celula.verde {
+  background-color: #e9f7f0;
+  border-color: #a5dec4;
+}
+
+.celula.verde .aula-codigo {
+  color: #178a5c;
+}
+
+.celula.verde .aula-hora {
+  color: #2a9b6e;
+}
+
+.celula.azul {
+  background-color: #eef1fd;
+  border-color: #bcc6f0;
+}
+
+.celula.azul .aula-codigo {
+  color: #3a4ea8;
+}
+
+.celula.azul .aula-hora {
+  color: #5566bb;
+}
+
+.card-dica {
+  margin-top: 20px;
+  background-color: #fff;
+  border: 1px solid #e3e3e8;
+  border-radius: 14px;
+  padding: 20px;
+}
+
+.card-dica h3 {
+  margin: 0 0 6px;
+  font-size: 15px;
+  color: #1b2a4a;
+}
+
+.card-dica p {
+  margin: 0;
+  color: #8a8a8a;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.rodape {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 30px;
+  padding: 16px;
+  border-top: 1px solid rgb(158, 148, 177);
+}
+
+.rodape-item {
+  color: #555;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.rodape-item:hover {
+  color: #2b2b33;
+}
+
+.rodape-item.ativo {
+  color: #16384a;
+  font-weight: bold;
+}
