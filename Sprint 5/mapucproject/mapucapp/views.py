@@ -101,8 +101,16 @@ def notificacoes(request):
     return render(request, 'notificacoesmelhorado.html')
 
 
+
 def rota(request):
-    return render(request, 'telarota.html')
+    destino = 'F402'
+    local_atual = 'Você está aqui'
+
+    return render(request, 'telarota.html', {
+        'destino': destino,
+        'local_atual': local_atual
+    })
+
 
 
 
