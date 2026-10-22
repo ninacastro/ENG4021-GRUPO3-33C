@@ -19,11 +19,11 @@ from django.urls import path
 from mapucapp.views import *
 
 urlpatterns = [
+    path('', login),
     path('admin/', admin.site.urls),
     path('inicio/', inicio),
     path('bibliotecas/', bibliotecas),
     path('perfil/', perfil),
-    path('login/', login),
     path('grade/', grade),
     path('detalhes-aula/', aula),
     path('deslogar/',deslogar),
