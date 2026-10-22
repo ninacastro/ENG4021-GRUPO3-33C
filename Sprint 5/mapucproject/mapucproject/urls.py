@@ -28,5 +28,7 @@ urlpatterns = [
     path('detalhes-aula/', aula),
     path('deslogar/',deslogar),
     path('dados/', dados),
+    path('notificacoes/', notificacoes),
+    path('rota/', rota),
 
 ]
