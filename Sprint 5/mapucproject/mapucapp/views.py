@@ -81,8 +81,17 @@ def aula(request):
 
 
 def deslogar(request):
-    return render(request, "deslogar.html")
+    aluno = Aluno.objects.first()
+    iniciais = ""
+    if aluno:
+        partes = aluno.nome.split()
+        iniciais = (partes[0][0] + partes[-1][0]).upper()
 
+    context = {
+        'aluno': aluno,
+        'iniciais': iniciais,
+    }
+    return render(request, "deslogar.html", context)
 
 def dados(request):
     return render(request, "dados.html")
