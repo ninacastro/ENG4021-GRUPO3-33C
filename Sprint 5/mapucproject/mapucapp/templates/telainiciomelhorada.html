@@ -1,16 +1,16 @@
-
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
   <title>Início - MaPUC</title>
-  <link rel="stylesheet" href="../static/css/telainicio-melhorada.css">
+  <link rel="stylesheet" href="{% static 'css/telainicio-melhorada.css' %}">
 </head>
 
 <body>
 
   <div class="area-perfil">
-    <a href="telaperfilmelhorado.html">
+    <a href="/perfil/">
       <button class="botao-perfil">Perfil</button>
     </a>
   </div>
@@ -19,37 +19,55 @@
   <div><p>Se encontre pelos blocos, salas e pilotis da PUC-Rio.</p></div>
 
   <div>
-    <form action="rotas.html">
-      <input class="caixa-texto" type="text"
-             placeholder="Buscar sala ou prédio">
+    <form action="/inicio/" method="get">
+      <input class="caixa-texto" type="text" name="busca"
+             value="{{ busca }}" placeholder="Buscar sala ou prédio">
     </form>
   </div>
 
+  {% if busca %}
+  <div class="resultados">
+    <h3>Resultados para "{{ busca }}"</h3>
+
+    {% for predio in predios %}
+      <p><strong>Prédio:</strong> {{ predio.nome }} ({{ predio.sigla_codigo }})</p>
+    {% endfor %}
+
+    {% for sala in salas %}
+      <p>
+        <strong>{{ sala.nome_exibicao }}</strong> ({{ sala.codigo_sala }})<br>
+        {{ sala.predio.nome }} · {{ sala.andar }} · {{ sala.tipo_sala }}
+      </p>
+    {% endfor %}
+
+    {% if not predios and not salas %}
+      <p>Nenhum resultado encontrado.</p>
+    {% endif %}
+  </div>
+  {% endif %}
+
   <div class="mini-mapa">
-    <img src="https://www.psi.puc-rio.br/site/images/pdf/mapa.jpg"
-         alt="Mapa">
+    <img src="https://www.psi.puc-rio.br/site/images/pdf/mapa.jpg" alt="Mapa">
   </div>
 
   <div class="atalhos">
-    <a href="bibliotecas.html">
+    <a href="/bibliotecas/">
       <button class="botao-p">Biblioteca</button>
     </a>
-
     <button class="botao-p">Alimentação</button>
   </div>
 
   <div class="atalhos">
-    <a href="notificaçõesmelhorado.html">
+    <a href="/notificacoes/">
       <button class="botao-g">Avisos e Recados</button>
     </a>
   </div>
 
   <div class="atalhos">
-    <a href="telaaulas.html">
+    <a href="/grade/">
       <button class="botao-g">Minha Grade de Aulas</button>
-    </a>    
+    </a>
   </div>
-
 
 </body>
 </html>
