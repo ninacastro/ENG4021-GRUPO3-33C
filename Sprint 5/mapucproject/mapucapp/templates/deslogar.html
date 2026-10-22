@@ -1,26 +1,30 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <title>Deslogar - MaPUC</title>
-    <link rel="stylesheet" href="../static/css/deslogar.css">
+    <link rel="stylesheet" href="{% static 'css/deslogar.css' %}">
 </head>
 
 <body>
 
     <div class="topo">
-        <a href="telaperfilmelhorado.html"><button class="botao-seta" type="button">←</button></a>
+        <a href="/perfil/"><button class="botao-seta" type="button">←</button></a>
         <h1>Deslogar</h1>
     </div>
 
     <div class="geral">
-			
-    	<div class="circulo-iniciais">LA</div>
 
-    	<h2>Lucas Silveira de Alencar</h2>
-    	<p>Matrícula: 2110482</p>
-    	<p>Engenharia de Computação</p>
+        {% if aluno %}
+            <div class="circulo-iniciais">{{ iniciais }}</div>
 
+            <h2>{{ aluno.nome }}</h2>
+            <p>Matrícula: {{ aluno.matricula }}</p>
+            <p>{{ aluno.curso }}</p>
+        {% else %}
+            <p>Nenhum aluno encontrado.</p>
+        {% endif %}
 
         <div class="icone-saida">⇥</div>
 
@@ -32,9 +36,9 @@
         </p>
 
         <div class="botoes">
-            <a href="loginmelhorado.html" class="botao-sair">⇥ Sair</a>
+            <a href="/login/" class="botao-sair">⇥ Sair</a>
 
-            <a href="telaperfilmelhorado.html" class="botao-cancelar">⇥ Cancelar</a>
+            <a href="/perfil/" class="botao-cancelar">⇥ Cancelar</a>
         </div>
 
     </div>
