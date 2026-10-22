@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>MaPUC - Mapa</title>
+    <link rel="stylesheet" href="../static/css/caminhofrings.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="voltar">←</button>
+          <div class="logo-bloco"></div>
+          <div class="titulo-area">
+            <h1>Ma<span class="verde">PUC</span></h1>
+            <span>Campus Gávea • Mapa interativo</span>
+          </div>
+        </div>
+        <div class="topbar-right">
+          <button class="sino"><span class="badge">3</span></button>
+          <div class="avatar-ini">LA</div>
+        </div>
+      </header>
+
+      <div class="corpo">
+        <span class="origem-chip">Origem: Pilotis</span>
+
+        <!-- mapa do campus -->
+        <div class="mapa">
+          <div class="grade-mapa">
+            <div class="bloco">
+              <span class="letra">R</span>
+              <span class="nome">RDC</span>
+            </div>
+            <div class="bloco">
+              <span class="letra">K</span>
+              <span class="nome">Kennedy</span>
+            </div>
+            <div class="bloco">
+              <span class="letra">L</span>
+              <span class="nome">Cardeal Leme</span>
+            </div>
+            <div class="bloco destaque">
+              <span class="letra">F</span>
+              <span class="nome">Cardeal Frings</span>
+            </div>
+            <div class="bloco pilotis">
+              <span class="letra">B</span>
+              <span class="nome">Pilotis</span>
+            </div>
+            <div class="bloco">
+              <span class="letra">A</span>
+              <span class="nome">Padre Leonel Franca</span>
+            </div>
+            <div class="bloco">
+              <span class="letra">V</span>
+              <span class="nome">Vila dos Diretórios</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- seletor de partida -->
+        <div class="dropdown-linha">
+          <label for="partida">Ponto de partida</label>
+          <select id="partida">
+            <option>Pilotis</option>
+            <option>RDC</option>
+            <option>Kennedy</option>
+            <option>Cardeal Leme</option>
+          </select>
+        </div>
+
+        <!-- card de destino -->
+        <div class="card-destino">
+          <button class="fechar">×</button>
+          <span class="rotulo">DESTINO</span>
+          <h2>Cardeal Frings</h2>
+          <span class="curso">Engenharia</span>
+          <div>
+            <span class="chip-tempo">5 min a pé • 375 m</span>
+          </div>
+
+          <ol class="passos">
+            <li><span class="num">1</span> Saia de Pilotis e siga pela via central do campus.</li>
+            <li><span class="num">2</span> Caminhe cerca de 5 min em direção ao prédio Cardeal Frings.</li>
+            <li><span class="num">3</span> Entre no prédio Cardeal Frings pela entrada principal (bloco F).</li>
+            <li><span class="num">4</span> Procure a recepção do bloco F para orientações internas.</li>
+          </ol>
+
+          <div class="espacos-titulo">ESPAÇOS NESTE PRÉDIO</div>
+          <p class="espaco-item"><strong>F309</strong> — Salas de aula • 3º andar</p>
+          <p class="espaco-item"><strong>F402</strong> — Salas de aula • 4º andar</p>
+        </div>
+      </div>
+
+      <footer class="rodape">
+        <span class="rodape-item ativo">MAPA</span>
+        <span class="rodape-item">HORÁRIO</span>
+      </footer>
+    </div>
+  </body>
+</html>
