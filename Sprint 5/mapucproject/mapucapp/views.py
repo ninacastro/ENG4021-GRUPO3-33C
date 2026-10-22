@@ -93,17 +93,37 @@ def deslogar(request):
     }
     return render(request, "deslogar.html", context)
 
-
 def dados(request):
-    return render(request, "dados.html")
+    perfil = get_object_or_404(Perfil, matricula='2110482')
+
+    if request.method == 'POST':
+        perfil.nome = request.POST.get('nome')
+        perfil.curso = request.POST.get('curso')
+        perfil.email = request.POST.get('email')
+        perfil.save()
+
+        messages.success(request, 'Dados atualizados com sucesso!')
+        return redirect(request.path)
+
+    return render(request, 'dados.html', {
+        'perfil': perfil
+    })
 
 
 def notificacoes(request):
     return render(request, 'notificacoesmelhorado.html')
 
 
+
 def rota(request):
-    return render(request, 'telarota.html')
+    destino = 'F402'
+    local_atual = 'Você está aqui'
+
+    return render(request, 'telarota.html', {
+        'destino': destino,
+        'local_atual': local_atual
+    })
+
 
 
 

@@ -1,10 +1,11 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Rota - MaPUC</title>
-  <link rel="stylesheet" href="..\static\css\telarota.css">
+  <link rel="stylesheet" href="../static/css/telarota.css">
 </head>
 <body>
   <div class="celular">
@@ -15,8 +16,11 @@
     </div>
 
     <header class="topo">
-      <a href="telainiciomelhorada.html" class="botao-voltar" aria-label="Voltar">←</a>
-      <h1 class="titulo"><span class="seta" aria-hidden="true">➤</span> Rota para F402</h1>
+      <a href="{% url 'inicio' %}" class="botao-voltar" aria-label="Voltar">←</a>
+      <h1 class="titulo">
+        <span class="seta" aria-hidden="true">➤</span>
+        Rota para {{ destino|default:"F402" }}
+      </h1>
     </header>
 
     <main class="mapa">
@@ -39,21 +43,21 @@
 
       <div class="marcador" style="--top: 240px; --left: 214px">
         <div class="pino" aria-hidden="true">📍</div>
-        <div class="etiqueta">Sala F402</div>
+        <div class="etiqueta">Sala {{ destino|default:"F402" }}</div>
       </div>
 
       <div class="marcador" style="--top: 435px; --left: 77px">
         <div class="pino pino--escuro" aria-hidden="true">👤</div>
-        <div class="etiqueta">Você está aqui</div>
+        <div class="etiqueta">{{ local_atual|default:"Você está aqui" }}</div>
       </div>
     </main>
 
     <nav class="menu">
-      <a class="item-menu ativo" aria-current="page">
+      <a href="{% url 'inicio' %}" class="item-menu ativo">
         <span aria-hidden="true">🗺️</span>
         Mapa
       </a>
-      <a href="aula.html" class="item-menu">
+      <a href="{% url 'aula' %}" class="item-menu">
         <span aria-hidden="true">📅</span>
         Horário
       </a>
@@ -62,3 +66,4 @@
   </div>
 </body>
 </html>
+
