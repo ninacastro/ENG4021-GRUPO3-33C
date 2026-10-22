@@ -60,5 +60,7 @@ def aula(request):
 
 def deslogar(request):
     return render(request,"deslogar.html")
+def dados(request):
+    return render(request, "dados.html")
 
 
