@@ -60,7 +60,15 @@ def aula(request):
 
 def deslogar(request):
     return render(request,"deslogar.html")
+
 def dados(request):
     return render(request, "dados.html")
+
+def notificacoes(request):
+    return render(request, 'notificacoesmelhorado.html')
+
+def rota(request):
+    return render(request, 'telarota.html')
+
 
 
