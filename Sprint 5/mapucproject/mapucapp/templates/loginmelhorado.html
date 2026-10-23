@@ -25,10 +25,10 @@
     <form action="/inicio/" method="POST">
     {% csrf_token %}
     
-    {{ form.email }}
+    {{ form.matricula }}
     {{ form.senha }}
     
-    <button href="{% url 'inicio' %}" type="submit" class="botao-login">Entrar</button>
+    <button type="submit" class="botao-login">Entrar</button>
 </form>
 </div>
 
