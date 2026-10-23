@@ -26,7 +26,7 @@ def inicio(request):
         'predios': predios,
         'salas': salas,
     }
-    return render(request, "telainiciomelhorado.html", context)
+    return render(request, "telainiciomelhorada.html", context)
 
 
 def bibliotecas(request):
