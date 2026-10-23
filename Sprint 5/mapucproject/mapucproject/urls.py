@@ -30,5 +30,7 @@ urlpatterns = [
     path('dados/', dados, name='deslogar'),
     path('notificacoes/', notificacoes, name='notificacoes'),
     path('rota/', rota, name='rota'),
+    path('caminho-frings/', caminho_frings, name='caminho_frings'),
+    path('cadastro/', cadastro, name='cadastro'),
 
 ]
