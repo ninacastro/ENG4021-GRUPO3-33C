@@ -57,7 +57,7 @@ def login(request):
     context = {
         'form': form_login
     }
-    return render(request, "loginmelhorado.html")
+    return render(request, "loginmelhorado.html",context)
 
 
 def grade(request):
