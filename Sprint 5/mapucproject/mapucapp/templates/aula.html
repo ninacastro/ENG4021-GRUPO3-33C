@@ -12,46 +12,62 @@
 
         <h1>← Detalhes da aula</h1>
 
-        <div class="materia">
-           <p>▢ MAT1161 - Obrigatória</p>
-            <h2>CÁLCULO I</h2>
-        </div>
-
-        <div class="detalhes">
-
-            <div class="item">
-                <div class="icone">◷</div>
-                <div class="texto">
-                    <p class="titulo">HORÁRIO</p>
-                    <p>Terça-feira, 09:00 - 11:00</p>
-                </div>
+        {% if turma %}
+            <div class="materia">
+                <p>▢ {{ turma.codigo_disciplina.codigo_disciplina }}</p>
+                <h2>{{ turma.codigo_disciplina.nome }}</h2>
             </div>
 
-            <div class="item">
-                <div class="icone verde">♧</div>
-                <div class="texto">
-                    <p class="titulo">TURMA</p>
-                    <p>21C</p>
+            <div class="detalhes">
+
+                <div class="item">
+                    <div class="icone">◷</div>
+                    <div class="texto">
+                        <p class="titulo">HORÁRIO</p>
+                        <p>{{ turma.horario }}</p>
+                    </div>
                 </div>
+
+                <div class="item">
+                    <div class="icone verde">♧</div>
+                    <div class="texto">
+                        <p class="titulo">TURMA</p>
+                        <p>{{ turma.codigo_turma }}</p>
+                    </div>
+                </div>
+
+                <div class="item">
+                    <div class="icone">♙</div>
+                    <div class="texto">
+                        <p class="titulo">PROFESSOR</p>
+                        {% if turma.professor %}
+                            <p>{{ turma.professor.nome }}</p>
+                        {% else %}
+                            <p>Professor não informado</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="item">
+                    <div class="icone verde">◎</div>
+                    <div class="texto">
+                        <p class="titulo">SALA</p>
+                        {% for sala in salas %}
+                            <p>{{ sala.codigo_sala }} (Prédio {{ sala.predio.nome }})</p>
+                        {% empty %}
+                            <p>Sala não informada</p>
+                        {% endfor %}
+                    </div>
+                </div>
+
             </div>
 
-            <div class="item">
-                <div class="icone">♙</div>
-                <div class="texto">
-                    <p class="titulo">PROFESSOR</p>
-                    <p>Marcos Paulo</p>
-                </div>
+        {% else %}
+            <div class="materia">
+                <h2>Nenhuma turma cadastrada</h2>
+                <p>Não há dados de aula disponíveis.</p>
             </div>
-
-            <div class="item">
-                <div class="icone verde">◎</div>
-                <div class="texto">
-                    <p class="titulo">SALA</p>
-                <p>K102 (Prédio Kennedy)</p>
-                </div>
-            </div>
-
-        </div>
+        {% endif %}
 
         <div class="botao">
            <p>Ver rota até a sala</p>
