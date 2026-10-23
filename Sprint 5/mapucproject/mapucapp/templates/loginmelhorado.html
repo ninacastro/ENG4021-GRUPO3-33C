@@ -1,11 +1,11 @@
-
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - MaPUC</title>
-    <link rel="stylesheet" href="../static/css/loginmelhorado.css">
+    <link rel="stylesheet" href="{% static 'css/loginmelhorado.css' %}">
 </head>
 
 <body>
@@ -22,11 +22,14 @@
         <h3>Acesse com sua matrícula</h3>
 
 <div>
-    <input type="text" placeholder="Matrícula ou e-mail">
-
-    <input type="password" placeholder="Senha">
-
-    <button type="button">Acessar</button>
+    <form action="/inicio/" method="POST">
+    {% csrf_token %}
+    
+    {{ form.email }}
+    {{ form.senha }}
+    
+    <button href="/inicio/" type="submit" class="botao-login">Entrar</button>
+</form>
 </div>
 
         <button type="button">Esqueci minha senha</button>

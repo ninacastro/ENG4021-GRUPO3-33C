@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.db.models import Q
 from .models import *
+from .forms import LoginForm
 
 def inicio(request):
     busca = request.GET.get('busca', '').strip()
@@ -51,6 +52,11 @@ def perfil(request):
 
 
 def login(request):
+    form_login = LoginForm()
+    
+    context = {
+        'form': form_login
+    }
     return render(request, "loginmelhorado.html")
 
 
