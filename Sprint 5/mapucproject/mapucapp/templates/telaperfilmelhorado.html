@@ -2,7 +2,7 @@
 <html>
   <head>
     <title>MaPUC - Perfil</title>
-    <link rel="stylesheet" href="..\static\css\telaperfilmelhorado.css">
+    <link rel="stylesheet" href={% static 'css/telaperfilmelhorado.css' %}>
   </head>
   <body>
     <header class="topbar">
@@ -54,7 +54,8 @@
     </div>
 
     <footer class="rodape">
-      <button class="voltar-rodape" href="telainiciomelhorada.html">← VOLTAR</button>
+      <button class="voltar-rodape" href="{% url 'inicio' %}">← VOLTAR</button>
     </footer>
   </body>
 </html>
+
