@@ -1,0 +1,154 @@
+
+body {
+    margin: 0;
+    background-color: #f3f6fa;
+    font-family: Arial, sans-serif;
+    color: #0a2240;
+}
+
+.topo {
+    height: 85px;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    gap: 500px;
+    padding: 0 35px;
+}
+
+.voltar {
+    color: #0a2240;
+    font-size: 30px;
+}
+
+.titulo {
+    background-color: #e7efff;
+    color: #2850d8;
+    padding: 14px 22px;
+    border-radius: 30px;
+    font-weight: bold;
+}
+
+.corpo {
+    max-width: 1115px;
+    margin: 45px auto 25px;
+}
+
+
+h1 {
+    font-size: 36px;
+    margin-bottom: 3px;
+}
+
+h2 {
+    color: #2850d8;
+    font-size: 25px;
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.descricao {
+    color: #64748b;
+}
+
+.campos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px 45px;
+}
+
+.campo label {
+    display: block;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+.campo label span {
+    color: #e53935;
+}
+
+.campo input,
+.campo select {
+    box-sizing: border-box;
+    width: 100%;
+    height: 68px;
+    padding: 0 20px;
+    border: 1px solid #d9e1ec;
+    border-radius: 35px;
+    background-color: white;
+    font-size: 17px;
+    color: #0a2240;
+}
+
+.campo input::placeholder {
+    color: #8290a5;
+}
+
+.seguranca {
+    background-color: #eaf0ff;
+    border-radius: 25px;
+    padding: 16px;
+    margin-top: 15px;
+    color: #2850d8;
+    font-size: 13px;
+}
+
+.seguranca p {
+    display: inline-block;
+    background-color: white;
+    border: 1px solid #dce3ed;
+    border-radius: 20px;
+    padding: 10px;
+    margin: 3px;
+    color: #64748b;
+}
+
+
+.opcoes label {
+    display: block;
+    margin-bottom: 18px;
+    font-size: 15px;
+}
+
+.opcoes input {
+    margin-right: 12px;
+}
+
+.opcoes a {
+    color: #2850d8;
+}
+
+.botoes {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 35px;
+}
+
+.botoes button {
+    height: 62px;
+    border-radius: 35px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.botao-sair {
+    width: 210px;
+    background-color: white;
+    color: #0a2240;
+    border: 1px solid #d9e1ec;
+}
+
+.botao-proximo {
+    width: 335px;
+    background-color: #2850d8;
+    color: white;
+    border: none;
+}
+
+.botao-proximo span {
+    margin-left: 12px;
+    font-size: 20px;
+}
+

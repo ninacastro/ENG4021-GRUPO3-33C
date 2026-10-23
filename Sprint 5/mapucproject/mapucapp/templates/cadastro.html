@@ -1,0 +1,124 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro - MaPUC</title>
+    <link rel="stylesheet" href="{% static 'css/telaperfilmelhorado.css' %}">
+</head>
+
+<body>
+    <div class="topo">
+        <a href="#" class="voltar">←</a>
+        <div class="titulo">PUC MAPA GUIA</div>
+    </div>
+
+    <div class="corpo">
+     
+        <h1>Nunca se cadastrou?</h1>
+        <h2>Junte-se ao nosso app!</h2>
+        <p class="descricao">
+            Navegue facilmente pelas salas, auditórios, blocos e serviços
+            da universidade direto no mapa interativo.
+        </p>
+
+            <div class="campos">
+
+                <div class="campo">
+                    <label>NOME COMPLETO <span>*</span></label>
+                    <input type="text"
+                           placeholder="Ex: Mariana Silva e Souza">
+                </div>
+
+                <div class="campo">
+                    <label>EMAIL <span>*</span></label>
+                    <input type="text"
+                           placeholder="aluno@puc.br ou seu email">
+                </div>
+
+                <div class="campo">
+                    <label>CEP</label>
+                    <input type="text"
+                           placeholder="00000-000">
+                </div>
+
+                <div class="campo">
+                    <label>CURSO</label>
+                    <select>
+                        <option value="">Selecione seu curso...</option>
+                        <option value="Engenharia da Computação">
+                            Engenharia da Computação
+                        </option>
+                        <option value="Ciência da Computação">
+                            Engenharia de Produção
+                        </option>
+                        <option value="Outro">Outro</option>
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <label>PERÍODO DO CURSO</label>
+                    <input type="number"
+                           placeholder="">
+                </div>
+
+                <div class="campo">
+                    <label>MATRÍCULA <span>*</span></label>
+                    <input type="text"
+                           placeholder="Ex: 2024108849">
+                </div>
+
+                <div class="campo">
+                    <label>SENHA <span>*</span></label>
+                    <input type="password"
+                           placeholder="Crie sua senha segura">
+
+                    <div class="seguranca">
+                        <h3>CRITÉRIOS DE SEGURANÇA:</h3>
+                        <p>● Mínimo 8 caracteres</p>
+                        <p>● Mínimo 2 símbolos</p>
+                        <p>● Mínimo 1 número</p>
+                    </div>
+                </div>
+
+                <div class="campo">
+                    <label>CONFIRMAR SENHA <span>*</span></label>
+                    <input type="password"
+                           placeholder="Digite a senha novamente">
+                </div>
+
+            </div>
+
+            <div class="opcoes">
+                <label>
+                    <input type="checkbox">
+                    Receber notícias, avisos, atualizações
+                </label>
+
+                <label>
+                    <input type="checkbox">
+                    Concordar com nossa
+                    <a href="">Política de Uso e Privacidade</a>
+                </label>
+            </div>
+
+            <div class="botoes">
+                <button type="button" class="botao-sair">SAIR</button>
+                <button type="button" class="botao-proximo">
+                    PRÓXIMO <span>→</span>
+                </button>
+            </div>
+
+            <div class="botoes">
+                <a href="{% url 'inicio' %}" class="botao-sair">SAIR</a>
+
+                <a href="" class="botao-proximo">PRÓXIMO <span>→</span></a>
+            </div>
+     
+    </div>
+
+
+</body>
+</html>

@@ -3,7 +3,7 @@
 <html>
   <head>
     <title>MaPUC - Perfil</title>
-    <link rel="stylesheet" href="{% static 'css/telaperfilmelhorado.css' %}"">
+    <link rel="stylesheet" href="{% static 'css/telaperfilmelhorado.css' %}">
   </head>
   <body>
     <header class="topbar">
@@ -15,8 +15,19 @@
       <div class="caixa perfil">
         <span class="etiqueta">CONTA ACADÊMICA</span>
         <h1>PERFIL</h1>
-        <h4>Lucas Silveira de Alencar</h4>
-        <p class="matricula">Matrícula: 2110482</p>
+
+        {% if aluno %}
+          <h4>{{ aluno.nome }}</h4>
+          <p class="matricula">Matrícula: {{ aluno.matricula }}</p>
+          <p class="meta">{{ aluno.email }}</p>
+          <p class="meta">{{ aluno.curso }} — {{ aluno.periodo }}º período</p>
+        {% else %}
+          <h4>Aluno não encontrado</h4>
+          <p class="matricula">Nenhum aluno cadastrado.</p>
+        {% endif %}
+
+
+        
       </div>
     </div>
 
