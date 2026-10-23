@@ -140,5 +140,18 @@ def rota(request):
     })
 
 
+def caminho_frings(request):
+    predios = Predio.objects.all()
+
+    context = {
+        'predios': predios
+    }
+
+    return render(request, 'caminhofrings.html', context)
+
+
+
+def cadastro(request):
+    return render(request, 'cadastro.html')
 
 
