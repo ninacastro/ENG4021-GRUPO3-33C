@@ -117,6 +117,15 @@ def dados(request):
 
 
 def notificacoes(request):
+    aluno_atual = Aluno.objects.first()
+    
+    avisos_do_aluno = None
+    if aluno_atual:
+        avisos_do_aluno = Notificacao.objects.filter(aluno=aluno_atual).order_by('-data_criacao')
+
+    context = {
+        'notificacoes': avisos_do_aluno
+    }
     return render(request, 'notificacoesmelhorado.html')
 
 
