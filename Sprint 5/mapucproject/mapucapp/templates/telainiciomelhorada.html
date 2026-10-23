@@ -10,7 +10,7 @@
 <body>
 
   <div class="area-perfil">
-    <a href="/perfil/">
+    <a href="{% url 'perfil' %}">
       <button class="botao-perfil">Perfil</button>
     </a>
   </div>
@@ -51,23 +51,24 @@
   </div>
 
   <div class="atalhos">
-    <a href="/bibliotecas/">
+    <a href="{% url 'bibliotecas' %}">
       <button class="botao-p">Biblioteca</button>
     </a>
     <button class="botao-p">Alimentação</button>
   </div>
 
   <div class="atalhos">
-    <a href="/notificacoes/">
+    <a href="{% url 'notificacoes' %}">
       <button class="botao-g">Avisos e Recados</button>
     </a>
   </div>
 
   <div class="atalhos">
-    <a href="/grade/">
+    <a href="{% url 'grade' %}">
       <button class="botao-g">Minha Grade de Aulas</button>
     </a>
   </div>
 
 </body>
 </html>
+

@@ -1,4 +1,3 @@
-{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,7 +9,7 @@
 <body>
 
     <div class="topo">
-        <a href="/perfil/"><button class="botao-seta" type="button">←</button></a>
+        <a href="{% url 'perfil' %}"><button class="botao-seta" type="button">←</button></a>
         <h1>Deslogar</h1>
     </div>
 
@@ -36,12 +35,13 @@
         </p>
 
         <div class="botoes">
-            <a href="/login/" class="botao-sair">⇥ Sair</a>
+            <a href="{% url 'login' %}" class="botao-sair">⇥ Sair</a>
 
-            <a href="/perfil/" class="botao-cancelar">⇥ Cancelar</a>
+            <a href="{% url 'perfil' %}" class="botao-cancelar">⇥ Cancelar</a>
         </div>
 
     </div>
 
 </body>
 </html>
+
