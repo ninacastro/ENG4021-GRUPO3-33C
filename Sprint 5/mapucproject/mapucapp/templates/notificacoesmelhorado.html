@@ -1,15 +1,14 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
   <head>
+    <meta charset="UTF-8">
     <title>MaPUC - Avisos</title>
-
     <link rel="stylesheet" href="{% static 'css/notificacoesmelhorado.css' %}" />
   </head>
   <body>
     <header class="topbar">
       <div class="topbar-left">
-      
         <a href="/inicio/" style="text-decoration: none;">
             <button class="voltar">←</button>
         </a>
@@ -19,23 +18,22 @@
     </header>
 
     <div class="conteudo">
-      <div class="area-notificacoes">
-
-        {% if notificacoes %}
-        
-
-            {% for aviso in notificacoes %}
-                <div class="card-notificacao">
-                    <h3>{{ aviso.titulo }}</h3>
-                    <p>{{ aviso.mensagem }}</p>
-                    <small>{{ aviso.data_criacao }}</small>
-                </div>
-            {% endfor %}
-            
-        {% else %}
-            <p>Você não tem novas notificações no momento.</p>
-        {% endif %}
-      </div>
+      {% if notificacoes %}
+        <div class="linha" style="flex-wrap: wrap;">
+          
+          {% for aviso in notificacoes %}
+              <div class="caixa recado">
+                  <span class="etiqueta etiqueta-recado">Aviso</span>
+                  <h3>{{ aviso.titulo }}</h3>
+                  <p>{{ aviso.mensagem }}</p>
+                  <div class="meta">{{ aviso.data_criacao|date:"d/m/Y H:i" }}</div>
+              </div>
+          {% endfor %}
+          
+        </div>
+      {% else %}
+          <p>Você não tem novas notificações no momento.</p>
+      {% endif %}
     </div>
 
     <footer class="rodape">
