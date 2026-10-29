@@ -17,7 +17,12 @@
           </div>
         </div>
         <div class="topbar-right">
-          <button class="sino"><span class="badge">3</span></button>
+          <a class="sino" href="{% url 'avisos' %}" aria-label="Abrir avisos">
+            <span aria-hidden="true">🔔</span>
+            {% if notificacoes_nao_lidas %}
+              <span class="badge">{{ notificacoes_nao_lidas }}</span>
+            {% endif %}
+          </a>
           <div class="avatar-ini">LA</div>
         </div>
       </header>

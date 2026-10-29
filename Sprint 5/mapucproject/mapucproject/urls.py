@@ -28,6 +28,7 @@ urlpatterns = [
     path('detalhes-aula/', aula, name='aula'),
     path('deslogar/',deslogar, name='deslogar'),
     path('dados/', dados, name='dados'),
+    path('avisos/', notificacoes, name='avisos'),
     path('notificacoes/', notificacoes, name='notificacoes'),
     path('rota/', rota, name='rota'),
     path('caminho-frings/', caminho_frings, name='caminho_frings'),

@@ -83,6 +83,11 @@ body {
   border: 1px solid #ddd;
   background-color: #fff;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+  text-decoration: none;
 }
 
 .sino .badge {

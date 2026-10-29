@@ -3,42 +3,49 @@
 <html lang="pt-br">
   <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>MaPUC - Avisos</title>
     <link rel="stylesheet" href="{% static 'css/notificacoesmelhorado.css' %}" />
   </head>
   <body>
     <header class="topbar">
       <div class="topbar-left">
-        <a href="/inicio/" style="text-decoration: none;">
-            <button class="voltar">←</button>
-        </a>
+        <a class="voltar" href="{% url 'inicio' %}" aria-label="Voltar para o mapa">←</a>
         <h1>Avisos e Recados</h1>
       </div>
-      <button class="marcar-tudo">Marcar tudo</button>
+      {% if notificacoes_nao_lidas %}
+        <form method="post">
+          {% csrf_token %}
+          <input type="hidden" name="acao" value="marcar_todas_lidas">
+          <button class="marcar-tudo" type="submit">Marcar tudo como lido</button>
+        </form>
+      {% else %}
+        <button class="marcar-tudo" type="button" disabled>Tudo lido</button>
+      {% endif %}
     </header>
 
-    <div class="conteudo">
+    <main class="conteudo">
       {% if notificacoes %}
         <div class="linha" style="flex-wrap: wrap;">
-          
           {% for aviso in notificacoes %}
-              <div class="caixa recado">
-                  <span class="etiqueta etiqueta-recado">Aviso</span>
-                  <h3>{{ aviso.titulo }}</h3>
-                  <p>{{ aviso.mensagem }}</p>
-                  <div class="meta">{{ aviso.data_criacao|date:"d/m/Y H:i" }}</div>
-              </div>
+            <article class="caixa {% if aviso.lida %}recado{% endif %}">
+              <span class="etiqueta etiqueta-recado">
+                {% if aviso.lida %}Lido{% else %}Novo aviso{% endif %}
+              </span>
+              <h3>{{ aviso.titulo }}</h3>
+              <p>{{ aviso.mensagem }}</p>
+              <p class="meta">{{ aviso.data_criacao|date:"d/m/Y H:i" }}</p>
+            </article>
           {% endfor %}
-          
         </div>
       {% else %}
-          <p>Você não tem novas notificações no momento.</p>
+        <p>Você não tem novas notificações no momento.</p>
       {% endif %}
-    </div>
+    </main>
 
     <footer class="rodape">
-      <a href="/inicio/" class="rodape-item" style="text-decoration: none; color: inherit;">MAPA</a>
-      <a href="/grade/" class="rodape-item" style="text-decoration: none; color: inherit;">HORÁRIO</a>
+      <a href="{% url 'inicio' %}" class="rodape-item">MAPA</a>
+      <a href="{% url 'grade' %}" class="rodape-item">HORÁRIO</a>
     </footer>
   </body>
 </html>

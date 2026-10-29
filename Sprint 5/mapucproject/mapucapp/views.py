@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.db.models import Q
 from .models import *
 from .forms import LoginForm
@@ -118,15 +118,26 @@ def dados(request):
 
 def notificacoes(request):
     aluno_atual = Aluno.objects.first()
-    
-    avisos_do_aluno = None
+
     if aluno_atual:
-        avisos_do_aluno = Notificacao.objects.filter(aluno=aluno_atual).order_by('-data_criacao')
+        avisos_do_aluno = Notificacao.objects.filter(aluno=aluno_atual)
+
+        if request.method == 'POST' and request.POST.get('acao') == 'marcar_todas_lidas':
+            avisos_do_aluno.filter(lida=False).update(lida=True)
+            return redirect('avisos')
+
+        avisos_do_aluno = avisos_do_aluno.order_by('-data_criacao')
+        notificacoes_nao_lidas = avisos_do_aluno.filter(lida=False).exists()
+    else:
+        avisos_do_aluno = Notificacao.objects.none()
+        notificacoes_nao_lidas = False
 
     context = {
-        'notificacoes': avisos_do_aluno
+        'notificacoes': avisos_do_aluno,
+        'notificacoes_nao_lidas': notificacoes_nao_lidas,
+        'aluno': aluno_atual,
     }
-    return render(request, 'notificacoesmelhorado.html')
+    return render(request, 'notificacoesmelhorado.html', context)
 
 
 
@@ -142,9 +153,17 @@ def rota(request):
 
 def caminho_frings(request):
     predios = Predio.objects.all()
+    aluno_atual = Aluno.objects.first()
+    notificacoes_nao_lidas = 0
+    if aluno_atual:
+        notificacoes_nao_lidas = Notificacao.objects.filter(
+            aluno=aluno_atual,
+            lida=False,
+        ).count()
 
     context = {
-        'predios': predios
+        'predios': predios,
+        'notificacoes_nao_lidas': notificacoes_nao_lidas,
     }
 
     return render(request, 'caminhofrings.html', context)
@@ -153,5 +172,3 @@ def caminho_frings(request):
 
 def cadastro(request):
     return render(request, 'cadastro.html')
-
-
