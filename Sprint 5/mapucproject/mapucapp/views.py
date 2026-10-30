@@ -172,3 +172,9 @@ def caminho_frings(request):
 
 def cadastro(request):
     return render(request, 'cadastro.html')
+
+def restaurantes(request):
+    return render(request, "mapuc_app/restaurantes.html")
+
+def avisos(request):
+    return render(request, "mapuc_app/avisos.html")
