@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Minhas aulas</title>
+</head>
+<body>
+  <h1>Feriados de 2026</h1>
+  <ul id="lista"></ul>
+
+  <script>
+    async function carregarFeriados() {
+      const resposta = await fetch('https://brasilapi.com.br/api/feriados/v1/2026');
+      const feriados = await resposta.json();
+
+      const lista = document.getElementById('lista');
+      feriados.forEach(f => {
+        const li = document.createElement('li');
+        li.textContent = `${f.date} - ${f.name}`;
+        lista.appendChild(li);
+      });
+    }
+    carregarFeriados();
+  </script>
+</body>
+</html>
