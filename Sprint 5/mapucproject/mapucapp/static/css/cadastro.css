@@ -67,6 +67,19 @@ h2 {
     color: #e53935;
 }
 
+.erro,
+.campo .errorlist,
+.opcoes .errorlist {
+    color: #e53935;
+    font-size: 13px;
+}
+
+.campo .errorlist,
+.opcoes .errorlist {
+    margin: 8px 0 0;
+    padding-left: 18px;
+}
+
 .campo input,
 .campo select {
     box-sizing: border-box;
@@ -151,4 +164,3 @@ h2 {
     margin-left: 12px;
     font-size: 20px;
 }
-
