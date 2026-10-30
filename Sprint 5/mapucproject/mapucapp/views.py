@@ -1,10 +1,13 @@
 from django.shortcuts import redirect, render
 from django.db.models import Q
 from .models import *
-from .forms import LoginForm
+from .forms import BuscaForm, LoginForm
 
 def inicio(request):
-    busca = request.GET.get('busca', '').strip()
+    form_busca = BuscaForm(request.GET or None)
+    busca = ''
+    if form_busca.is_valid():
+        busca = form_busca.cleaned_data['busca'].strip()
 
     predios = Predio.objects.none()
     salas = Sala.objects.none()
@@ -22,6 +25,7 @@ def inicio(request):
         )
 
     context = {
+        'form_busca': form_busca,
         'busca': busca,
         'predios': predios,
         'salas': salas,

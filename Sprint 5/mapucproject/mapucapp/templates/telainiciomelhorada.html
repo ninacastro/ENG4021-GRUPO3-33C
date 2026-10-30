@@ -20,8 +20,7 @@
 
   <div>
     <form class="form-pesquisa" action="/inicio/" method="get">
-      <input class="caixa-texto" type="text" name="busca"
-             value="{{ busca }}" placeholder="Buscar sala ou prédio">
+      {{ form_busca.busca }}
       <button class="botao-busca" type="submit">Pesquisar</button>
     </form>
   </div>
