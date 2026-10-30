@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Cadastro - MaPUC</title>
-    <link rel="stylesheet" href="{% static 'css/telaperfilmelhorado.css' %}">
+    <link rel="stylesheet" href="{% static 'css/cadastro.css' %}">
 </head>
 
 <body>
@@ -29,60 +29,52 @@
         <form method="POST">
             {% csrf_token %}
 
-            {% if erro %}
-                <p class="erro">{{ erro }}</p>
+            {% if form.non_field_errors %}
+                <p class="erro">{{ form.non_field_errors }}</p>
             {% endif %}
 
             <div class="campos">
 
                 <div class="campo">
-                    <label>NOME COMPLETO <span>*</span></label>
-                    <input type="text" name="nome"
-                        placeholder="Ex: Mariana Silva e Souza" required>
+                    <label for="{{ form.nome.id_for_label }}">NOME COMPLETO <span>*</span></label>
+                    {{ form.nome }}
+                    {{ form.nome.errors }}
                 </div>
 
                 <div class="campo">
-                    <label>EMAIL <span>*</span></label>
-                    <input type="email" name="email"
-                        placeholder="aluno@puc.br ou seu email" required>
+                    <label for="{{ form.email.id_for_label }}">EMAIL <span>*</span></label>
+                    {{ form.email }}
+                    {{ form.email.errors }}
                 </div>
 
                 <div class="campo">
-                    <label>CEP</label>
-                    <input type="text" name="cep"
-                        placeholder="00000-000">
+                    <label for="{{ form.cep.id_for_label }}">CEP</label>
+                    {{ form.cep }}
+                    {{ form.cep.errors }}
                 </div>
 
                 <div class="campo">
-                    <label>CURSO</label>
-                    <select name="curso">
-                        <option value="">Selecione seu curso...</option>
-                        <option value="Engenharia da Computação">
-                            Engenharia da Computação
-                        </option>
-                        <option value="Engenharia de Produção">
-                            Engenharia de Produção
-                        </option>
-                        <option value="Outro">Outro</option>
-                    </select>
+                    <label for="{{ form.curso.id_for_label }}">CURSO <span>*</span></label>
+                    {{ form.curso }}
+                    {{ form.curso.errors }}
                 </div>
 
                 <div class="campo">
-                    <label>PERÍODO DO CURSO</label>
-                    <input type="number" name="periodo" min="1"
-                        placeholder="Ex: 2">
+                    <label for="{{ form.periodo.id_for_label }}">PERÍODO DO CURSO <span>*</span></label>
+                    {{ form.periodo }}
+                    {{ form.periodo.errors }}
                 </div>
 
                 <div class="campo">
-                    <label>MATRÍCULA <span>*</span></label>
-                    <input type="text" name="matricula"
-                        placeholder="Ex: 2024108849" required>
+                    <label for="{{ form.matricula.id_for_label }}">MATRÍCULA <span>*</span></label>
+                    {{ form.matricula }}
+                    {{ form.matricula.errors }}
                 </div>
 
                 <div class="campo">
-                    <label>SENHA <span>*</span></label>
-                    <input type="password" name="senha"
-                        placeholder="Crie sua senha segura" required>
+                    <label for="{{ form.senha.id_for_label }}">SENHA <span>*</span></label>
+                    {{ form.senha }}
+                    {{ form.senha.errors }}
 
                     <div class="seguranca">
                         <h3>CRITÉRIOS DE SEGURANÇA:</h3>
@@ -93,9 +85,9 @@
                 </div>
 
                 <div class="campo">
-                    <label>CONFIRMAR SENHA <span>*</span></label>
-                    <input type="password" name="confirmar_senha"
-                        placeholder="Digite a senha novamente" required>
+                    <label for="{{ form.confirmar_senha.id_for_label }}">CONFIRMAR SENHA <span>*</span></label>
+                    {{ form.confirmar_senha }}
+                    {{ form.confirmar_senha.errors }}
                 </div>
 
             </div>
@@ -103,18 +95,18 @@
             <div class="opcoes">
 
                 <label>
-                    <input type="checkbox" name="receber_noticias">
+                    {{ form.receber_noticias }}
                     Receber notícias, avisos, atualizações
                 </label>
 
                 <label>
-                    <input type="checkbox" name="aceitou_privacidade"
-                        required>
+                    {{ form.aceitou_privacidade }}
                     Concordar com nossa
-                    <a href="{% url 'politica_privacidade' %}">
+                    <a href="{% url 'privacidade' %}">
                         Política de Uso e Privacidade
                     </a>
                 </label>
+                {{ form.aceitou_privacidade.errors }}
 
             </div>
 
@@ -132,4 +124,3 @@
 
 </body>
 </html>
-

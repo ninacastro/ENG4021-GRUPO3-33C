@@ -1,7 +1,8 @@
 from django.shortcuts import redirect, render
 from django.db.models import Q
+from django.contrib.auth.hashers import make_password
 from .models import *
-from .forms import BuscaForm, LoginForm
+from .forms import BuscaForm, CadastroForm, LoginForm
 
 def inicio(request):
     form_busca = BuscaForm(request.GET or None)
@@ -175,33 +176,16 @@ def caminho_frings(request):
 
 
 def cadastro(request):
-    if request.method == 'POST':
-        nome = request.POST.get('nome')
-        email = request.POST.get('email')
-        curso = request.POST.get('curso')
-        periodo = request.POST.get('periodo') or None
-        matricula = request.POST.get('matricula')
-        senha = request.POST.get('senha')
-        confirmar_senha = request.POST.get('confirmar_senha')
-
-        if senha != confirmar_senha:
-            return render(request, 'cadastro.html', {'erro': 'As senhas não coincidem.'})
-
-        if Aluno.objects.filter(email=email).exists() or Aluno.objects.filter(matricula=matricula).exists():
-            return render(request, 'cadastro.html', {'erro': 'E-mail ou matrícula já cadastrados.'})
-
-        Aluno.objects.create(
-            nome=nome,
-            email=email,
-            curso=curso,
-            periodo=periodo,
-            matricula=matricula,
-            senha=make_password(senha)
-        )
-
+    form = CadastroForm(
+        request.POST if request.method == 'POST' else None
+    )
+    if request.method == 'POST' and form.is_valid():
+        aluno = form.save(commit=False)
+        aluno.senha = make_password(form.cleaned_data['senha'])
+        aluno.save()
         return redirect('login')
 
-    return render(request, 'cadastro.html')
+    return render(request, 'cadastro.html', {'form': form})
 
 def restaurantes(request):
     return render(request, 'restaurantes.html')
