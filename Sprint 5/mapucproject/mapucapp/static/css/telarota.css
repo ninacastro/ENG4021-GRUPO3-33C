@@ -1,204 +1,221 @@
+
 :root {
-  --azul: #0a2240;
-  --verde: #40c0a8;
-  --fundo-mapa: #e8efe9;
-  --quarteirao: #d0e1d6;
-  --borda: #ddd;
-  --cinza: #808080;
-  --sombra: 0 2px 6px rgba(0, 0, 0, 0.15);
+    --azul: #0a2240;
+    --verde: #40c0a8;
+    --fundo-mapa: #e8efe9;
+    --quarteirao: #d0e1d6;
+    --borda: #ddd;
+    --cinza: #808080;
+    --sombra: 0 2px 6px rgba(0, 0, 0, 0.12);
 }
 
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 body {
-  margin: 0;
-  background-color: #222;
-  font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #f3f6f8;
+    font-family: Arial, sans-serif;
+    color: var(--azul);
 }
 
 .celular {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  width: 360px;
-  height: 640px;
-  margin: 20px auto;
-  background-color: white;
-  overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-height: 100vh;
+    margin: 0;
+    background-color: white;
 }
 
-/* Barra de status */
-.barra-status {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 10;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  height: 40px;
-  padding: 0 20px;
-  background-color: #f8faf9;
-  color: #333;
-  font-size: 14px;
-  font-weight: bold;
-}
 
-/* Topo */
 .topo {
-  position: absolute;
-  top: 55px;
-  left: 15px;
-  z-index: 10;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 22px 40px;
+    background-color: white;
+    border-bottom: 1px solid #e5e9ed;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    z-index: 2;
 }
 
 .botao-voltar {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: white;
-  box-shadow: var(--sombra);
-  color: var(--azul);
-  font-size: 20px;
-  text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background-color: #edf5f3;
+    color: var(--azul);
+    font-size: 26px;
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+
+.botao-voltar:hover {
+    background-color: #dcece7;
+}
+
+.informacoes-rota {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
 
 .titulo {
-  margin: 0;
-  padding: 10px 70px 10px 15px;
-  border-radius: 20px;
-  background-color: white;
-  box-shadow: var(--sombra);
-  color: var(--azul);
-  font-size: 16px;
-  font-weight: bold;
+    margin: 0;
+    color: var(--azul);
+    font-size: 24px;
 }
 
 .seta {
-  color: var(--verde);
+    margin-right: 8px;
+    color: var(--verde);
 }
 
-/* Mapa */
+.subtitulo {
+    margin: 0;
+    color: var(--cinza);
+    font-size: 14px;
+}
+
+
 .mapa {
-  position: relative;
-  flex: 1;
-  background-color: var(--fundo-mapa);
+    position: relative;
+    flex: 1;
+    min-height: 600px;
+    overflow: hidden;
+    background-color: var(--fundo-mapa);
+    background-image: radial-gradient(#d4e1d8 1px, transparent 1px);
+    background-size: 22px 22px;
 }
 
 .rua {
-  position: absolute;
-  background-color: white;
+    position: absolute;
+    background-color: white;
 }
 
 .rua--horizontal {
-  top: var(--pos);
-  left: 0;
-  width: 100%;
-  height: 28px;
+    top: var(--pos);
+    left: 0;
+    width: 100%;
+    height: 34px;
 }
 
 .rua--vertical {
-  top: 0;
-  left: var(--pos);
-  width: 25px;
-  height: 100%;
+    top: 0;
+    left: var(--pos);
+    width: 34px;
+    height: 100%;
 }
 
 .quarteirao {
-  position: absolute;
-  top: var(--top);
-  left: var(--left);
-  width: var(--w);
-  height: var(--h);
-  border-radius: 8px;
-  background-color: var(--quarteirao);
+    position: absolute;
+    top: var(--top);
+    left: var(--left);
+    width: var(--w);
+    height: var(--h);
+    border: 1px solid #c2d5c8;
+    border-radius: 10px;
+    background-color: var(--quarteirao);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04);
 }
 
-/* Trajeto (linha tracejada da rota) */
+
 .trajeto {
-  position: absolute;
-  top: var(--top);
-  left: var(--left);
+    position: absolute;
+    top: var(--top);
+    left: var(--left);
+    z-index: 1;
 }
 
 .trajeto--vertical {
-  height: var(--size);
-  border-left: 5px dashed var(--verde);
+    height: var(--size);
+    border-left: 5px dashed var(--verde);
 }
 
 .trajeto--horizontal {
-  width: var(--size);
-  border-top: 5px dashed var(--verde);
+    width: var(--size);
+    border-top: 5px dashed var(--verde);
 }
 
-/* Marcadores */
+
 .marcador {
-  position: absolute;
-  top: var(--top);
-  left: var(--left);
-  width: 120px;
-  text-align: center;
+    position: absolute;
+    top: var(--top);
+    left: var(--left);
+    z-index: 2;
+    width: 140px;
+    text-align: center;
 }
 
 .pino {
-  width: 35px;
-  height: 35px;
-  margin: 0 auto;
-  border: 3px solid white;
-  border-radius: 50%;
-  background-color: var(--verde);
-  box-shadow: var(--sombra);
-  line-height: 29px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    margin: 0 auto;
+    border: 3px solid white;
+    border-radius: 50%;
+    background-color: var(--verde);
+    box-shadow: var(--sombra);
+    font-size: 18px;
 }
 
 .pino--escuro {
-  background-color: var(--azul);
+    background-color: var(--azul);
 }
 
 .etiqueta {
-  display: inline-block;
-  margin-top: 5px;
-  padding: 6px 10px;
-  border-radius: 8px;
-  background-color: white;
-  box-shadow: var(--sombra);
-  color: var(--azul);
-  font-size: 13px;
-  font-weight: bold;
-  white-space: nowrap;
+    display: inline-block;
+    margin-top: 8px;
+    padding: 9px 13px;
+    border-radius: 8px;
+    background-color: white;
+    box-shadow: var(--sombra);
+    color: var(--azul);
+    font-size: 13px;
+    font-weight: bold;
+    white-space: nowrap;
 }
 
-/* Menu inferior */
+
 .menu {
-  display: flex;
-  height: 80px;
-  border-top: 1px solid var(--borda);
-  background-color: white;
+    display: flex;
+    min-height: 72px;
+    border-top: 1px solid var(--borda);
+    background-color: white;
 }
 
 .item-menu {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  padding-top: 15px;
-  color: var(--cinza);
-  font-size: 12px;
-  font-weight: bold;
-  text-decoration: none;
-  text-transform: uppercase;
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 18px;
+    color: var(--cinza);
+    font-size: 14px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+
+.item-menu span {
+    font-size: 20px;
+}
+
+.item-menu:hover {
+    background-color: #f5f8f7;
 }
 
 .item-menu.ativo {
-  color: var(--azul);
+    border-top: 3px solid var(--verde);
+    background-color: #f0f8f5;
+    color: var(--azul);
 }
