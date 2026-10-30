@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>MaPUC - Mapa de Restaurantes</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="voltar">←</button>
+          <div class="logo-bloco"></div>
+          <div class="titulo-area">
+            <h1>Ma<span class="verde">PUC</span></h1>
+            <span>Campus Gávea • Mapa interativo</span>
+          </div>
+        </div>
+        <div class="topbar-right">
+          <button class="sino"><span class="badge">3</span></button>
+          <div class="avatar-ini">LA</div>
+        </div>
+      </header>
+
+      <div class="layout">
+        <div class="mapa-col">
+          <div class="mapa">
+            <span class="origem-chip">Origem: Bar das Freiras</span>
+            <div class="grade-mapa">
+              <div class="bloco">
+                <span class="letra">C</span>
+                <span class="nome">Couve Flor</span>
+              </div>
+              <div class="bloco">
+                <span class="letra">G</span>
+                <span class="nome">Geneal</span>
+              </div>
+              <div class="bloco">
+                <span class="letra">M</span>
+                <span class="nome">Megamatte</span>
+              </div>
+              <div class="bloco">
+                <span class="letra">L</span>
+                <span class="nome">Lemax</span>
+              </div>
+              <div class="bloco origem">
+                <span class="letra">Bar das Freiras <span class="ponto"></span></span>
+                <span class="nome">Origem</span>
+              </div>
+              <div class="bloco">
+                <span class="letra">O</span>
+                <span class="nome">Oakberry</span>
+              </div>
+              <div class="bloco">
+                <span class="letra">B</span>
+                <span class="nome">Bandejão</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="painel-col">
+          <div class="dropdown-linha">
+            <label for="partida">Ponto de partida</label>
+            <select id="partida">
+              <option>Bar das Freiras</option>
+              <option>Couve Flor</option>
+              <option>Geneal</option>
+              <option>Megamatte</option>
+            </select>
+          </div>
+
+          <div class="painel-card">
+            <h2>Toque em um restaurante para traçar a rota</h2>
+            <p>Você também pode chegar aqui pela busca da tela inicial ou clicando no restaurante pelo seu horário.</p>
+          </div>
+
+          <div class="painel-card">
+            <div class="lista-titulo">RESTAURANTES DO CAMPUS</div>
+            <div class="chips">
+              <span class="chip">Bar das Freiras</span>
+              <span class="chip">Couve Flor</span>
+              <span
