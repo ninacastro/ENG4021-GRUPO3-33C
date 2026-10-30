@@ -1,8 +1,8 @@
-
 {% load static %}
 
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <title>Cadastro - MaPUC</title>
@@ -10,48 +10,57 @@
 </head>
 
 <body>
+
     <div class="topo">
         <a href="{% url 'login' %}" class="voltar">←</a>
         <div class="titulo">PUC MAPA GUIA</div>
     </div>
 
     <div class="corpo">
-     
+
         <h1>Nunca se cadastrou?</h1>
         <h2>Junte-se ao nosso app!</h2>
+
         <p class="descricao">
             Navegue facilmente pelas salas, auditórios, blocos e serviços
             da universidade direto no mapa interativo.
         </p>
 
+        <form method="POST">
+            {% csrf_token %}
+
+            {% if erro %}
+                <p class="erro">{{ erro }}</p>
+            {% endif %}
+
             <div class="campos">
 
                 <div class="campo">
                     <label>NOME COMPLETO <span>*</span></label>
-                    <input type="text"
-                           placeholder="Ex: Mariana Silva e Souza">
+                    <input type="text" name="nome"
+                        placeholder="Ex: Mariana Silva e Souza" required>
                 </div>
 
                 <div class="campo">
                     <label>EMAIL <span>*</span></label>
-                    <input type="text"
-                           placeholder="aluno@puc.br ou seu email">
+                    <input type="email" name="email"
+                        placeholder="aluno@puc.br ou seu email" required>
                 </div>
 
                 <div class="campo">
                     <label>CEP</label>
-                    <input type="text"
-                           placeholder="00000-000">
+                    <input type="text" name="cep"
+                        placeholder="00000-000">
                 </div>
 
                 <div class="campo">
                     <label>CURSO</label>
-                    <select>
+                    <select name="curso">
                         <option value="">Selecione seu curso...</option>
                         <option value="Engenharia da Computação">
                             Engenharia da Computação
                         </option>
-                        <option value="Ciência da Computação">
+                        <option value="Engenharia de Produção">
                             Engenharia de Produção
                         </option>
                         <option value="Outro">Outro</option>
@@ -60,20 +69,20 @@
 
                 <div class="campo">
                     <label>PERÍODO DO CURSO</label>
-                    <input type="number"
-                           placeholder="">
+                    <input type="number" name="periodo" min="1"
+                        placeholder="Ex: 2">
                 </div>
 
                 <div class="campo">
                     <label>MATRÍCULA <span>*</span></label>
-                    <input type="text"
-                           placeholder="Ex: 2024108849">
+                    <input type="text" name="matricula"
+                        placeholder="Ex: 2024108849" required>
                 </div>
 
                 <div class="campo">
                     <label>SENHA <span>*</span></label>
-                    <input type="password"
-                           placeholder="Crie sua senha segura">
+                    <input type="password" name="senha"
+                        placeholder="Crie sua senha segura" required>
 
                     <div class="seguranca">
                         <h3>CRITÉRIOS DE SEGURANÇA:</h3>
@@ -85,40 +94,42 @@
 
                 <div class="campo">
                     <label>CONFIRMAR SENHA <span>*</span></label>
-                    <input type="password"
-                           placeholder="Digite a senha novamente">
+                    <input type="password" name="confirmar_senha"
+                        placeholder="Digite a senha novamente" required>
                 </div>
 
             </div>
 
             <div class="opcoes">
+
                 <label>
-                    <input type="checkbox">
+                    <input type="checkbox" name="receber_noticias">
                     Receber notícias, avisos, atualizações
                 </label>
 
                 <label>
-                    <input type="checkbox">
+                    <input type="checkbox" name="aceitou_privacidade"
+                        required>
                     Concordar com nossa
-                    <a href="">Política de Uso e Privacidade</a>
+                    <a href="{% url 'politica_privacidade' %}">
+                        Política de Uso e Privacidade
+                    </a>
                 </label>
-            </div>
 
-            <div class="botoes">
-                <button type="button" class="botao-sair">SAIR</button>
-                <button type="button" class="botao-proximo">
-                    PRÓXIMO <span>→</span>
-                </button>
             </div>
 
             <div class="botoes">
                 <a href="{% url 'inicio' %}" class="botao-sair">SAIR</a>
 
-                <a href="" class="botao-proximo">PRÓXIMO <span>→</span></a>
+                <button type="submit" class="botao-proximo">
+                    PRÓXIMO <span>→</span>
+                </button>
             </div>
-     
-    </div>
 
+        </form>
+
+    </div>
 
 </body>
 </html>
+
