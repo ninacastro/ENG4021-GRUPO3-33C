@@ -1,0 +1,78 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f1f5f8;
+    color: #172b49;
+}
+
+.pagina {
+    width: 100%;
+    min-height: 100vh;
+}
+
+.cabecalho {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 14px 20px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #e0e5eb;
+}
+
+.voltar {
+    width: 37px;
+    height: 37px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #dce1e7;
+    border-radius: 50%;
+    text-decoration: none;
+    color: #172b49;
+    font-size: 25px;
+    transition: background-color 0.2s;
+}
+
+.voltar:hover {
+    background-color: #edf1f5;
+}
+
+.cabecalho h1 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #172b49;
+}
+
+.conteudo {
+    padding: 7px 20px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.cartao {
+    background-color: #ffffff;
+    border: 1px solid #dce2e8;
+    border-radius: 21px;
+    padding: 19px 16px;
+    box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.03);
+}
+
+.cartao h2 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #172b49;
+    margin-bottom: 7px;
+}
+
+.descricao {
+    font-size: 14px;
+    line-height: 1.5;
+    color: #737d89;
+}
+
