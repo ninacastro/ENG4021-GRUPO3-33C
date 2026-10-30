@@ -10,7 +10,7 @@
 <body>
 
     <div class="topo">
-        <a href="{% url 'perfil' %}"><button class="botao-seta" type="button">←</button></a>
+        <a href="{% url 'perfil' %}" class="botao-seta" aria-label="Voltar para o perfil">←</a>
         <h1>Deslogar</h1>
     </div>
 
@@ -36,8 +36,10 @@
         </p>
 
         <div class="botoes">
-            <a href="{% url 'login' %}" class="botao-sair">⇥ Sair</a>
-
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="botao-sair">⇥ Sair</button>
+            </form>
             <a href="{% url 'perfil' %}" class="botao-cancelar">⇥ Cancelar</a>
         </div>
 
@@ -45,4 +47,3 @@
 
 </body>
 </html>
-

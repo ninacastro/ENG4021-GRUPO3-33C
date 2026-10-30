@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - MaPUC</title>
-    <link rel="stylesheet" href="{% static 'css/loginmelhorado.css' %}">
+    <link rel="stylesheet" href="{% static 'css/loginmelhorado.css' %}?v=3">
 </head>
 
 <body>
@@ -21,19 +21,25 @@
         <h2>Tela de início</h2>
         <h3>Acesse com sua matrícula</h3>
 
-<div>
-    <form action="/inicio/" method="POST">
-    {% csrf_token %}
-    
-    {{ form.matricula }}
-    {{ form.senha }}
-    
-    <button type="submit" class="botao-login">Entrar</button>
-</form>
-</div>
+        <form action="{% url 'login' %}" method="post">
+            {% csrf_token %}
+            {% if form.non_field_errors %}
+                <div class="erro-login" role="alert">{{ form.non_field_errors }}</div>
+            {% endif %}
+            {{ form.matricula }}
+            {{ form.matricula.errors }}
+            {{ form.senha }}
+            {{ form.senha.errors }}
+            <button type="submit" class="botao-login">Entrar</button>
+        </form>
 
-        <button type="button">Esqueci minha senha</button>
-        <button href="{% url 'cadastro' %}" type="button">Não tenho cadastro</button>
+        {% if messages %}
+            {% for message in messages %}
+                <p class="mensagem-login" role="status">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+        <button type="button" disabled>Esqueci minha senha</button>
+        <a class="botao-cadastro" href="{% url 'cadastro' %}">Não tenho cadastro</a>
 
     </div>
 

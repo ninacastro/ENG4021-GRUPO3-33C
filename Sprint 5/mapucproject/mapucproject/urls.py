@@ -21,10 +21,13 @@ from mapucapp.views import *
 urlpatterns = [
     path('', login, name='login'),
     path('admin/', admin.site.urls),
+    path('login/', login, name='login'),
+    path('logout/', logout, name='logout'),
     path('inicio/', inicio, name='inicio'),
     path('bibliotecas/', bibliotecas, name='bibliotecas'),
     path('perfil/', perfil, name='perfil'),
     path('grade/', grade, name='grade'),
+    path('feriados/', feriados, name='feriados'),
     path('detalhes-aula/', aula, name='aula'),
     path('deslogar/',deslogar, name='deslogar'),
     path('dados/', dados, name='dados'),

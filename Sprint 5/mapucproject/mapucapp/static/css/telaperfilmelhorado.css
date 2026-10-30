@@ -22,7 +22,7 @@ body {
   padding: 25px;
   background-color: var(--fundo);
   color: var(--texto);
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-family: system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
   line-height: 1.5;
 }
 
@@ -98,7 +98,6 @@ body {
 
 .matricula {
   margin: 0;
-  font-family: ui-monospace, Consolas, monospace;
   color: var(--cinza);
 }
 

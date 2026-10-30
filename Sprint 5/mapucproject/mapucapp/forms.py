@@ -6,18 +6,20 @@ from .models import Aluno
 class LoginForm(forms.Form):
     matricula = forms.CharField(
         label='',
-        max_length=150,
-        # 2. Mudou de EmailInput para TextInput
+        max_length=50,
         widget=forms.TextInput(attrs={
-            'class': 'caixa-texto', 
-            'placeholder': 'Introduza a sua matrícula da PUC'
+            'class': 'caixa-texto',
+            'placeholder': 'Introduza a sua matrícula da PUC',
+            'autocomplete': 'username',
         })
     )
     senha = forms.CharField(
         label='',
+        strip=False,
         widget=forms.PasswordInput(attrs={
             'class': 'caixa-texto',
-            'placeholder': 'Introduza a sua senha'
+            'placeholder': 'Introduza a sua senha',
+            'autocomplete': 'current-password',
         })
     )
 
@@ -105,3 +107,9 @@ class CadastroForm(forms.ModelForm):
         if senha and confirmar_senha and senha != confirmar_senha:
             self.add_error('confirmar_senha', 'As senhas não coincidem.')
         return cleaned_data
+
+
+class AlterarDadosForm(forms.ModelForm):
+    class Meta:
+        model = Aluno
+        fields = ('nome', 'curso', 'email')

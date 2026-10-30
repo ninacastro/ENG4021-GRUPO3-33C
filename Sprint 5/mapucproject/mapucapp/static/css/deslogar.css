@@ -18,14 +18,18 @@ body {
 }
 
 .botao-seta {
+    display: flex;
     width: 45px;
     height: 45px;
+    align-items: center;
+    justify-content: center;
     border: 1px solid #dce3ec;
     border-radius: 50%;
     background-color: white;
     font-size: 28px;
     color: #102044;
     cursor: pointer;
+    text-decoration: none;
 }
 
 .geral {
@@ -87,6 +91,21 @@ body {
     gap: 15px;
 }
 
+.botoes form {
+    width: 100%;
+    margin: 0;
+}
+
+.botao-sair,
+.botao-cancelar {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    border: 0;
+    text-align: center;
+    text-decoration: none;
+    font-family: inherit;
+}
 
 .botao-sair {
     padding: 20px;
@@ -106,4 +125,3 @@ body {
     font-size: 18px;
     cursor: pointer;
 }
-

@@ -13,8 +13,11 @@ body {
 }
 
 .botao-perfil {
+  display: inline-flex;
   width: 70px;
   height: 40px;
+  align-items: center;
+  justify-content: center;
   background-color: #0A2240;
   color: white;
   border: none;
@@ -22,6 +25,7 @@ body {
   font-size: 15px;
   font-weight: bold;
   cursor: pointer;
+  text-decoration: none;
 }
 
 
@@ -98,5 +102,4 @@ body {
   font-weight: bold;
   cursor: pointer;
 }
-
 

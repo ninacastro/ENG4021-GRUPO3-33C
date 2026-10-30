@@ -31,14 +31,13 @@
             </div>
 
             <p class="centro">
-                <a href="#">Alterar foto do perfil</a>
+                As iniciais identificam seu perfil nesta versão.
             </p>
 
             <div class="campo">
-                <label for="nome">Nome</label>
-                <input type="text" id="nome" name="nome"
-                       value="{{ perfil.nome }}"
-                       autocomplete="name" required>
+                <label for="{{ form.nome.id_for_label }}">Nome</label>
+                {{ form.nome }}
+                {{ form.nome.errors }}
             </div>
 
             <div class="campo">
@@ -48,27 +47,20 @@
             </div>
 
             <div class="campo">
-                <label for="curso">Curso</label>
-                <input type="text" id="curso" name="curso"
-                       value="{{ perfil.curso }}" required>
+                <label for="{{ form.curso.id_for_label }}">Curso</label>
+                {{ form.curso }}
+                {{ form.curso.errors }}
             </div>
 
             <div class="campo">
-                <label for="email">E-mail</label>
-                <input type="email" id="email" name="email"
-                       value="{{ perfil.email }}"
-                       autocomplete="email" required>
+                <label for="{{ form.email.id_for_label }}">E-mail</label>
+                {{ form.email }}
+                {{ form.email.errors }}
             </div>
 
             <div class="campo">
                 <span class="rotulo">Senha</span>
-                <a class="cartao-senha" href="#"> <!-- troque pelo {% url 'nome_da_url' %} -->
-                    <div>
-                        <strong>Alterar senha</strong>
-                        <span class="dica">Atualizada há 3 meses</span>
-                    </div>
-                    <span class="seta" aria-hidden="true">›</span>
-                </a>
+                <p class="dica">A alteração de senha não está disponível nesta tela.</p>
             </div>
 
             <button type="submit" class="botao-salvar">Salvar alterações</button>

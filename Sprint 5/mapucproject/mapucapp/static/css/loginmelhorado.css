@@ -24,7 +24,9 @@ input {
     box-sizing: border-box;
 }
 
-button {
+button,
+.botao-cadastro {
+    display: block;
     width: 100%;
     padding: 12px;
     margin-bottom: 10px;
@@ -32,5 +34,17 @@ button {
     color: #0A2240;
     border: none;
     border-radius: 8px;
+    font: inherit;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
 }
 
+.botao-cadastro {
+    box-sizing: border-box;
+}
+
+.botao-cadastro:focus-visible {
+    outline: 3px solid #0A2240;
+    outline-offset: 2px;
+}

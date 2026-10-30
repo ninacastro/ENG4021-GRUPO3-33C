@@ -28,6 +28,32 @@ body {
   gap: 12px;
 }
 
+.botao-voltar {
+  display: flex;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #dcdce4;
+  border-radius: 50%;
+  background-color: #fff;
+  color: #16384a;
+  font-size: 22px;
+  line-height: 1;
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+}
+
+.botao-voltar:hover {
+  background-color: #eafaf1;
+}
+
+.botao-voltar:focus-visible {
+  outline: 3px solid #1f9d6b;
+  outline-offset: 3px;
+}
+
 .badge-disciplinas {
   border: 1px solid #a5dec4;
   background-color: #eafaf1;
@@ -161,6 +187,28 @@ body {
   color: #8a8a8a;
   font-size: 14px;
   line-height: 1.45;
+}
+
+.botao-feriados {
+  display: inline-block;
+  margin-top: 16px;
+  padding: 10px 16px;
+  border-radius: 9px;
+  background-color: #16384a;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+}
+
+.botao-feriados:hover {
+  background-color: #1f9d6b;
+}
+
+.botao-feriados:focus-visible {
+  outline: 3px solid #1f9d6b;
+  outline-offset: 3px;
 }
 
 .rodape {

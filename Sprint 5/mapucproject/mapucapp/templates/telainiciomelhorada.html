@@ -10,9 +10,7 @@
 <body>
 
   <div class="area-perfil">
-    <a href="{% url 'perfil' %}">
-      <button class="botao-perfil">Perfil</button>
-    </a>
+    <a class="botao-perfil" href="{% url 'perfil' %}">Perfil</a>
   </div>
 
   <div><h2>Tela de início</h2></div>
@@ -54,7 +52,9 @@
     <a href="{% url 'bibliotecas' %}">
       <button class="botao-p">Biblioteca</button>
     </a>
-    <button class="botao-p">Alimentação</button>
+    <a href="{% url 'restaurantes' %}">
+      <button class="botao-p" type="button">Alimentação</button>
+    </a>
   </div>
 
   <div class="atalhos">

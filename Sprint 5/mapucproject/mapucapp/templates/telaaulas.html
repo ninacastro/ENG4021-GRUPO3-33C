@@ -8,6 +8,7 @@
   <body>
     <header class="topbar">
       <div class="topbar-left">
+        <a class="botao-voltar" href="{% url 'inicio' %}" aria-label="Voltar para a tela de início">←</a>
         <h1>Horário de Aulas</h1>
       </div>
       <span class="badge-disciplinas">6 Disciplinas</span>
@@ -97,6 +98,7 @@
       <div class="card-dica">
         <h3>CLIQUE NA SALA DESEJADA</h3>
         <p>Redirecionamento automático ao mapa para traçar a melhor rota a pé pelo campus da PUC-Rio.</p>
+        <a class="botao-feriados" href="{% url 'feriados' %}">Ver feriados do ano</a>
       </div>
     </div>
 

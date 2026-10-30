@@ -1,14 +1,16 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
   <head>
     <title>MaPUC - Mapa de Restaurantes</title>
-    <link rel="stylesheet" href="styles.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/restaurantes.css' %}" />
   </head>
   <body>
     <div class="app">
       <header class="topbar">
         <div class="topbar-left">
-          <button class="voltar">←</button>
+          <a class="voltar" href="{% url 'inicio' %}" aria-label="Voltar para a tela de início">←</a>
           <div class="logo-bloco"></div>
           <div class="titulo-area">
             <h1>Ma<span class="verde">PUC</span></h1>

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>MaPUC - Perfil</title>
-    <link rel="stylesheet" href="{% static 'css/telaperfilmelhorado.css' %}">
+    <link rel="stylesheet" href="{% static 'css/telaperfilmelhorado.css' %}?v=2">
   </head>
   <body>
     <header class="topbar">
@@ -31,7 +31,7 @@
       </section>
 
       <nav class="linha" aria-label="Opções da conta">
-        <a class="caixa opcao" href="#"> <!-- troque pelo {% url 'nome_da_url' %} -->
+        <a class="caixa opcao" href="{% url 'dados' %}">
           <div class="texto-opcao">
             <h3>ALTERAR DADOS</h3>
             <p class="meta">Nome, e-mail, senha e curso</p>
@@ -39,7 +39,7 @@
           <span class="seta" aria-hidden="true">›</span>
         </a>
 
-        <a class="caixa opcao" href="#">
+        <a class="caixa opcao" href="{% url 'privacidade' %}">
           <div class="texto-opcao">
             <h3>POLÍTICA DE PRIVACIDADE</h3>
             <p class="meta">Proteção de dados e localização</p>
@@ -49,24 +49,20 @@
       </nav>
 
       <nav class="linha" aria-label="Sessão e suporte">
-        <form class="caixa opcao" method="post" action="{% url 'logout' %}">
-          {% csrf_token %}
-          <button type="submit" class="botao-limpo">
-            <div class="texto-opcao">
-              <h3 class="vermelho">DESLOGAR</h3>
-              <p class="meta">Encerrar sessão no dispositivo</p>
-            </div>
-            <span class="seta" aria-hidden="true">›</span>
-          </button>
-        </form>
-
-        <a class="caixa opcao" href="#">
+        <a class="caixa opcao" href="{% url 'deslogar' %}">
           <div class="texto-opcao">
-            <h3>AJUDA</h3>
-            <p class="meta">Dúvidas frequentes e suporte do campus</p>
+            <h3 class="vermelho">DESLOGAR</h3>
+            <p class="meta">Encerrar sessão no dispositivo</p>
           </div>
           <span class="seta" aria-hidden="true">›</span>
         </a>
+
+        <div class="caixa opcao">
+          <div class="texto-opcao">
+            <h3>AJUDA</h3>
+            <p class="meta">Para suporte, procure os canais oficiais da PUC-Rio.</p>
+          </div>
+        </div>
       </nav>
     </main>
 
