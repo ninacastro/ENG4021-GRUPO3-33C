@@ -34,5 +34,6 @@ urlpatterns = [
     path('caminho-frings/', caminho_frings, name='caminho_frings'),
     path('cadastro/', cadastro, name='cadastro'),
     path("restaurantes/", restaurantes, name="restaurantes"),
+    path('privacidade/', privacidade, name='privacidade'),
 
 ]
