@@ -17,3 +17,14 @@ class LoginForm(forms.Form):
             'placeholder': 'Introduza a sua senha'
         })
     )
+
+
+class BuscaForm(forms.Form):
+    busca = forms.CharField(
+        label='',
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'caixa-texto',
+            'placeholder': 'Buscar sala ou prédio'
+        })
+    )

@@ -35,6 +35,23 @@ body {
   margin: 15px;
 }
 
+.form-pesquisa {
+  display: flex;
+  align-items: center;
+}
+
+.botao-busca {
+  height: 45px;
+  padding: 0 20px;
+  background-color: #0A2240;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
 
 .mini-mapa {
   width: 600px;
@@ -81,6 +98,5 @@ body {
   font-weight: bold;
   cursor: pointer;
 }
-
 
 
