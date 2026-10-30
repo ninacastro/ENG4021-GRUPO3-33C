@@ -171,6 +171,32 @@ def caminho_frings(request):
 
 
 def cadastro(request):
+    if request.method == 'POST':
+        nome = request.POST.get('nome')
+        email = request.POST.get('email')
+        curso = request.POST.get('curso')
+        periodo = request.POST.get('periodo') or None
+        matricula = request.POST.get('matricula')
+        senha = request.POST.get('senha')
+        confirmar_senha = request.POST.get('confirmar_senha')
+
+        if senha != confirmar_senha:
+            return render(request, 'cadastro.html', {'erro': 'As senhas não coincidem.'})
+
+        if Aluno.objects.filter(email=email).exists() or Aluno.objects.filter(matricula=matricula).exists():
+            return render(request, 'cadastro.html', {'erro': 'E-mail ou matrícula já cadastrados.'})
+
+        Aluno.objects.create(
+            nome=nome,
+            email=email,
+            curso=curso,
+            periodo=periodo,
+            matricula=matricula,
+            senha=make_password(senha)
+        )
+
+        return redirect('login')
+
     return render(request, 'cadastro.html')
 
 def restaurantes(request):
