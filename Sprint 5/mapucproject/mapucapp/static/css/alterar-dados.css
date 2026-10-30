@@ -1,20 +1,99 @@
+:root {
+  --fundo: #f4f6f8;
+  --branco: #ffffff;
+  --borda: #dddddd;
+  --marinho: #0b1f3a;
+  --verde: #3fbfa5;
+  --verde-escuro: #34a38c;
+  --azul-claro: #eaf5fd;
+  --azul-borda: #cfe6f8;
+  --cinza: #6b7280;
+  --vermelho: #d64545;
+  --raio: 15px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 body {
-  background-color: #f4f6f8;
-  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px 16px 40px;
+  background-color: var(--fundo);
+  color: var(--marinho);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  line-height: 1.5;
 }
 
 .container-celular {
-  width: 350px;
+  width: 100%;
+  max-width: 350px; /* no celular ocupa a tela toda, no PC fica centralizado */
   margin: 0 auto;
 }
+
+/* ---------- Cabeçalho ---------- */
+
+.cabecalho {
+  margin-bottom: 20px;
+}
+
+.cabecalho h1 {
+  margin: 12px 0 0;
+  font-size: 22px;
+  letter-spacing: 0.3px;
+}
+
+.voltar {
+  display: inline-block;
+  color: var(--marinho);
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.voltar:hover {
+  text-decoration: underline;
+}
+
+/* ---------- Mensagens do Django ---------- */
+
+.mensagens {
+  margin-bottom: 16px;
+}
+
+.mensagem {
+  margin: 0 0 8px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  font-size: 14px;
+  background-color: var(--azul-claro);
+  border: 1px solid var(--azul-borda);
+}
+
+.mensagem.success {
+  background-color: #e6f7f3;
+  border-color: #b5e6da;
+  color: #1d6b59;
+}
+
+.mensagem.error {
+  background-color: #fdeaea;
+  border-color: #f4c2c2;
+  color: var(--vermelho);
+}
+
+/* ---------- Avatar ---------- */
 
 .avatar {
   width: 80px;
   height: 80px;
-  line-height: 80px;
-  text-align: center;
-  border: 3px solid #0b1f3a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid var(--marinho);
   border-radius: 50%;
+  background-color: var(--branco);
   font-size: 28px;
   font-weight: bold;
   margin: 0 auto;
@@ -22,35 +101,121 @@ body {
 
 .centro {
   text-align: center;
+  margin: 10px 0 24px;
+  font-size: 14px;
+}
+
+.centro a {
+  color: var(--marinho);
+}
+
+/* ---------- Campos ---------- */
+
+.campo {
+  margin-bottom: 18px;
+}
+
+.campo label,
+.rotulo {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.dica {
+  font-size: 12px;
+  font-weight: normal;
+  color: var(--cinza);
 }
 
 input {
   width: 100%;
-  box-sizing: border-box;
   padding: 14px;
-  border: 1px solid #dddddd;
-  border-radius: 15px;
-  font-size: 16px;
+  border: 1px solid var(--borda);
+  border-radius: var(--raio);
+  background-color: var(--branco);
+  color: var(--marinho);
+  font: inherit;
+  font-size: 16px; /* 16px evita o zoom automático do iPhone */
+  transition: border-color 0.15s, box-shadow 0.15s;
 }
+
+input:focus {
+  outline: none;
+  border-color: var(--marinho);
+  box-shadow: 0 0 0 3px rgba(11, 31, 58, 0.12);
+}
+
+input[readonly] {
+  background-color: #eceff2;
+  color: var(--cinza);
+  cursor: not-allowed;
+}
+
+/* ---------- Cartão da senha ---------- */
 
 .cartao-senha {
-  display: block;
-  background-color: #eaf5fd;
-  border: 1px solid #cfe6f8;
-  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
   padding: 15px;
-  color: #0b1f3a;
+  background-color: var(--azul-claro);
+  border: 1px solid var(--azul-borda);
+  border-radius: var(--raio);
+  color: var(--marinho);
   text-decoration: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
 }
 
-button {
+.cartao-senha:hover {
+  border-color: var(--marinho);
+  box-shadow: 0 4px 12px rgba(11, 31, 58, 0.1);
+}
+
+.cartao-senha strong {
+  display: block;
+}
+
+.cartao-senha .dica {
+  display: block;
+}
+
+.seta {
+  font-size: 24px;
+  color: var(--cinza);
+}
+
+/* ---------- Botão salvar ---------- */
+
+.botao-salvar {
   width: 100%;
-  background-color: #3fbfa5;
-  color: white;
+  margin-top: 30px;
+  padding: 16px;
+  background-color: var(--verde);
+  color: var(--branco);
+  font: inherit;
   font-size: 17px;
   font-weight: bold;
   border: none;
-  border-radius: 15px;
-  padding: 16px;
-  margin-top: 30px;
+  border-radius: var(--raio);
+  cursor: pointer;
+  transition: background-color 0.15s, transform 0.1s;
+}
+
+.botao-salvar:hover {
+  background-color: var(--verde-escuro);
+}
+
+.botao-salvar:active {
+  transform: translateY(1px);
+}
+
+/* ---------- Foco via teclado ---------- */
+
+a:focus-visible,
+.botao-salvar:focus-visible {
+  outline: 3px solid var(--marinho);
+  outline-offset: 2px;
 }
