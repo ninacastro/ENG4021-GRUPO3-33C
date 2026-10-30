@@ -1,37 +1,83 @@
-body{
-  padding: 25px;
-  background-color: #f6f6f7;
+:root {
+  --fundo: #f6f6f7;
+  --branco: #ffffff;
+  --borda: #e3e3e8;
+  --borda-forte: rgb(158, 148, 177);
+  --azul: #41508c;
+  --azul-claro: #e8ecfb;
+  --cinza: #8a8a8a;
+  --vermelho: #d64545;
+  --texto: #1f2230;
+  --largura: 860px;
 }
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 25px;
+  background-color: var(--fundo);
+  color: var(--texto);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  line-height: 1.5;
+}
+
+/* ---------- Topo ---------- */
 
 .topbar {
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 8px;
-  border-bottom: 1px solid rgb(158, 148, 177);
+  border-bottom: 1px solid var(--borda-forte);
 }
 
 .titulo-topo {
-  color: #41508c;
+  color: var(--azul);
   font-weight: bold;
   font-size: 15px;
-  background-color: #e8ecfb;
+  background-color: var(--azul-claro);
   padding: 6px 16px;
   border-radius: 999px;
 }
 
+/* ---------- Layout ---------- */
+
 .linha {
   display: flex;
+  flex-wrap: wrap; /* no celular as caixas empilham */
   justify-content: center;
   gap: 20px;
-  margin-top: 20px;
+  max-width: var(--largura);
+  margin: 20px auto 0;
 }
 
 .caixa {
-  background-color: #ffffff;
-  border: 1px solid #e3e3e8;
+  background-color: var(--branco);
+  border: 1px solid var(--borda);
   border-radius: 12px;
   padding: 20px;
+}
+
+/* ---------- Perfil ---------- */
+
+.perfil {
+  width: 100%;
+}
+
+.perfil h1 {
+  margin: 10px 0 4px;
+  font-size: 28px;
+  color: var(--azul);
+}
+
+.perfil h2 {
+  margin: 12px 0 4px;
+  font-size: 20px;
 }
 
 .etiqueta {
@@ -40,50 +86,129 @@ body{
   border-radius: 999px;
   font-size: 12px;
   font-weight: bold;
-  background-color: #e8ecfb;
-  color: #41508c;
+  background-color: var(--azul-claro);
+  color: var(--azul);
 }
 
 .meta {
-  color: #8a8a8a;
+  margin: 4px 0 0;
+  color: var(--cinza);
   font-size: 13px;
-  margin-top: 4px;
-}
-
-.perfil {
-  width: 860px;
 }
 
 .matricula {
-  font-family: monospace;
-  color: #8a8a8a;
+  margin: 0;
+  font-family: ui-monospace, Consolas, monospace;
+  color: var(--cinza);
 }
 
+/* ---------- Opções clicáveis ---------- */
+
 .opcao {
-  width: 400px;
+  flex: 1 1 300px; /* duas por linha no PC, uma no celular */
   display: flex;
   align-items: center;
   gap: 15px;
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+}
+
+.opcao h3 {
+  margin: 0;
+  font-size: 15px;
+  letter-spacing: 0.3px;
+}
+
+.seta {
+  margin-left: auto; /* empurra a seta pro canto direito */
+  font-size: 24px;
+  color: var(--cinza);
+}
+
+a.caixa,
+a.voltar-rodape {
+  text-decoration: none;
+  color: inherit;
+}
+
+a.opcao:hover,
+form.opcao:hover {
+  border-color: var(--azul);
+  box-shadow: 0 4px 14px rgba(65, 80, 140, 0.12);
+  transform: translateY(-1px);
+}
+
+a.opcao:hover .seta,
+form.opcao:hover .seta {
+  color: var(--azul);
 }
 
 .vermelho {
-  color: #d64545;
+  color: var(--vermelho);
 }
+
+/* Botão de deslogar: a caixa inteira vira área de clique */
+form.opcao {
+  padding: 0;
+}
+
+.botao-limpo {
+  all: unset;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  width: 100%;
+  padding: 20px;
+  border-radius: 12px;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+/* ---------- Acessibilidade: foco via teclado ---------- */
+
+a:focus-visible,
+.botao-limpo:focus-visible {
+  outline: 3px solid var(--azul);
+  outline-offset: 2px;
+}
+
+/* ---------- Rodapé ---------- */
 
 .rodape {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 40px;
+  max-width: var(--largura);
+  margin: 40px auto 0;
   padding: 16px;
-  border-top: 1px solid rgb(158, 148, 177);
+  border-top: 1px solid var(--borda-forte);
 }
 
 .voltar-rodape {
+  display: inline-block;
   border: 1px solid #ddd;
-  background-color: #fff;
+  background-color: var(--branco);
   border-radius: 8px;
   padding: 8px 14px;
-  cursor: pointer;
   font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.15s, border-color 0.15s;
+}
+
+.voltar-rodape:hover {
+  background-color: var(--azul-claro);
+  border-color: var(--azul);
+}
+
+/* ---------- Celular ---------- */
+
+@media (max-width: 600px) {
+  body {
+    padding: 14px;
+  }
+
+  .perfil h1 {
+    font-size: 24px;
+  }
 }
