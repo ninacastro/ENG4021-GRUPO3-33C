@@ -201,3 +201,6 @@ def cadastro(request):
 
 def restaurantes(request):
     return render(request, 'restaurantes.html')
+
+def privacidade(request):
+    return render(request, "privacidade.html")
