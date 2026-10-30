@@ -33,6 +33,6 @@ urlpatterns = [
     path('rota/', rota, name='rota'),
     path('caminho-frings/', caminho_frings, name='caminho_frings'),
     path('cadastro/', cadastro, name='cadastro'),
-    path("restaurantes/", views.restaurantes, name="restaurantes"),
+    path("restaurantes/", restaurantes, name="restaurantes"),
 
 ]
