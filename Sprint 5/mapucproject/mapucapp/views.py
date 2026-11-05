@@ -65,6 +65,10 @@ def inicio(request):
     return render(request, "telainiciomelhorada.html", context)
 
 
+def mapa(request):
+    return render(request, "mapa.html")
+
+
 def bibliotecas(request):
     bibliotecas = Sala.objects.filter(tipo_sala__icontains="Biblioteca")
 

@@ -5,6 +5,10 @@
   <meta charset="UTF-8">
   <title>Início - MaPUC</title>
   <link rel="stylesheet" href="{% static 'css/telainicio-melhorada.css' %}">
+  <link rel="stylesheet" href="{% static 'css/mapa-puc.css' %}">
+  
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 
 <body>
@@ -44,8 +48,9 @@
   </div>
   {% endif %}
 
-  <div class="mini-mapa">
-    <img src="https://www.psi.puc-rio.br/site/images/pdf/mapa.jpg" alt="Mapa">
+  <div class="mapa-container">
+    <div id="mapa-puc" class="mapa-puc"></div>
+    <a class="botao-mapa-tela-cheia" href="{% url 'mapa' %}">Abrir mapa em tela cheia</a>
   </div>
 
   <div class="atalhos">
@@ -68,6 +73,8 @@
       <button class="botao-g">Minha Grade de Aulas</button>
     </a>
   </div>
+
+  <script src="{% static 'js/mapa-puc.js' %}"></script>
 
 </body>
 </html>

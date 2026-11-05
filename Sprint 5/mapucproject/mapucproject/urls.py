@@ -24,6 +24,7 @@ urlpatterns = [
     path('login/', login, name='login'),
     path('logout/', logout, name='logout'),
     path('inicio/', inicio, name='inicio'),
+    path('mapa/', mapa, name='mapa'),
     path('bibliotecas/', bibliotecas, name='bibliotecas'),
     path('perfil/', perfil, name='perfil'),
     path('grade/', grade, name='grade'),

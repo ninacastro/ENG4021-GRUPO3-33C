@@ -5,6 +5,23 @@ from django.contrib.auth.hashers import check_password, make_password
 from .models import Aluno, Notificacao
 
 
+class MapaViewTests(TestCase):
+    def test_mapa_em_tela_cheia_renderiza_mapa_e_link_de_volta(self):
+        response = self.client.get(reverse('mapa'))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'mapa.html')
+        self.assertContains(response, 'id="mapa-puc"')
+        self.assertContains(response, reverse('inicio'))
+
+    def test_inicio_exibe_link_para_mapa_em_tela_cheia(self):
+        response = self.client.get(reverse('inicio'))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, reverse('mapa'))
+        self.assertContains(response, 'Abrir mapa em tela cheia')
+
+
 class AvisosViewTests(TestCase):
     def setUp(self):
         self.aluno = Aluno.objects.create(

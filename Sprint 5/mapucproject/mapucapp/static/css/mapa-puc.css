@@ -1,0 +1,58 @@
+.mapa-container {
+  position: relative;
+  width: min(640px, calc(100% - 32px));
+  height: 400px;
+  margin: 20px auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+}
+
+.mapa-puc {
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+}
+
+.botao-mapa-tela-cheia {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 500;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background-color: #0A2240;
+  color: #fff;
+  font: bold 14px Arial, sans-serif;
+  text-decoration: none;
+}
+
+.botao-mapa-tela-cheia:hover {
+  background-color: #16365f;
+}
+
+.pagina-mapa {
+  margin: 0;
+  overflow: hidden;
+}
+
+.mapa-container--tela-cheia {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  max-width: none;
+  margin: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.mapa-container--tela-cheia .mapa-puc {
+  border-radius: 0;
+}
+
+.botao-mapa-voltar {
+  right: auto;
+  left: 12px;
+}
