@@ -1,0 +1,190 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #f7f9f9;
+    font-family: Arial, sans-serif;
+    color: #102a49;
+    padding: 20px;
+}
+
+.cabecalho {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 5px 30px;
+}
+
+.botao-voltar {
+    color: #102a49;
+    font-size: 30px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.logo {
+    color: #43bfae;
+    font-size: 27px;
+    font-weight: bold;
+}
+
+.botao-perfil {
+    background: #102a49;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 25px;
+    text-decoration: none;
+}
+
+.conteudo {
+    max-width: 650px;
+    margin: auto;
+}
+
+.titulo {
+    text-align: center;
+    margin: 25px 0 40px;
+}
+
+.titulo h2 {
+    font-size: 27px;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+
+.titulo div, .descricao-vazia {
+    color: #8493a3;
+    line-height: 1.5;
+}
+
+.subtitulo {
+    font-size: 19px;
+    font-weight: bold;
+    margin-bottom: 18px;
+}
+
+.lista-historico {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.item-historico {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: white;
+    border: 1px solid #e3e8eb;
+    border-radius: 18px;
+    padding: 18px;
+}
+
+.icone-busca {
+    background: #e5f6f3;
+    color: #43bfae;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+}
+
+.informacoes-busca {
+    flex: 1;
+}
+
+.nome-busca {
+    font-size: 17px;
+    font-weight: bold;
+    margin-bottom: 7px;
+}
+
+.data-busca {
+    color: #8996a5;
+    font-size: 13px;
+}
+
+.botao-pesquisar {
+    background: #43bfae;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    font-size: 23px;
+    cursor: pointer;
+}
+
+.botao-pesquisar:hover {
+    background: #32a995;
+}
+
+.historico-vazio {
+    background: white;
+    border: 1px solid #e3e8eb;
+    border-radius: 20px;
+    padding: 40px 25px;
+    text-align: center;
+}
+
+.icone-vazio {
+    color: #43bfae;
+    font-size: 45px;
+    margin-bottom: 15px;
+}
+
+.mensagem-vazia {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+.descricao-vazia {
+    font-size: 14px;
+    margin-bottom: 25px;
+}
+
+.botao-inicio {
+    display: inline-block;
+    background: #43bfae;
+    color: white;
+    padding: 13px 22px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.atalho-mapa {
+    text-align: center;
+    margin-top: 35px;
+}
+
+.atalho-mapa a {
+    color: #43bfae;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 15px;
+    }
+
+    .titulo h2 {
+        font-size: 23px;
+    }
+
+    .item-historico {
+        padding: 14px;
+    }
+
+    .nome-busca {
+        font-size: 15px;
+    }
+}
