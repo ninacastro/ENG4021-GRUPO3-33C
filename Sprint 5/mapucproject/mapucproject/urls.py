@@ -39,5 +39,6 @@ urlpatterns = [
     path('cadastro/', cadastro, name='cadastro'),
     path("restaurantes/", restaurantes, name='restaurantes'),
     path('privacidade/', privacidade, name='privacidade'),
+    path('historico/', views.historico, name='historico'),
 
 ]

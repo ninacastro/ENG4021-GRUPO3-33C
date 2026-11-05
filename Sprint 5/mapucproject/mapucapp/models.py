@@ -83,6 +83,15 @@ class Notificacao(models.Model):
     def __str__(self):
         return f"{self.titulo} - {self.aluno.nome}"
 
+class HistoricoBusca(models.Model):
+    id_historico = models.AutoField(primary_key=True)
+    aluno = models.ForeignKey(Aluno, on_delete=models.CASCADE, related_name='historico_buscas')
+    termo = models.CharField(max_length=200)
+    data = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.termo} - {self.aluno.nome}"
+
 class Biblioteca(models.Model):
     id_biblioteca = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=150)

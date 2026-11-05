@@ -1,4 +1,3 @@
-
 {% load static %}
 <!DOCTYPE html>
 <html>
@@ -41,7 +40,7 @@
                         </div>
 
                         <div class="data-busca">
-                            {{ busca.data }}
+                            {{ busca.data|date:"d/m/Y H:i" }}
                         </div>
                     </div>
 
@@ -56,13 +55,18 @@
 
                 <div class="historico-vazio">
                     <div class="icone-vazio">⌕</div>
+
                     <div class="mensagem-vazia">
                         Nenhuma busca realizada ainda.
                     </div>
+
                     <div class="descricao-vazia">
                         Suas pesquisas aparecerão aqui para facilitar o acesso aos locais da PUC.
                     </div>
-                    <a href="{% url 'inicio' %}" class="botao-inicio">Começar a pesquisar</a>
+
+                    <a href="{% url 'inicio' %}" class="botao-inicio">
+                        Começar a pesquisar
+                    </a>
                 </div>
 
             {% endfor %}
@@ -77,3 +81,4 @@
 
 </body>
 </html>
+
