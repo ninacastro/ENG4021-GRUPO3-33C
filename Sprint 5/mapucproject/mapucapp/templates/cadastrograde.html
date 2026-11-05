@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>MaPUC - Cadastrar Grade</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="voltar">←</button>
+          <div class="titulo-area">
+            <h1>Cadastrar Grade</h1>
+            <span>Monte o seu horário de aulas</span>
+          </div>
+        </div>
+        <span class="badge-disciplinas">3 Disciplinas</span>
+      </header>
+
+      <div class="layout">
+        <!-- coluna do formulário -->
+        <div class="form-col">
+          <form class="painel-card" method="post" action="">
+            <div class="lista-titulo">NOVA DISCIPLINA</div>
+
+            <div class="campo">
+              <label for="codigo">Código da disciplina</label>
+              <input type="text" id="codigo" name="codigo" placeholder="Ex: INF1005" />
+            </div>
+
+            <div class="campo">
+              <label for="dia">Dia da semana</label>
+              <select id="dia" name="dia">
+                <option>Segunda-feira</option>
+                <option>Terça-feira</option>
+                <option>Quarta-feira</option>
+                <option>Quinta-feira</option>
+                <option>Sexta-feira</option>
+                <option>Sábado</option>
+              </select>
+            </div>
+
+            <div class="campo">
+              <label for="horario">Horário</label>
+              <select id="horario" name="horario">
+                <option>07:00 - 09:00</option>
+                <option>09:00 - 11:00</option>
+                <option>11:00 - 13:00</option>
+                <option>14:00 - 16:00</option>
+                <option>16:00 - 18:00</option>
+              </select>
+            </div>
+
+            <div class="campo">
+              <label for="sala">Sala</label>
+              <input type="text" id="sala" name="sala" placeholder="Ex: L318" />
+            </div>
+
+            <div class="campo">
+              <span class="rotulo-campo">Cor na grade</span>
+              <div class="cores">
+                <label class="cor">
+                  <input type="radio" name="cor" value="verde" checked />
+                  <span class="cor-chip cor-verde">Verde</span>
+                </label>
+                <label class="cor">
+                  <input type="radio" name="cor" value="azul" />
+                  <span class="cor-chip cor-azul">Azul</span>
+                </label>
+              </div>
+            </div>
+
+            <button type="submit" class="botao">Adicionar à grade</button>
+          </form>
+        </div>
+
+        <!-- coluna da prévia -->
+        <div class="previa-col">
+          <div class="painel-card">
+            <div class="lista-titulo">SUA GRADE</div>
+            <div class="grade-wrapper">
+              <div class="grade-mini">
+                <div class="dia-cab">SEG</div>
+                <div class="dia-cab">TER</div>
+                <div class="dia-cab">QUA</div>
+                <div class="dia-cab">QUI</div>
+                <div class="dia-cab">SEX</div>
+                <div class="dia-cab">SÁB</div>
+
+                <div class="celula aula verde">INF1005</div>
+                <div class="celula vazia">07-09</div>
+                <div class="celula vazia">07-09</div>
+                <div class="celula vazia">07-09</div>
+                <div class="celula vazia">07-09</div>
+                <div class="celula vazia">07-09</div>
+
+                <div class="celula vazia">09-11</div>
+                <div class="celula aula azul">MAT1161</div>
+                <div class="celula aula verde">ENG1000</div>
+                <div class="celula vazia">09-11</div>
+                <div class="celula vazia">09-11</div>
+                <div class="celula vazia">09-11</div>
+
+                <div class="celula vazia">11-13</div>
+                <div class="celula vazia">11-13</div>
+                <div class="celula vazia">11-13</div>
+                <div class="celula vazia">11-13</div>
+                <div class="celula vazia">11-13</div>
+                <div class="celula vazia">11-13</div>
+
+                <div class="celula vazia">14-16</div>
+                <div class="celula vazia">14-16</div>
+                <div class="celula vazia">14-16</div>
+                <div class="celula vazia">14-16</div>
+                <div class="celula vazia">14-16</div>
+                <div class="celula vazia">14-16</div>
+
+                <div class="celula vazia">16-18</div>
+                <div class="celula vazia">16-18</div>
+                <div class="celula vazia">16-18</div>
+                <div class="celula vazia">16-18</div>
+                <div class="celula vazia">16-18</div>
+                <div class="celula vazia">16-18</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="painel-card">
+            <div class="lista-titulo">DISCIPLINAS CADASTRADAS</div>
+
+            <div class="item-disciplina">
+              <div>
+                <strong>INF1005</strong>
+                <p>Segunda-feira • 07:00 - 09:00 • Sala L318</p>
+              </div>
+              <button class="remover">Remover</button>
+            </div>
+
+            <div class="item-disciplina">
+              <div>
+                <strong>MAT1161</strong>
+                <p>Terça-feira • 09:00 - 11:00 • Sala K102</p>
+              </div>
+              <button class="remover">Remover</button>
+            </div>
+
+            <div class="item-disciplina">
+              <div>
+                <strong>ENG1000</strong>
+                <p>Quarta-feira • 09:00 - 11:00 • Sala F402</p>
+              </div>
+              <button class="remover">Remover</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="rodape">
+        <span class="rodape-item">MAPA</span>
+        <span class="rodape-item ativo">HORÁRIO</span>
+      </footer>
+    </div>
+  </body>
+</html>
