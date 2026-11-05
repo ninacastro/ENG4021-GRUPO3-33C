@@ -1,0 +1,292 @@
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 16px;
+  background-color: #eef1f4;
+  font-family: system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  color: #2b2b33;
+}
+
+.app {
+  max-width: 900px;
+  margin: 0 auto;
+  background-color: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid #eee;
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.voltar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  cursor: pointer;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.voltar:hover {
+  background-color: #f0f0f2;
+}
+
+.titulo-area h1 {
+  margin: 0;
+  font-size: 18px;
+  color: #16384a;
+}
+
+.titulo-area span {
+  font-size: 11px;
+  color: #8a8a8a;
+}
+
+.badge-disciplinas {
+  border: 1px solid #a5dec4;
+  background-color: #eafaf1;
+  color: #1f9d6b;
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.layout {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 16px;
+  align-items: flex-start;
+}
+
+.form-col {
+  flex: 1 1 280px;
+  min-width: 0;
+}
+
+.previa-col {
+  flex: 1 1 320px;
+  min-width: 0;
+}
+
+.painel-card {
+  background-color: #fff;
+  border: 1px solid #e3e3e8;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 14px;
+}
+
+.lista-titulo {
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  color: #8a8a8a;
+  margin-bottom: 12px;
+}
+
+/* formulário */
+.campo {
+  margin-bottom: 12px;
+}
+
+.campo label,
+.rotulo-campo {
+  display: block;
+  font-size: 13px;
+  color: #4a4a52;
+  margin-bottom: 5px;
+}
+
+.campo input[type="text"],
+.campo select {
+  width: 100%;
+  padding: 9px 10px;
+  border: 1px solid #dcdce4;
+  border-radius: 9px;
+  font-size: 13px;
+  background-color: #fff;
+}
+
+.campo input[type="text"]:focus,
+.campo select:focus {
+  outline: none;
+  border-color: #a5dec4;
+}
+
+.cores {
+  display: flex;
+  gap: 8px;
+}
+
+.cor input {
+  display: none;
+}
+
+.cor-chip {
+  display: inline-block;
+  border: 1px solid #dcdce4;
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 12px;
+  cursor: pointer;
+  color: #3a3a44;
+}
+
+.cor input:checked + .cor-verde {
+  background-color: #e9f7f0;
+  border-color: #a5dec4;
+  color: #178a5c;
+  font-weight: bold;
+}
+
+.cor input:checked + .cor-azul {
+  background-color: #eef1fd;
+  border-color: #bcc6f0;
+  color: #3a4ea8;
+  font-weight: bold;
+}
+
+.botao {
+  width: 100%;
+  padding: 10px;
+  margin-top: 4px;
+  background-color: #3b4a6b;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.botao:hover {
+  background-color: #32405d;
+}
+
+/* prévia da grade */
+.grade-wrapper {
+  overflow-x: auto;
+}
+
+.grade-mini {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 6px;
+  min-width: 380px;
+}
+
+.dia-cab {
+  text-align: center;
+  font-size: 11px;
+  font-weight: bold;
+  color: #1b2a4a;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #eee;
+}
+
+.celula {
+  min-height: 40px;
+  border: 1px dashed #dcdce4;
+  border-radius: 8px;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 10px;
+  color: #a0a0aa;
+}
+
+.celula.aula {
+  border-style: solid;
+  font-weight: bold;
+}
+
+.celula.verde {
+  background-color: #e9f7f0;
+  border-color: #a5dec4;
+  color: #178a5c;
+}
+
+.celula.azul {
+  background-color: #eef1fd;
+  border-color: #bcc6f0;
+  color: #3a4ea8;
+}
+
+/* lista de disciplinas */
+.item-disciplina {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 0;
+  border-top: 1px solid #eee;
+}
+
+.item-disciplina strong {
+  font-size: 14px;
+  color: #16384a;
+}
+
+.item-disciplina p {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: #8a8a8a;
+}
+
+.remover {
+  border: 1px solid #f3c4c4;
+  background-color: #fdeaea;
+  color: #a23b3b;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.remover:hover {
+  background-color: #f9d6d6;
+}
+
+/* rodapé */
+.rodape {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 14px;
+  border-top: 1px solid #eee;
+}
+
+.rodape-item {
+  color: #555;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.rodape-item:hover {
+  color: #2b2b33;
+}
+
+.rodape-item.ativo {
+  color: #16384a;
+  font-weight: bold;
+}
