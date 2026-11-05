@@ -283,3 +283,6 @@ def restaurantes(request):
 
 def privacidade(request):
     return render(request, "privacidade.html")
+    
+def cadastrar_grade(request):
+    return render(request, 'cadastrograde.html', context)
