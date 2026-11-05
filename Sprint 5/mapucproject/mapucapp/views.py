@@ -152,6 +152,7 @@ def grade(request):
     return render(request, "telaaulas.html", context)
 
 
+
 def feriados(request):
     return render(request, "feriadoAPI.html")
 

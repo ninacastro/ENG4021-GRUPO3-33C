@@ -1,14 +1,15 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
   <head>
     <title>MaPUC - Cadastrar Grade</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="{% static 'css/cadastrograde.css' %}" />
   </head>
   <body>
     <div class="app">
       <header class="topbar">
         <div class="topbar-left">
-          <button class="voltar">←</button>
+          <a class="voltar" href="{% url 'grade' %}" aria-label="Voltar para a grade">←</a>
           <div class="titulo-area">
             <h1>Cadastrar Grade</h1>
             <span>Monte o seu horário de aulas</span>
@@ -70,7 +71,7 @@
               </div>
             </div>
 
-            <button type="submit" class="botao">Adicionar à grade</button>
+            <a class="botao" href="{% url 'grade' %}">Cadastrar</a>
           </form>
         </div>
 

@@ -105,6 +105,21 @@ class FeriadosViewTests(TestCase):
         self.assertContains(response, reverse('feriados'))
         self.assertContains(response, 'Ver feriados do ano')
 
+    def test_grade_tem_link_para_cadastrar_grade(self):
+        response = self.client.get(reverse('grade'))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, reverse('cadastrograde'))
+        self.assertContains(response, 'Cadastrar grade')
+
+    def test_cadastro_de_grade_tem_links_de_volta_para_grade(self):
+        response = self.client.get(reverse('cadastrograde'))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'cadastrograde.html')
+        self.assertContains(response, reverse('grade'), count=2)
+        self.assertContains(response, 'Cadastrar')
+
 
 class NavegacaoTelasTests(TestCase):
     def setUp(self):
