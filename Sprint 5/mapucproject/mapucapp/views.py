@@ -58,7 +58,6 @@ def inicio(request):
             Q(predio__sigla_codigo__icontains=busca)
         )
 
-        # Salva a pesquisa no histórico do aluno logado
         aluno = obter_aluno_logado(request)
 
         if aluno:
