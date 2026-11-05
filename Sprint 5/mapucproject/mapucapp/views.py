@@ -38,6 +38,7 @@ def requer_aluno(view):
 def inicio(request):
     form_busca = BuscaForm(request.GET or None)
     busca = ''
+
     if form_busca.is_valid():
         busca = form_busca.cleaned_data['busca'].strip()
 
@@ -49,6 +50,7 @@ def inicio(request):
             Q(nome__icontains=busca) |
             Q(sigla_codigo__icontains=busca)
         )
+
         salas = Sala.objects.select_related('predio', 'andar').filter(
             Q(codigo_sala__icontains=busca) |
             Q(nome_exibicao__icontains=busca) |
@@ -56,13 +58,37 @@ def inicio(request):
             Q(predio__sigla_codigo__icontains=busca)
         )
 
+        # Salva a pesquisa no histórico do aluno logado
+        aluno = obter_aluno_logado(request)
+
+        if aluno:
+            HistoricoBusca.objects.create(
+                aluno=aluno,
+                termo=busca
+            )
+
     context = {
         'form_busca': form_busca,
         'busca': busca,
         'predios': predios,
         'salas': salas,
     }
+
     return render(request, "telainiciomelhorada.html", context)
+
+
+def historico(request):
+    aluno = obter_aluno_logado(request)
+
+    buscas = HistoricoBusca.objects.filter(
+        aluno=aluno
+    ).order_by('-data')
+
+    context = {
+        'buscas': buscas
+    }
+
+    return render(request, 'historico.html', context)
 
 
 def mapa(request):
