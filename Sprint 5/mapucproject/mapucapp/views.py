@@ -9,9 +9,10 @@ from django.views.decorators.http import require_POST
 from django.db.models import Q
 from .models import *
 from .forms import AlterarDadosForm, BuscaForm, CadastroForm, LoginForm
+from django.core.cache import cache
+from .feriados_service import criar_avisos_de_feriados
 
 ALUNO_SESSION_KEY = 'aluno_id'
-
 
 def obter_aluno_logado(request):
     aluno_id = request.session.get(ALUNO_SESSION_KEY)
@@ -205,6 +206,12 @@ def dados(request):
 
 
 def notificacoes(request):
+    if cache.add('sync_feriados', True, 60 * 60 * 12):
+        try:
+            criar_avisos_de_feriados()
+        except Exception:
+            cache.delete('sync_feriados')  # tenta de novo no próximo acesso
+
     aluno_atual = obter_aluno_logado(request)
 
     if aluno_atual:
