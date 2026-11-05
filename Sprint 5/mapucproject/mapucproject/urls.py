@@ -40,6 +40,6 @@ urlpatterns = [
     path("restaurantes/", restaurantes, name='restaurantes'),
     path('privacidade/', privacidade, name='privacidade'),
     path('cadastrar-grade/', cadastrar_grade, name='cadastrar_grade'),
-    path('historico/', views.historico, name='historico'),
+    path('historico/', historico, name='historico'),
 
 ]
