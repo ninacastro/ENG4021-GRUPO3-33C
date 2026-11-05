@@ -1,0 +1,79 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Histórico de Buscas - MaPUC</title>
+    <link rel="stylesheet" href="{% static 'css/historico.css' %}">
+</head>
+
+<body>
+
+    <div class="cabecalho">
+        <a class="botao-voltar" href="{% url 'inicio' %}">←</a>
+        <div class="logo">MaPUC</div>
+        <a class="botao-perfil" href="{% url 'perfil' %}">Perfil</a>
+    </div>
+
+    <div class="conteudo">
+
+        <div class="titulo">
+            <h2>Histórico de Buscas</h2>
+            <div>Encontre novamente os locais que você pesquisou na PUC-Rio.</div>
+        </div>
+
+        <div class="subtitulo">
+            Pesquisas recentes
+        </div>
+
+        <div class="lista-historico">
+
+            {% for busca in buscas %}
+
+                <div class="item-historico">
+
+                    <div class="icone-busca">⌕</div>
+
+                    <div class="informacoes-busca">
+                        <div class="nome-busca">
+                            {{ busca.termo }}
+                        </div>
+
+                        <div class="data-busca">
+                            {{ busca.data }}
+                        </div>
+                    </div>
+
+                    <form action="{% url 'inicio' %}" method="get">
+                        <input type="hidden" name="busca" value="{{ busca.termo }}">
+                        <button type="submit" class="botao-pesquisar">→</button>
+                    </form>
+
+                </div>
+
+            {% empty %}
+
+                <div class="historico-vazio">
+                    <div class="icone-vazio">⌕</div>
+                    <div class="mensagem-vazia">
+                        Nenhuma busca realizada ainda.
+                    </div>
+                    <div class="descricao-vazia">
+                        Suas pesquisas aparecerão aqui para facilitar o acesso aos locais da PUC.
+                    </div>
+                    <a href="{% url 'inicio' %}" class="botao-inicio">Começar a pesquisar</a>
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+        <div class="atalho-mapa">
+            <a href="{% url 'mapa' %}">Voltar para o mapa</a>
+        </div>
+
+    </div>
+
+</body>
+</html>
