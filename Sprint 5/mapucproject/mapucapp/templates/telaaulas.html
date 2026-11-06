@@ -11,7 +11,7 @@
         <a class="botao-voltar" href="{% url 'inicio' %}" aria-label="Voltar para a tela de início">←</a>
         <h1>Horário de Aulas</h1>
       </div>
-      <span class="badge-disciplinas">6 Disciplinas</span>
+      <span class="badge-disciplinas">{{ numero_disciplinas }} disciplina{% if numero_disciplinas != 1 %}s{% endif %}</span>
     </header>
 
     <div class="conteudo">
@@ -25,69 +25,19 @@
           <div class="dia-cabecalho"><strong>SEX</strong><span>6ª feira</span></div>
           <div class="dia-cabecalho"><strong>SÁB</strong><span>Sábado</span></div>
 
-          <div class="celula aula verde">
-            <span class="aula-codigo">INF1005</span>
-            <span class="aula-hora">07:00-09:00</span>
-            <span class="sala">L318</span>
-          </div>
-          <div class="celula vazia">07-09</div>
-          <div class="celula vazia">07-09</div>
-          <div class="celula aula azul">
-            <span class="aula-codigo">LET1010</span>
-            <span class="aula-hora">07:00-09:00</span>
-            <span class="sala">R204</span>
-          </div>
-          <div class="celula vazia">Livre</div>
-          <div class="celula vazia">07-09</div>
-
-          <div class="celula vazia">09-11</div>
-          <div class="celula aula azul">
-            <span class="aula-codigo">MAT1161</span>
-            <span class="aula-hora">09:00-11:00</span>
-            <span class="sala">K102</span>
-          </div>
-          <div class="celula aula verde">
-            <span class="aula-codigo">ENG1000</span>
-            <span class="aula-hora">09:00-11:00</span>
-            <span class="sala">F402</span>
-          </div>
-          <div class="celula vazia">09-11</div>
-          <div class="celula vazia">Livre</div>
-          <div class="celula vazia">09-11</div>
-
-          <div class="celula vazia">11-13</div>
-          <div class="celula vazia">11-13</div>
-          <div class="celula aula verde">
-            <span class="aula-codigo">FIS1025</span>
-            <span class="aula-hora">11:00-13:00</span>
-            <span class="sala">L112</span>
-          </div>
-          <div class="celula vazia">11-13</div>
-          <div class="celula aula verde">
-            <span class="aula-codigo">ENG4021</span>
-            <span class="aula-hora">11:00-13:00</span>
-            <span class="sala">LIENG</span>
-          </div>
-          <div class="celula vazia">11-13</div>
-
-
-          <div class="celula vazia">13-15</div>
-          <div class="celula vazia">13-15</div>
-          <div class="celula vazia">13-15</div>
-          <div class="celula aula azul">
-            <span class="aula-codigo">MAT1161</span>
-            <span class="aula-hora">13:00-15:00</span>
-            <span class="sala">L206</span>
-          </div>
-          <div class="celula vazia">Livre</div>
-          <div class="celula vazia">13-15</div>
-
-          <div class="celula vazia">15-17</div>
-          <div class="celula vazia">15-17</div>
-          <div class="celula vazia">15-17</div>
-          <div class="celula vazia">15-17</div>
-          <div class="celula vazia">Livre</div>
-          <div class="celula vazia">15-17</div>
+          {% for linha in grade_linhas %}
+            {% for celula in linha %}
+              {% if celula.aula %}
+                <div class="celula aula {{ celula.aula.cor }}">
+                  <span class="aula-codigo">{{ celula.aula.codigo_disciplina }} — {{ celula.aula.nome_disciplina }}</span>
+                  <span class="aula-hora">{{ celula.aula.horario }}</span>
+                  <span class="sala">Sala {{ celula.aula.codigo_sala }}</span>
+                </div>
+              {% else %}
+                <div class="celula vazia">{{ celula.horario|slice:":2" }}-{{ celula.horario|slice:"8:10" }}</div>
+              {% endif %}
+            {% endfor %}
+          {% endfor %}
         </div>
       </div>
 

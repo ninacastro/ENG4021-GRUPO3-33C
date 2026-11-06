@@ -1,7 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
-from .models import Aluno
+from .models import Aluno, AulaGrade
 
 class LoginForm(forms.Form):
     matricula = forms.CharField(
@@ -113,3 +113,52 @@ class AlterarDadosForm(forms.ModelForm):
     class Meta:
         model = Aluno
         fields = ('nome', 'curso', 'email')
+
+
+class AulaGradeForm(forms.ModelForm):
+    class Meta:
+        model = AulaGrade
+        fields = (
+            'codigo_disciplina',
+            'nome_disciplina',
+            'dia_semana',
+            'horario',
+            'codigo_sala',
+            'cor',
+        )
+        labels = {
+            'codigo_disciplina': 'Código da disciplina',
+            'nome_disciplina': 'Nome da disciplina',
+            'dia_semana': 'Dia da semana',
+            'horario': 'Horário',
+            'codigo_sala': 'Sala',
+            'cor': 'Cor na grade',
+        }
+        widgets = {
+            'codigo_disciplina': forms.TextInput(attrs={'placeholder': 'Ex: INF1005'}),
+            'nome_disciplina': forms.TextInput(attrs={'placeholder': 'Ex: Introdução à Computação'}),
+            'codigo_sala': forms.TextInput(attrs={'placeholder': 'Ex: L318'}),
+        }
+
+    def __init__(self, *args, aluno=None, **kwargs):
+        self.aluno = aluno
+        kwargs.setdefault('initial', {'cor': 'verde'})
+        super().__init__(*args, **kwargs)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        if self.aluno is None:
+            return cleaned_data
+
+        dia_semana = cleaned_data.get('dia_semana')
+        horario = cleaned_data.get('horario')
+        if dia_semana and horario and AulaGrade.objects.filter(
+            aluno=self.aluno,
+            dia_semana=dia_semana,
+            horario=horario,
+        ).exists():
+            raise ValidationError(
+                'Você já cadastrou uma aula nesse dia e horário.'
+            )
+
+        return cleaned_data

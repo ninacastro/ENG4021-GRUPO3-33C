@@ -58,6 +58,8 @@ class Aluno(models.Model):
     matricula = models.CharField(max_length=50, unique=True)
     curso = models.CharField(max_length=150)
     periodo = models.IntegerField()
+    cep = models.CharField(max_length=9, blank=True, null=True)
+    receber_noticias = models.BooleanField(default=False)
 
 class Turma(models.Model):
     id_turma = models.AutoField(primary_key=True)
@@ -112,3 +114,49 @@ class Restaurante(models.Model):
 
     def __str__(self):
         return self.nome
+
+
+class AulaGrade(models.Model):
+    DIAS_SEMANA = [
+        ('segunda-feira', 'Segunda-feira'),
+        ('terça-feira', 'Terça-feira'),
+        ('quarta-feira', 'Quarta-feira'),
+        ('quinta-feira', 'Quinta-feira'),
+        ('sexta-feira', 'Sexta-feira'),
+        ('sábado', 'Sábado'),
+    ]
+    HORARIOS = [
+        ('07:00 - 09:00', '07:00 - 09:00'),
+        ('09:00 - 11:00', '09:00 - 11:00'),
+        ('11:00 - 13:00', '11:00 - 13:00'),
+        ('14:00 - 16:00', '14:00 - 16:00'),
+        ('16:00 - 18:00', '16:00 - 18:00'),
+    ]
+    CORES = [
+        ('verde', 'Verde'),
+        ('azul', 'Azul'),
+    ]
+
+    id_aula_grade = models.AutoField(primary_key=True)
+    aluno = models.ForeignKey(
+        Aluno,
+        on_delete=models.CASCADE,
+        related_name='aulas_grade',
+    )
+    codigo_disciplina = models.CharField(max_length=50)
+    nome_disciplina = models.CharField(max_length=150)
+    dia_semana = models.CharField(max_length=20, choices=DIAS_SEMANA)
+    horario = models.CharField(max_length=20, choices=HORARIOS)
+    codigo_sala = models.CharField(max_length=50)
+    cor = models.CharField(max_length=10, choices=CORES, default='verde')
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['aluno', 'dia_semana', 'horario'],
+                name='unique_aula_grade_aluno_horario',
+            ),
+        ]
+
+    def __str__(self):
+        return f'{self.codigo_disciplina} - {self.get_dia_semana_display()}'

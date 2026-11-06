@@ -9,7 +9,13 @@ from django.utils.crypto import constant_time_compare
 from django.views.decorators.http import require_POST
 from django.db.models import Q
 from .models import *
-from .forms import AlterarDadosForm, BuscaForm, CadastroForm, LoginForm
+from .forms import (
+    AlterarDadosForm,
+    AulaGradeForm,
+    BuscaForm,
+    CadastroForm,
+    LoginForm,
+)
 from .feriados_service import criar_avisos_de_feriados, obter_feriados_proximos
 from .mapa_utils import parsear_coordenadas
 
@@ -36,6 +42,47 @@ def requer_aluno(view):
         return view(request, *args, **kwargs)
 
     return view_protegida
+
+
+def _contexto_grade(aluno):
+    aulas = list(AulaGrade.objects.filter(aluno=aluno)) if aluno else []
+    ordem_dias = {
+        dia: indice
+        for indice, (dia, _) in enumerate(AulaGrade.DIAS_SEMANA)
+    }
+    ordem_horarios = {
+        horario: indice
+        for indice, (horario, _) in enumerate(AulaGrade.HORARIOS)
+    }
+    aulas.sort(key=lambda aula: (
+        ordem_dias[aula.dia_semana],
+        ordem_horarios[aula.horario],
+    ))
+    aulas_por_horario = {
+        (aula.dia_semana, aula.horario): aula
+        for aula in aulas
+    }
+
+    grade_linhas = []
+    for horario, horario_label in AulaGrade.HORARIOS:
+        celulas = [
+            {
+                'aula': aulas_por_horario.get((dia, horario)),
+                'horario': horario_label,
+            }
+            for dia, _ in AulaGrade.DIAS_SEMANA
+        ]
+        grade_linhas.append(celulas)
+
+    disciplinas = {
+        (aula.codigo_disciplina, aula.nome_disciplina)
+        for aula in aulas
+    }
+    return {
+        'aulas': aulas,
+        'grade_linhas': grade_linhas,
+        'numero_disciplinas': len(disciplinas),
+    }
 
 
 
@@ -255,14 +302,7 @@ def logout(request):
 
 def grade(request):
     aluno_atual = obter_aluno_logado(request)
-    turmas_do_aluno = None
-    if aluno_atual:
-        turmas_do_aluno = aluno_atual.turmas.all()
-
-    context = {
-        'aluno': aluno_atual,
-        'turmas': turmas_do_aluno,
-    }
+    context = {'aluno': aluno_atual, **_contexto_grade(aluno_atual)}
     return render(request, "telaaulas.html", context)
 
 
@@ -384,4 +424,37 @@ def privacidade(request):
     return render(request, "privacidade.html")
     
 def cadastrar_grade(request):
-    return render(request, 'cadastrograde.html')
+    aluno = obter_aluno_logado(request)
+    if request.method == 'POST' and aluno is None:
+        messages.error(request, 'Entre na sua conta para cadastrar aulas.')
+        return redirect('login')
+
+    form = AulaGradeForm(
+        request.POST if request.method == 'POST' else None,
+        aluno=aluno,
+    )
+    if request.method == 'POST' and form.is_valid():
+        aula_grade = form.save(commit=False)
+        aula_grade.aluno = aluno
+        aula_grade.save()
+        messages.success(request, 'Aula cadastrada na sua grade.')
+        return redirect('cadastrar_grade')
+
+    return render(request, 'cadastrograde.html', {
+        'aluno': aluno,
+        'form': form,
+        **_contexto_grade(aluno),
+    })
+
+
+@requer_aluno
+@require_POST
+def excluir_aula(request, aula_id):
+    aluno = obter_aluno_logado(request)
+    aula = AulaGrade.objects.filter(pk=aula_id, aluno=aluno).first()
+    if aula is None:
+        raise Http404('Aula não encontrada.')
+
+    aula.delete()
+    messages.success(request, 'Aula removida da sua grade.')
+    return redirect('cadastrar_grade')
