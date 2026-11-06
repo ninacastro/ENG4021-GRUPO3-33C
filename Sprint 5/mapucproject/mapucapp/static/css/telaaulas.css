@@ -146,6 +146,23 @@ body {
   color: #4a4a52;
 }
 
+a.celula.com-mapa {
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+a.celula.com-mapa:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(22, 56, 74, 0.15);
+}
+
+a.celula.com-mapa:focus-visible {
+  outline: 3px solid #1f9d6b;
+  outline-offset: 3px;
+}
+
 .celula.verde {
   background-color: #e9f7f0;
   border-color: #a5dec4;
