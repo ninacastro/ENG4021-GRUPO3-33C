@@ -31,6 +31,21 @@ class MapaViewTests(TestCase):
         self.assertContains(response, reverse('mapa'))
         self.assertContains(response, 'Abrir mapa em tela cheia')
 
+    def test_atalhos_de_biblioteca_e_alimentacao_abrem_o_mapa(self):
+        response_inicio = self.client.get(reverse('inicio'))
+
+        self.assertEqual(response_inicio.status_code, 200)
+        self.assertContains(response_inicio, f'href="{reverse("bibliotecas")}"')
+        self.assertContains(response_inicio, f'href="{reverse("restaurantes")}"')
+
+        for rota in ('bibliotecas', 'restaurantes'):
+            with self.subTest(rota=rota):
+                response = self.client.get(reverse(rota))
+                self.assertRedirects(response, reverse('mapa'))
+                response_mapa = self.client.get(response.url)
+                self.assertEqual(response_mapa.status_code, 200)
+                self.assertTemplateUsed(response_mapa, 'mapa.html')
+
     def test_link_da_tela_inicial_abre_a_grade(self):
         response_inicio = self.client.get(reverse('inicio'))
 
