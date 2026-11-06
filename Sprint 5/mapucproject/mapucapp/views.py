@@ -96,15 +96,6 @@ def mapa(request):
     return render(request, "mapa.html")
 
 
-def bibliotecas(request):
-    bibliotecas = Sala.objects.filter(tipo_sala__icontains="Biblioteca")
-
-    context = {
-        'bibliotecas': bibliotecas,
-    }
-    return render(request, "bibliotecas.html", context)
-
-
 def perfil(request):
     aluno = obter_aluno_logado(request)
     if aluno is None:
@@ -280,35 +271,6 @@ def notificacoes(request):
 
 
 
-def rota(request):
-    destino = 'F402'
-    local_atual = 'Você está aqui'
-
-    return render(request, 'telarota.html', {
-        'destino': destino,
-        'local_atual': local_atual
-    })
-
-
-def caminho_frings(request):
-    predios = Predio.objects.all()
-    aluno_atual = obter_aluno_logado(request)
-    notificacoes_nao_lidas = 0
-    if aluno_atual:
-        notificacoes_nao_lidas = Notificacao.objects.filter(
-            aluno=aluno_atual,
-            lida=False,
-        ).count()
-
-    context = {
-        'predios': predios,
-        'notificacoes_nao_lidas': notificacoes_nao_lidas,
-    }
-
-    return render(request, 'caminhofrings.html', context)
-
-
-
 def cadastro(request):
     form = CadastroForm(
         request.POST if request.method == 'POST' else None
@@ -321,9 +283,6 @@ def cadastro(request):
         return redirect('login')
 
     return render(request, 'cadastro.html', {'form': form})
-
-def restaurantes(request):
-    return render(request, 'restaurantes.html')
 
 def privacidade(request):
     return render(request, "privacidade.html")
