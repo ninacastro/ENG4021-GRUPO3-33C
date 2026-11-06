@@ -15,63 +15,66 @@
             <span>Monte o seu horário de aulas</span>
           </div>
         </div>
-        <span class="badge-disciplinas">3 Disciplinas</span>
+        <span class="badge-disciplinas">{{ numero_disciplinas }} disciplina{% if numero_disciplinas != 1 %}s{% endif %}</span>
       </header>
 
       <div class="layout">
         <!-- coluna do formulário -->
         <div class="form-col">
-          <form class="painel-card" method="post" action="">
+          <form class="painel-card" method="post" action="{% url 'cadastrar_grade' %}">
+            {% csrf_token %}
             <div class="lista-titulo">NOVA DISCIPLINA</div>
 
+            {% if form.non_field_errors %}
+              <div class="erro-formulario">{{ form.non_field_errors }}</div>
+            {% endif %}
+
             <div class="campo">
-              <label for="codigo">Código da disciplina</label>
-              <input type="text" id="codigo" name="codigo" placeholder="Ex: INF1005" />
+              <label for="{{ form.codigo_disciplina.id_for_label }}">Código da disciplina</label>
+              {{ form.codigo_disciplina }}
+              {{ form.codigo_disciplina.errors }}
             </div>
 
             <div class="campo">
-              <label for="dia">Dia da semana</label>
-              <select id="dia" name="dia">
-                <option>Segunda-feira</option>
-                <option>Terça-feira</option>
-                <option>Quarta-feira</option>
-                <option>Quinta-feira</option>
-                <option>Sexta-feira</option>
-                <option>Sábado</option>
-              </select>
+              <label for="{{ form.nome_disciplina.id_for_label }}">Nome da disciplina</label>
+              {{ form.nome_disciplina }}
+              {{ form.nome_disciplina.errors }}
             </div>
 
             <div class="campo">
-              <label for="horario">Horário</label>
-              <select id="horario" name="horario">
-                <option>07:00 - 09:00</option>
-                <option>09:00 - 11:00</option>
-                <option>11:00 - 13:00</option>
-                <option>14:00 - 16:00</option>
-                <option>16:00 - 18:00</option>
-              </select>
+              <label for="{{ form.dia_semana.id_for_label }}">Dia da semana</label>
+              {{ form.dia_semana }}
+              {{ form.dia_semana.errors }}
             </div>
 
             <div class="campo">
-              <label for="sala">Sala</label>
-              <input type="text" id="sala" name="sala" placeholder="Ex: L318" />
+              <label for="{{ form.horario.id_for_label }}">Horário</label>
+              {{ form.horario }}
+              {{ form.horario.errors }}
             </div>
 
             <div class="campo">
-              <span class="rotulo-campo">Cor na grade</span>
+              <label for="{{ form.codigo_sala.id_for_label }}">Sala</label>
+              {{ form.codigo_sala }}
+              {{ form.codigo_sala.errors }}
+            </div>
+
+            <div class="campo">
+              <span class="rotulo-campo">{{ form.cor.label }}</span>
               <div class="cores">
-                <label class="cor">
-                  <input type="radio" name="cor" value="verde" checked />
+                <label class="cor" for="id_cor_verde">
+                  <input type="radio" id="id_cor_verde" name="cor" value="verde" {% if form.cor.value == 'verde' %}checked{% endif %} required />
                   <span class="cor-chip cor-verde">Verde</span>
                 </label>
-                <label class="cor">
-                  <input type="radio" name="cor" value="azul" />
+                <label class="cor" for="id_cor_azul">
+                  <input type="radio" id="id_cor_azul" name="cor" value="azul" {% if form.cor.value == 'azul' %}checked{% endif %} />
                   <span class="cor-chip cor-azul">Azul</span>
                 </label>
               </div>
+              {{ form.cor.errors }}
             </div>
 
-            <a class="botao" href="{% url 'grade' %}">Cadastrar</a>
+            <button class="botao" type="submit">Cadastrar</button>
           </form>
         </div>
 
@@ -87,40 +90,15 @@
                 <div class="dia-cab">SEX</div>
                 <div class="dia-cab">SÁB</div>
 
-                <div class="celula aula verde">INF1005</div>
-                <div class="celula vazia">07-09</div>
-                <div class="celula vazia">07-09</div>
-                <div class="celula vazia">07-09</div>
-                <div class="celula vazia">07-09</div>
-                <div class="celula vazia">07-09</div>
-
-                <div class="celula vazia">09-11</div>
-                <div class="celula aula azul">MAT1161</div>
-                <div class="celula aula verde">ENG1000</div>
-                <div class="celula vazia">09-11</div>
-                <div class="celula vazia">09-11</div>
-                <div class="celula vazia">09-11</div>
-
-                <div class="celula vazia">11-13</div>
-                <div class="celula vazia">11-13</div>
-                <div class="celula vazia">11-13</div>
-                <div class="celula vazia">11-13</div>
-                <div class="celula vazia">11-13</div>
-                <div class="celula vazia">11-13</div>
-
-                <div class="celula vazia">13-15</div>
-                <div class="celula vazia">13-15</div>
-                <div class="celula vazia">13-15</div>
-                <div class="celula vazia">13-15</div>
-                <div class="celula vazia">13-15</div>
-                <div class="celula vazia">13-15</div>
-
-                <div class="celula vazia">15-17</div>
-                <div class="celula vazia">15-17</div>
-                <div class="celula vazia">15-17</div>
-                <div class="celula vazia">15-17</div>
-                <div class="celula vazia">15-17</div>
-                <div class="celula vazia">15-17</div>
+                {% for linha in grade_linhas %}
+                  {% for celula in linha %}
+                    {% if celula.aula %}
+                      <div class="celula aula {{ celula.aula.cor }}">{{ celula.aula.codigo_disciplina }}</div>
+                    {% else %}
+                      <div class="celula vazia">{{ celula.horario|slice:":2" }}-{{ celula.horario|slice:"8:10" }}</div>
+                    {% endif %}
+                  {% endfor %}
+                {% endfor %}
               </div>
             </div>
           </div>
@@ -128,36 +106,27 @@
           <div class="painel-card">
             <div class="lista-titulo">DISCIPLINAS CADASTRADAS</div>
 
-            <div class="item-disciplina">
-              <div>
-                <strong>INF1005</strong>
-                <p>Segunda-feira • 07:00 - 09:00 • Sala L318</p>
+            {% for aula in aulas %}
+              <div class="item-disciplina">
+                <div>
+                  <strong>{{ aula.codigo_disciplina }} — {{ aula.nome_disciplina }}</strong>
+                  <p>{{ aula.get_dia_semana_display }} • {{ aula.horario }} • Sala {{ aula.codigo_sala }}</p>
+                </div>
+                <form method="post" action="{% url 'excluir_aula' aula.id_aula_grade %}">
+                  {% csrf_token %}
+                  <button class="remover" type="submit">Remover</button>
+                </form>
               </div>
-              <button class="remover">Remover</button>
-            </div>
-
-            <div class="item-disciplina">
-              <div>
-                <strong>MAT1161</strong>
-                <p>Terça-feira • 09:00 - 11:00 • Sala K102</p>
-              </div>
-              <button class="remover">Remover</button>
-            </div>
-
-            <div class="item-disciplina">
-              <div>
-                <strong>ENG1000</strong>
-                <p>Quarta-feira • 09:00 - 11:00 • Sala F402</p>
-              </div>
-              <button class="remover">Remover</button>
-            </div>
+            {% empty %}
+              <p class="lista-vazia">Nenhuma aula cadastrada.</p>
+            {% endfor %}
           </div>
         </div>
       </div>
 
       <footer class="rodape">
         <span class="rodape-item">MAPA</span>
-        <span class="rodape-item ativo">HORÁRIO</span>
+        <a class="rodape-item ativo" href="{% url 'grade' %}">HORÁRIO</a>
       </footer>
     </div>
   </body>

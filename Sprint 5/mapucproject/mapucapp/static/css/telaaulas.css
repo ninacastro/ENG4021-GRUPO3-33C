@@ -127,6 +127,10 @@ body {
   font-size: 14px;
 }
 
+.celula.aula .aula-codigo {
+  overflow-wrap: anywhere;
+}
+
 .aula-hora {
   font-size: 12px;
 }

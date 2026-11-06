@@ -38,6 +38,7 @@ urlpatterns = [
     path('cadastro/', cadastro, name='cadastro'),
     path('privacidade/', privacidade, name='privacidade'),
     path('cadastrar-grade/', cadastrar_grade, name='cadastrar_grade'),
+    path('aulas/<int:aula_id>/excluir/', excluir_aula, name='excluir_aula'),
     path('historico/', historico, name='historico'),
 
 ]
