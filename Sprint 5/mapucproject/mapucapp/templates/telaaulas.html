@@ -27,13 +27,21 @@
 
           {% for linha in grade_linhas %}
             {% for celula in linha %}
-              {% if celula.aula %}
-                <div class="celula aula {{ celula.aula.cor }}">
-                  <span class="aula-codigo">{{ celula.aula.codigo_disciplina }} — {{ celula.aula.nome_disciplina }}</span>
-                  <span class="aula-hora">{{ celula.aula.horario }}</span>
-                  <span class="sala">Sala {{ celula.aula.codigo_sala }}</span>
-                </div>
-              {% else %}
+              {% if celula.aula and celula.aula.sala_mapa %}
+                  <a class="celula aula com-mapa {{ celula.aula.cor }}"
+                     href="{% url 'mapa' %}?local=sala&id={{ celula.aula.sala_mapa.id_sala }}"
+                     title="Ver a sala {{ celula.aula.codigo_sala }} no mapa">
+                    <span class="aula-codigo">{{ celula.aula.codigo_disciplina }} — {{ celula.aula.nome_disciplina }}</span>
+                    <span class="aula-hora">{{ celula.aula.horario }}</span>
+                    <span class="sala">Sala {{ celula.aula.codigo_sala }} · ver no mapa</span>
+                  </a>
+                {% elif celula.aula %}
+                  <div class="celula aula {{ celula.aula.cor }}">
+                    <span class="aula-codigo">{{ celula.aula.codigo_disciplina }} — {{ celula.aula.nome_disciplina }}</span>
+                    <span class="aula-hora">{{ celula.aula.horario }}</span>
+                    <span class="sala">Sala {{ celula.aula.codigo_sala }}</span>
+                  </div>
+                {% else %}
                 <div class="celula vazia">{{ celula.horario|slice:":2" }}-{{ celula.horario|slice:"8:10" }}</div>
               {% endif %}
             {% endfor %}
