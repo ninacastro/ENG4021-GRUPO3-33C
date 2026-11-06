@@ -2,71 +2,91 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>Início - MaPUC</title>
-  <link rel="stylesheet" href="{% static 'css/telainicio-melhorada.css' %}?v=3">
-  <link rel="stylesheet" href="{% static 'css/mapa-puc.css' %}?v=2">
-  
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <meta charset="UTF-8">
+    <title>Início - MaPUC</title>
+
+    <link rel="stylesheet" href="{% static 'css/telainicio-melhorada.css' %}?v=3">
+    <link rel="stylesheet" href="{% static 'css/mapa-puc.css' %}?v=2">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 
 <body class="tela-inicio">
-  <div class="area-perfil">
-    <a class="botao-acao botao-perfil" href="{% url 'perfil' %}">Perfil</a>
-  </div>
 
-  <main class="inicio">
-    <header class="cabecalho-inicio">
-      <div>
-        <h1>Tela de início</h1>
-        <p>Se encontre pelos blocos, salas e pilotis da PUC-Rio.</p>
-      </div>
-    </header>
-
-    <form class="form-pesquisa" action="/inicio/" method="get">
-      {{ form_busca.busca }}
-      <button class="botao-acao botao-busca" type="submit">Pesquisar</button>
-    </form>
-
-    {% if busca %}
-    <div class="resultados">
-      <h3>Resultados para "{{ busca }}"</h3>
-
-      {% for predio in predios %}
-        <p><strong>Prédio:</strong> {{ predio.nome }} ({{ predio.sigla_codigo }})</p>
-      {% endfor %}
-
-      {% for sala in salas %}
-        <p>
-          <strong>{{ sala.nome_exibicao }}</strong> ({{ sala.codigo_sala }})<br>
-          {{ sala.predio.nome }} · {{ sala.andar }} · {{ sala.tipo_sala }}
-        </p>
-      {% endfor %}
-
-      {% if not predios and not salas %}
-        <p>Nenhum resultado encontrado.</p>
-      {% endif %}
+    <div class="area-perfil">
+        <a class="botao-acao botao-perfil" href="{% url 'perfil' %}">Perfil</a>
     </div>
-    {% endif %}
 
-    <div class="conteudo-inicio">
-      <div class="mapa-container">
-        <div id="mapa-puc" class="mapa-puc"></div>
-        <a class="botao-acao botao-mapa-tela-cheia" href="{% url 'mapa' %}">Abrir mapa em tela cheia</a>
-      </div>
+    <main class="inicio">
 
-      <nav class="atalhos" aria-label="Atalhos">
-        <a class="botao-acao botao-p" href="{% url 'bibliotecas' %}">Biblioteca</a>
-        <a class="botao-acao botao-p" href="{% url 'restaurantes' %}">Alimentação</a>
-        <a class="botao-acao botao-g" href="{% url 'avisos' %}">Avisos e Recados</a>
-        <a class="botao-acao botao-p" href="{% url 'historico' %}">Histórico de buscas</a>
-        <a class="botao-acao botao-g" href="{% url 'grade' %}">Minha Grade de Aulas</a>
-      </nav>
-    </div>
-  </main>
+        <header class="cabecalho-inicio">
+            <div>
+                <h1>Tela de início</h1>
+                <p>Se encontre pelos blocos, salas e pilotis da PUC-Rio.</p>
+            </div>
+        </header>
 
-  <script src="{% static 'js/mapa-puc.js' %}?v=2"></script>
+        <form class="form-pesquisa" action="/inicio/" method="get">
+            {{ form_busca.busca }}
+            <button class="botao-acao botao-busca" type="submit">Pesquisar</button>
+        </form>
+
+        {% if busca %}
+        <div class="resultados">
+            <h3>Resultados para "{{ busca }}"</h3>
+
+            {% for predio in predios %}
+                <p>
+                    <a href="{% url 'inicio' %}?busca={{ busca|urlencode }}&local=predio&id={{ predio.id_predio }}">
+                        <strong>Prédio:</strong> {{ predio.nome }} ({{ predio.sigla_codigo }})
+                    </a>
+                </p>
+            {% endfor %}
+
+            {% for sala in salas %}
+                <p>
+                    <a href="{% url 'inicio' %}?busca={{ busca|urlencode }}&local=sala&id={{ sala.id_sala }}">
+                        <strong>{{ sala.nome_exibicao }}</strong> ({{ sala.codigo_sala }})
+                    </a>
+                    <br>
+                    {{ sala.predio.nome }} · {{ sala.andar }} · {{ sala.tipo_sala }}
+                </p>
+            {% endfor %}
+
+            {% if not predios and not salas %}
+                <p>Nenhum resultado encontrado.</p>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        <div class="conteudo-inicio">
+
+            <div class="mapa-container">
+                <div id="mapa-puc" class="mapa-puc"></div>
+
+                <a class="botao-acao botao-mapa-tela-cheia" href="{% url 'mapa' %}">
+                    Abrir mapa em tela cheia
+                </a>
+            </div>
+
+            <nav class="atalhos" aria-label="Atalhos">
+                <a class="botao-acao botao-p" href="{% url 'bibliotecas' %}">Biblioteca</a>
+                <a class="botao-acao botao-p" href="{% url 'restaurantes' %}">Alimentação</a>
+                <a class="botao-acao botao-g" href="{% url 'avisos' %}">Avisos e Recados</a>
+                <a class="botao-acao botao-p" href="{% url 'historico' %}">Histórico de buscas</a>
+                <a class="botao-acao botao-g" href="{% url 'grade' %}">Minha Grade de Aulas</a>
+            </nav>
+
+        </div>
+    </main>
+
+    {{ coordenadas|json_script:"coordenadas-selecionadas" }}
+    {{ nome_local|json_script:"nome-local-selecionado" }}
+
+    <script src="{% static 'js/mapuc.js' %}?v=3"></script>
 
 </body>
 </html>
+
+
