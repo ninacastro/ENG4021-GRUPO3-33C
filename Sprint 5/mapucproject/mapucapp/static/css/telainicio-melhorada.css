@@ -1,59 +1,92 @@
 body {
+  box-sizing: border-box;
+  min-height: 100vh;
+  margin: 0;
+  padding: 24px 16px;
   background-color: #f0f4f8;
-  font-family: Arial, sans-serif;
+  font-family: system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
   color: #0A2240;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
 .area-perfil {
-    align-self: flex-end;
-    margin: 0px 50px;
+  width: min(920px, 100%);
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 12px;
+}
+
+.botao-acao {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 10px 16px;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  background-color: #16384a;
+  color: #fff;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.25;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.botao-acao:hover {
+  background-color: #1f9d6b;
+}
+
+.botao-acao:focus-visible {
+  outline: 3px solid #1f9d6b;
+  outline-offset: 3px;
 }
 
 .botao-perfil {
-  display: inline-flex;
-  width: 70px;
-  height: 40px;
-  align-items: center;
-  justify-content: center;
-  background-color: #0A2240;
-  color: white;
-  border: none;
-  border-radius: 20px;
-  font-size: 15px;
-  font-weight: bold;
-  cursor: pointer;
-  text-decoration: none;
+  min-height: 40px;
+  padding: 8px 18px;
 }
 
 
 .caixa-texto {
-  width: 570px;
-  height: 45px;
-  border-radius: 25px;
-  border: 1px solid #E5E7EB;
-  padding: 0 15px;
+  width: min(570px, 100%);
+  min-height: 44px;
+  border: 1px solid #dcdce4;
+  border-radius: 9px;
+  padding: 10px 14px;
+  background-color: #fff;
+  color: #2b2b33;
+  font: inherit;
   font-size: 15px;
-  margin: 15px;
+}
+
+.caixa-texto:focus-visible {
+  outline: 3px solid #a5dec4;
+  outline-offset: 1px;
 }
 
 .form-pesquisa {
   display: flex;
   align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: min(800px, 100%);
+  margin: 14px auto;
 }
 
 .botao-busca {
-  height: 45px;
-  padding: 0 20px;
-  background-color: #0A2240;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  font-size: 15px;
-  font-weight: bold;
-  cursor: pointer;
+  flex: 0 0 auto;
 }
 
 
@@ -73,33 +106,41 @@ body {
 
 .atalhos {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
-  gap: 20px;
-  margin: 20px 0px 0px;
-  width: 800px;
+  gap: 12px;
+  margin: 12px 0 0;
+  width: min(800px, 100%);
 }
 
 .botao-p {
-  width: 290px;
-  height: 45px;
-  background-color: #0A2240;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  font-size: 15px;
-  font-weight: bold;
-  cursor: pointer;
+  flex: 1 1 240px;
+  max-width: 290px;
 }
 
 .botao-g {
-  width: 600px;
-  height: 45px;
-  background-color: #0A2240;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  font-size: 15px;
-  font-weight: bold;
-  cursor: pointer;
+  flex: 1 1 360px;
+  max-width: 600px;
 }
 
+.botao-mapa-tela-cheia {
+  border-radius: 9px;
+  font-family: inherit;
+}
+
+@media (max-width: 560px) {
+  body {
+    padding: 16px 12px;
+  }
+
+  .form-pesquisa {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .form-pesquisa .botao-acao,
+  .atalhos .botao-acao {
+    width: 100%;
+    max-width: none;
+  }
+}

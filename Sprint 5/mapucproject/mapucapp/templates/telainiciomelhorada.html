@@ -14,7 +14,7 @@
 <body>
 
   <div class="area-perfil">
-    <a class="botao-perfil" href="{% url 'perfil' %}">Perfil</a>
+    <a class="botao-acao botao-perfil" href="{% url 'perfil' %}">Perfil</a>
   </div>
 
   <div><h2>Tela de início</h2></div>
@@ -23,7 +23,7 @@
   <div>
     <form class="form-pesquisa" action="/inicio/" method="get">
       {{ form_busca.busca }}
-      <button class="botao-busca" type="submit">Pesquisar</button>
+      <button class="botao-acao botao-busca" type="submit">Pesquisar</button>
     </form>
   </div>
 
@@ -50,32 +50,22 @@
 
   <div class="mapa-container">
     <div id="mapa-puc" class="mapa-puc"></div>
-    <a class="botao-mapa-tela-cheia" href="{% url 'mapa' %}">Abrir mapa em tela cheia</a>
+    <a class="botao-acao botao-mapa-tela-cheia" href="{% url 'mapa' %}">Abrir mapa em tela cheia</a>
   </div>
 
   <div class="atalhos">
-    <a href="{% url 'bibliotecas' %}">
-      <button class="botao-p">Biblioteca</button>
-    </a>
-    <a href="{% url 'restaurantes' %}">
-      <button class="botao-p" type="button">Alimentação</button>
-    </a>
+    <a class="botao-acao botao-p" href="{% url 'bibliotecas' %}">Biblioteca</a>
+    <a class="botao-acao botao-p" href="{% url 'restaurantes' %}">Alimentação</a>
   </div>
 
   <div class="atalhos">
-    <a href="{% url 'avisos' %}">
-      <button class="botao-g">Avisos e Recados</button>
-    </a>
+    <a class="botao-acao botao-g" href="{% url 'avisos' %}">Avisos e Recados</a>
   </div>
 
-<div class="atalhos">
-    <a href="{% url 'historico' %}">
-    Histórico de buscas
-</a>
-    <a href="{% url 'grade' %}">
-      <button class="botao-g">Minha Grade de Aulas</button>
-    </a>
-</div>
+  <div class="atalhos">
+    <a class="botao-acao botao-p" href="{% url 'historico' %}">Histórico de buscas</a>
+    <a class="botao-acao botao-g" href="{% url 'grade' %}">Minha Grade de Aulas</a>
+  </div>
 
   <script src="{% static 'js/mapa-puc.js' %}"></script>
 

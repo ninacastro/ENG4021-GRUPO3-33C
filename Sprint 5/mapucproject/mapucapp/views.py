@@ -1,4 +1,5 @@
 from functools import wraps
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.hashers import check_password, identify_hasher, make_password
@@ -9,10 +10,10 @@ from django.views.decorators.http import require_POST
 from django.db.models import Q
 from .models import *
 from .forms import AlterarDadosForm, BuscaForm, CadastroForm, LoginForm
-from django.core.cache import cache
-from .feriados_service import criar_avisos_de_feriados
+from .feriados_service import criar_avisos_de_feriados, obter_feriados_proximos
 
 ALUNO_SESSION_KEY = 'aluno_id'
+logger = logging.getLogger(__name__)
 
 def obter_aluno_logado(request):
     aluno_id = request.session.get(ALUNO_SESSION_KEY)
@@ -180,7 +181,20 @@ def grade(request):
 
 
 def feriados(request):
-    return render(request, "feriadoAPI.html")
+    try:
+        feriados_proximos = obter_feriados_proximos()
+        erro_feriados = None
+    except (OSError, ValueError):
+        logger.exception("Não foi possível carregar os próximos feriados.")
+        feriados_proximos = []
+        erro_feriados = (
+            "Não foi possível carregar os feriados agora. Tente novamente mais tarde."
+        )
+
+    return render(request, "feriadoAPI.html", {
+        'feriados': feriados_proximos,
+        'erro_feriados': erro_feriados,
+    })
 
 
 def aula(request):
@@ -231,11 +245,15 @@ def dados(request):
 
 
 def notificacoes(request):
-    if cache.add('sync_feriados', True, 60 * 60 * 12):
-        try:
-            criar_avisos_de_feriados()
-        except Exception:
-            cache.delete('sync_feriados')  # tenta de novo no próximo acesso
+    erro_feriados = None
+    try:
+        criar_avisos_de_feriados()
+    except (OSError, ValueError):
+        logger.exception("Não foi possível sincronizar avisos de feriados.")
+        erro_feriados = (
+            "Não foi possível atualizar os avisos de feriados agora. "
+            "Tente novamente mais tarde."
+        )
 
     aluno_atual = obter_aluno_logado(request)
 
@@ -256,6 +274,7 @@ def notificacoes(request):
         'notificacoes': avisos_do_aluno,
         'notificacoes_nao_lidas': notificacoes_nao_lidas,
         'aluno': aluno_atual,
+        'erro_feriados': erro_feriados,
     }
     return render(request, 'notificacoesmelhorado.html', context)
 
@@ -310,4 +329,4 @@ def privacidade(request):
     return render(request, "privacidade.html")
     
 def cadastrar_grade(request):
-    return render(request, 'cadastrograde.html', context)
+    return render(request, 'cadastrograde.html')

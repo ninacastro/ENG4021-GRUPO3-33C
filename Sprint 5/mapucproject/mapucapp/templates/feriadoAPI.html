@@ -13,64 +13,33 @@
       <a class="botao-voltar" href="{% url 'grade' %}" aria-label="Voltar para a grade de aulas">←</a>
       <div>
         <p class="sobretitulo">MaPUC · Calendário</p>
-        <h1>Feriados nacionais de <span id="ano"></span></h1>
+        <h1>Próximos feriados em dias úteis</h1>
       </div>
     </header>
 
     <section class="cartao-feriados" aria-labelledby="titulo-lista">
-      <h2 id="titulo-lista">Datas do ano</h2>
-      <p id="status" class="status" role="status" aria-live="polite">Carregando feriados...</p>
-      <ul id="lista" class="lista-feriados"></ul>
+      <h2 id="titulo-lista">Feriados nacionais nos próximos 30 dias</h2>
+      {% if erro_feriados %}
+        <p class="status" role="alert">{{ erro_feriados }}</p>
+      {% elif feriados %}
+        <ul class="lista-feriados">
+          {% for feriado in feriados %}
+            <li>
+              <time datetime="{{ feriado.data|date:'Y-m-d' }}">
+                {{ feriado.dia_semana }}, {{ feriado.data_formatada }}
+              </time>
+              <span>{{ feriado.nome }}</span>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="status" role="status">
+          Não há feriados nacionais em dias úteis nos próximos 30 dias.
+        </p>
+      {% endif %}
     </section>
 
     <a class="botao-grade" href="{% url 'grade' %}">Voltar para a grade de aulas</a>
   </main>
-
-  <script>
-    async function carregarFeriados() {
-      const ano = new Date().getFullYear();
-      const respostaAno = document.getElementById('ano');
-      const lista = document.getElementById('lista');
-      const status = document.getElementById('status');
-
-      respostaAno.textContent = ano;
-
-      try {
-        const resposta = await fetch(`https://brasilapi.com.br/api/feriados/v1/${ano}`);
-        if (!resposta.ok) {
-          throw new Error(`A API respondeu com o status ${resposta.status}.`);
-        }
-
-        const feriados = await resposta.json();
-        if (!Array.isArray(feriados)) {
-          throw new Error('A resposta da API não contém uma lista de feriados.');
-        }
-
-        feriados.forEach((feriado) => {
-          const item = document.createElement('li');
-          const data = document.createElement('time');
-          const nome = document.createElement('span');
-
-          data.dateTime = feriado.date;
-          data.textContent = new Date(`${feriado.date}T00:00:00`).toLocaleDateString('pt-BR', {
-            day: '2-digit',
-            month: 'long',
-          });
-          nome.textContent = feriado.name;
-          item.append(data, nome);
-          lista.appendChild(item);
-        });
-
-        status.textContent = feriados.length
-          ? `${feriados.length} feriados encontrados.`
-          : 'Nenhum feriado encontrado para este ano.';
-      } catch (erro) {
-        console.error('Não foi possível carregar os feriados:', erro);
-        status.textContent = 'Não foi possível carregar os feriados. Tente novamente mais tarde.';
-      }
-    }
-
-    carregarFeriados();
-  </script>
 </body>
 </html>

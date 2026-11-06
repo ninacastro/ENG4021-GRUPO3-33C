@@ -25,6 +25,9 @@
     </header>
 
     <main class="conteudo">
+      {% if erro_feriados %}
+        <p class="status" role="alert">{{ erro_feriados }}</p>
+      {% endif %}
       {% if notificacoes %}
         <div class="linha" style="flex-wrap: wrap;">
           {% for aviso in notificacoes %}
