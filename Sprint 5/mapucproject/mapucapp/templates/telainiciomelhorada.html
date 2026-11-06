@@ -4,68 +4,67 @@
 <head>
   <meta charset="UTF-8">
   <title>Início - MaPUC</title>
-  <link rel="stylesheet" href="{% static 'css/telainicio-melhorada.css' %}">
+  <link rel="stylesheet" href="{% static 'css/telainicio-melhorada.css' %}?v=3">
   <link rel="stylesheet" href="{% static 'css/mapa-puc.css' %}">
   
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 
-<body>
-
+<body class="tela-inicio">
   <div class="area-perfil">
     <a class="botao-acao botao-perfil" href="{% url 'perfil' %}">Perfil</a>
   </div>
 
-  <div><h2>Tela de início</h2></div>
-  <div><p>Se encontre pelos blocos, salas e pilotis da PUC-Rio.</p></div>
+  <main class="inicio">
+    <header class="cabecalho-inicio">
+      <div>
+        <h1>Tela de início</h1>
+        <p>Se encontre pelos blocos, salas e pilotis da PUC-Rio.</p>
+      </div>
+    </header>
 
-  <div>
     <form class="form-pesquisa" action="/inicio/" method="get">
       {{ form_busca.busca }}
       <button class="botao-acao botao-busca" type="submit">Pesquisar</button>
     </form>
-  </div>
 
-  {% if busca %}
-  <div class="resultados">
-    <h3>Resultados para "{{ busca }}"</h3>
+    {% if busca %}
+    <div class="resultados">
+      <h3>Resultados para "{{ busca }}"</h3>
 
-    {% for predio in predios %}
-      <p><strong>Prédio:</strong> {{ predio.nome }} ({{ predio.sigla_codigo }})</p>
-    {% endfor %}
+      {% for predio in predios %}
+        <p><strong>Prédio:</strong> {{ predio.nome }} ({{ predio.sigla_codigo }})</p>
+      {% endfor %}
 
-    {% for sala in salas %}
-      <p>
-        <strong>{{ sala.nome_exibicao }}</strong> ({{ sala.codigo_sala }})<br>
-        {{ sala.predio.nome }} · {{ sala.andar }} · {{ sala.tipo_sala }}
-      </p>
-    {% endfor %}
+      {% for sala in salas %}
+        <p>
+          <strong>{{ sala.nome_exibicao }}</strong> ({{ sala.codigo_sala }})<br>
+          {{ sala.predio.nome }} · {{ sala.andar }} · {{ sala.tipo_sala }}
+        </p>
+      {% endfor %}
 
-    {% if not predios and not salas %}
-      <p>Nenhum resultado encontrado.</p>
+      {% if not predios and not salas %}
+        <p>Nenhum resultado encontrado.</p>
+      {% endif %}
+    </div>
     {% endif %}
-  </div>
-  {% endif %}
 
-  <div class="mapa-container">
-    <div id="mapa-puc" class="mapa-puc"></div>
-    <a class="botao-acao botao-mapa-tela-cheia" href="{% url 'mapa' %}">Abrir mapa em tela cheia</a>
-  </div>
+    <div class="conteudo-inicio">
+      <div class="mapa-container">
+        <div id="mapa-puc" class="mapa-puc"></div>
+        <a class="botao-acao botao-mapa-tela-cheia" href="{% url 'mapa' %}">Abrir mapa em tela cheia</a>
+      </div>
 
-  <div class="atalhos">
-    <a class="botao-acao botao-p" href="{% url 'bibliotecas' %}">Biblioteca</a>
-    <a class="botao-acao botao-p" href="{% url 'restaurantes' %}">Alimentação</a>
-  </div>
-
-  <div class="atalhos">
-    <a class="botao-acao botao-g" href="{% url 'avisos' %}">Avisos e Recados</a>
-  </div>
-
-  <div class="atalhos">
-    <a class="botao-acao botao-p" href="{% url 'historico' %}">Histórico de buscas</a>
-    <a class="botao-acao botao-g" href="{% url 'grade' %}">Minha Grade de Aulas</a>
-  </div>
+      <nav class="atalhos" aria-label="Atalhos">
+        <a class="botao-acao botao-p" href="{% url 'bibliotecas' %}">Biblioteca</a>
+        <a class="botao-acao botao-p" href="{% url 'restaurantes' %}">Alimentação</a>
+        <a class="botao-acao botao-g" href="{% url 'avisos' %}">Avisos e Recados</a>
+        <a class="botao-acao botao-p" href="{% url 'historico' %}">Histórico de buscas</a>
+        <a class="botao-acao botao-g" href="{% url 'grade' %}">Minha Grade de Aulas</a>
+      </nav>
+    </div>
+  </main>
 
   <script src="{% static 'js/mapa-puc.js' %}"></script>
 
