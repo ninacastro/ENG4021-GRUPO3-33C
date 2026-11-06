@@ -102,7 +102,6 @@ def inicio(request):
 
     return render(request, "telainiciomelhorada.html", context)
 
-
 def historico(request):
     aluno = obter_aluno_logado(request)
 
