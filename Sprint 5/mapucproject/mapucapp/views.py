@@ -1,5 +1,6 @@
-from functools import wraps
+from functools import reduce, wraps
 import logging
+import operator
 
 from django.contrib import messages
 from django.contrib.auth.hashers import check_password, identify_hasher, make_password
@@ -43,9 +44,27 @@ def requer_aluno(view):
 
     return view_protegida
 
+def _associar_salas_do_mapa(aulas):
+    codigos = {
+        aula.codigo_sala.strip().lower()
+        for aula in aulas
+        if aula.codigo_sala.strip()
+    }
+    salas_por_codigo = {}
+    if codigos:
+        filtro = reduce(
+            operator.or_,
+            (Q(codigo_sala__iexact=codigo) for codigo in codigos),
+        )
+        for sala in Sala.objects.filter(filtro).order_by('id_sala'):
+            salas_por_codigo.setdefault(sala.codigo_sala.strip().lower(), sala)
+
+    for aula in aulas:
+        aula.sala_mapa = salas_por_codigo.get(aula.codigo_sala.strip().lower())
 
 def _contexto_grade(aluno):
     aulas = list(AulaGrade.objects.filter(aluno=aluno)) if aluno else []
+     _associar_salas_do_mapa(aulas) 
     ordem_dias = {
         dia: indice
         for indice, (dia, _) in enumerate(AulaGrade.DIAS_SEMANA)
