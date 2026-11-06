@@ -7,12 +7,14 @@ from django.urls import reverse
 from django.contrib.auth.hashers import check_password, make_password
 from django.core.cache import cache
 
-from .models import Aluno, Notificacao
+from .models import Aluno, Andar, Biblioteca, Notificacao, Predio, Restaurante
 from .feriados_service import (
     criar_avisos_de_feriados,
     obter_feriados_proximos,
     buscar_feriados,
 )
+from .mapa_utils import parsear_coordenadas
+from .admin import BibliotecaAdminForm, RestauranteAdminForm
 
 
 class MapaViewTests(TestCase):
@@ -23,6 +25,85 @@ class MapaViewTests(TestCase):
         self.assertTemplateUsed(response, 'mapa.html')
         self.assertContains(response, 'id="mapa-puc"')
         self.assertContains(response, reverse('inicio'))
+        self.assertEqual(response.context['marcadores'], [])
+
+    def test_tela_inicial_nao_renderiza_pins(self):
+        response = self.client.get(reverse('inicio'))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, 'mapa-marcadores')
+        self.assertNotContains(response, 'Prédio Cardeal Leme')
+
+    def test_mapa_de_bibliotecas_e_restaurantes_mostra_so_sua_categoria(self):
+        predio = Predio.objects.create(
+            nome='Prédio de teste',
+            sigla_codigo='PT',
+            coordenadas_entradas='-22.9785, -43.2324',
+            quantidade_andares=3,
+            horario_funcionamento='08:00-20:00',
+        )
+        andar = Andar.objects.create(
+            predio=predio,
+            numero_andar=1,
+            nome_exibicao='1º andar',
+            possui_elevador=True,
+        )
+        biblioteca = Biblioteca.objects.create(
+            nome='Biblioteca de teste',
+            predio=predio,
+            andar=andar,
+            coordenadas='-22.9786, -43.2325',
+            horario_funcionamento='08:00-18:00',
+        )
+        restaurante = Restaurante.objects.create(
+            nome='Restaurante de teste',
+            predio=predio,
+            coordenadas='-22.9787, -43.2326',
+            telefone='2222-2222',
+        )
+
+        resposta_bibliotecas = self.client.get(reverse('bibliotecas'))
+        self.assertEqual(resposta_bibliotecas.status_code, 200)
+        self.assertEqual(resposta_bibliotecas.context['titulo_mapa'], 'Bibliotecas')
+        self.assertEqual(len(resposta_bibliotecas.context['marcadores']), 1)
+        self.assertEqual(
+            resposta_bibliotecas.context['marcadores'][0]['nome'],
+            biblioteca.nome,
+        )
+        self.assertContains(resposta_bibliotecas, biblioteca.nome)
+        self.assertNotContains(resposta_bibliotecas, restaurante.nome)
+
+        resposta_restaurantes = self.client.get(reverse('restaurantes'))
+        self.assertEqual(resposta_restaurantes.status_code, 200)
+        self.assertEqual(resposta_restaurantes.context['titulo_mapa'], 'Alimentação')
+        self.assertEqual(len(resposta_restaurantes.context['marcadores']), 1)
+        self.assertEqual(
+            resposta_restaurantes.context['marcadores'][0]['nome'],
+            restaurante.nome,
+        )
+        self.assertContains(resposta_restaurantes, restaurante.nome)
+        self.assertNotContains(resposta_restaurantes, biblioteca.nome)
+
+    def test_coordenadas_do_mapa_sao_validada_e_convertidas(self):
+        self.assertEqual(
+            parsear_coordenadas('-22.9785, -43.2324'),
+            (-22.9785, -43.2324),
+        )
+        for coordenadas in ('sem coordenadas', '100, 200', 'nan, -43.2'):
+            with self.subTest(coordenadas=coordenadas):
+                with self.assertRaises(ValueError):
+                    parsear_coordenadas(coordenadas)
+
+    def test_formularios_admin_exibem_seletor_de_localizacao_no_mapa(self):
+        for form_class in (BibliotecaAdminForm, RestauranteAdminForm):
+            with self.subTest(form=form_class.__name__):
+                form = form_class()
+                campo = str(form['coordenadas'])
+
+                self.assertIn('coordenadas-seletor', campo)
+                self.assertIn('Clique no mapa', campo)
+                self.assertIn('leaflet@1.9.4/dist/leaflet.js', str(form.media))
+                self.assertIn('coordenadas-admin-v2.js', str(form.media))
 
     def test_inicio_exibe_link_para_mapa_em_tela_cheia(self):
         response = self.client.get(reverse('inicio'))
@@ -41,10 +122,8 @@ class MapaViewTests(TestCase):
         for rota in ('bibliotecas', 'restaurantes'):
             with self.subTest(rota=rota):
                 response = self.client.get(reverse(rota))
-                self.assertRedirects(response, reverse('mapa'))
-                response_mapa = self.client.get(response.url)
-                self.assertEqual(response_mapa.status_code, 200)
-                self.assertTemplateUsed(response_mapa, 'mapa.html')
+                self.assertEqual(response.status_code, 200)
+                self.assertTemplateUsed(response, 'mapa.html')
 
     def test_link_da_tela_inicial_abre_a_grade(self):
         response_inicio = self.client.get(reverse('inicio'))
@@ -447,9 +526,10 @@ class NavegacaoTelasTests(TestCase):
         )
         self.assertRedirects(login_response, reverse('inicio'))
 
-    def test_restaurantes_tem_botao_de_volta_para_inicio(self):
+    def test_restaurantes_abre_mapa_com_link_de_volta_para_inicio(self):
         response = self.client.get(reverse('restaurantes'))
 
         self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'mapa.html')
         self.assertContains(response, reverse('inicio'))
-        self.assertContains(response, 'Voltar para a tela de início')
+        self.assertContains(response, 'Voltar ao início')

@@ -20,14 +20,22 @@ L.tileLayer(
   }
 ).addTo(mapa);
 
-L.marker([-22.9781, -43.2328])
-  .addTo(mapa)
-  .bindPopup('<b>Prédio Cardeal Leme</b><br>Salas L, F, etc.');
+const dadosMarcadores = document.getElementById('mapa-marcadores');
 
-L.marker([-22.9791, -43.2322])
-  .addTo(mapa)
-  .bindPopup('<b>RDC</b><br>Laboratórios de Informática e Aulas');
+if (dadosMarcadores) {
+  const marcadores = JSON.parse(dadosMarcadores.textContent);
 
-L.marker([-22.9774, -43.2335])
-  .addTo(mapa)
-  .bindPopup('<b>Prédio da Amizade</b><br>Salas I, Ala Kennedy');
+  marcadores.forEach((marcador) => {
+    const conteudoPopup = document.createElement('div');
+    const nome = document.createElement('strong');
+    const detalhes = document.createElement('div');
+
+    nome.textContent = marcador.nome;
+    detalhes.textContent = marcador.detalhes;
+    conteudoPopup.append(nome, detalhes);
+
+    L.marker([marcador.latitude, marcador.longitude])
+      .addTo(mapa)
+      .bindPopup(conteudoPopup);
+  });
+}

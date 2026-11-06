@@ -1,0 +1,10 @@
+{% include "django/forms/widgets/text.html" %}
+<div
+  class="coordenadas-seletor"
+  data-coordenadas-input="{{ widget.attrs.id }}"
+  role="application"
+  aria-label="Mapa para selecionar coordenadas"
+></div>
+<p class="coordenadas-instrucao">
+  Clique no mapa para posicionar o marcador. Você também pode arrastá-lo.
+</p>

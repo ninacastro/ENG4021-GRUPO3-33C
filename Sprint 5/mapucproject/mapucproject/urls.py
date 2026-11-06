@@ -16,7 +16,6 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from django.views.generic import RedirectView
 from mapucapp.views import *
 
 urlpatterns = [
@@ -26,16 +25,8 @@ urlpatterns = [
     path('logout/', logout, name='logout'),
     path('inicio/', inicio, name='inicio'),
     path('mapa/', mapa, name='mapa'),
-    path(
-        'bibliotecas/',
-        RedirectView.as_view(pattern_name='mapa', permanent=False),
-        name='bibliotecas',
-    ),
-    path(
-        'restaurantes/',
-        RedirectView.as_view(pattern_name='mapa', permanent=False),
-        name='restaurantes',
-    ),
+    path('bibliotecas/', bibliotecas, name='bibliotecas'),
+    path('restaurantes/', restaurantes, name='restaurantes'),
     path('perfil/', perfil, name='perfil'),
     path('grade/', grade, name='grade'),
     path('feriados/', feriados, name='feriados'),

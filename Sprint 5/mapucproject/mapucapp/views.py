@@ -11,6 +11,7 @@ from django.db.models import Q
 from .models import *
 from .forms import AlterarDadosForm, BuscaForm, CadastroForm, LoginForm
 from .feriados_service import criar_avisos_de_feriados, obter_feriados_proximos
+from .mapa_utils import parsear_coordenadas
 
 ALUNO_SESSION_KEY = 'aluno_id'
 logger = logging.getLogger(__name__)
@@ -93,7 +94,67 @@ def historico(request):
 
 
 def mapa(request):
-    return render(request, "mapa.html")
+    return render_mapa(request)
+
+
+def render_mapa(request, categoria=None):
+    marcadores = []
+    coordenadas_invalidas = []
+
+    if categoria == 'bibliotecas':
+        locais = Biblioteca.objects.select_related('predio', 'andar')
+        for biblioteca in locais:
+            try:
+                latitude, longitude = parsear_coordenadas(biblioteca.coordenadas)
+            except ValueError:
+                coordenadas_invalidas.append(biblioteca.nome)
+                continue
+
+            marcadores.append({
+                'latitude': latitude,
+                'longitude': longitude,
+                'nome': biblioteca.nome,
+                'detalhes': (
+                    f'{biblioteca.predio.nome} · {biblioteca.andar.nome_exibicao} · '
+                    f'{biblioteca.horario_funcionamento}'
+                ),
+            })
+    elif categoria == 'restaurantes':
+        locais = Restaurante.objects.select_related('predio')
+        for restaurante in locais:
+            try:
+                latitude, longitude = parsear_coordenadas(restaurante.coordenadas)
+            except ValueError:
+                coordenadas_invalidas.append(restaurante.nome)
+                continue
+
+            detalhes = restaurante.predio.nome
+            if restaurante.telefone:
+                detalhes = f'{detalhes} · {restaurante.telefone}'
+            marcadores.append({
+                'latitude': latitude,
+                'longitude': longitude,
+                'nome': restaurante.nome,
+                'detalhes': detalhes,
+            })
+
+    titulos = {
+        'bibliotecas': 'Bibliotecas',
+        'restaurantes': 'Alimentação',
+    }
+    return render(request, 'mapa.html', {
+        'marcadores': marcadores,
+        'coordenadas_invalidas': coordenadas_invalidas,
+        'titulo_mapa': titulos.get(categoria),
+    })
+
+
+def bibliotecas(request):
+    return render_mapa(request, categoria='bibliotecas')
+
+
+def restaurantes(request):
+    return render_mapa(request, categoria='restaurantes')
 
 
 def perfil(request):

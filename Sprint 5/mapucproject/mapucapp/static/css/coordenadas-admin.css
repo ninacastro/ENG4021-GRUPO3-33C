@@ -1,0 +1,13 @@
+.coordenadas-seletor {
+  width: min(100%, 720px);
+  height: 360px;
+  margin-top: 10px;
+  border: 1px solid #c8c8c8;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.coordenadas-instrucao {
+  margin: 6px 0 0;
+  color: #555;
+}

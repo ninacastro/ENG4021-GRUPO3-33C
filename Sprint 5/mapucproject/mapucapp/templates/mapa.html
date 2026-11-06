@@ -5,15 +5,25 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Mapa - MaPUC</title>
-  <link rel="stylesheet" href="{% static 'css/mapa-puc.css' %}">
+  <link rel="stylesheet" href="{% static 'css/mapa-puc.css' %}?v=2">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 <body class="pagina-mapa">
   <main class="mapa-container mapa-container--tela-cheia">
     <div id="mapa-puc" class="mapa-puc"></div>
+    {% if titulo_mapa %}
+      <h1 class="titulo-categoria-mapa">{{ titulo_mapa }}</h1>
+    {% endif %}
     <a class="botao-mapa-tela-cheia botao-mapa-voltar" href="{% url 'inicio' %}">Voltar ao início</a>
   </main>
-  <script src="{% static 'js/mapa-puc.js' %}"></script>
+  {% if coordenadas_invalidas %}
+    <p class="aviso-coordenadas">
+      Não foi possível exibir: {{ coordenadas_invalidas|join:", " }}.
+      Confira as coordenadas no cadastro (latitude, longitude).
+    </p>
+  {% endif %}
+  {{ marcadores|json_script:"mapa-marcadores" }}
+  <script src="{% static 'js/mapa-puc.js' %}?v=2"></script>
 </body>
 </html>
