@@ -34,12 +34,19 @@
       <h3>Resultados para "{{ busca }}"</h3>
 
       {% for predio in predios %}
-        <p><strong>Prédio:</strong> {{ predio.nome }} ({{ predio.sigla_codigo }})</p>
+        <p>
+          <a href="{% url 'inicio' %}?local=predio&id={{ predio.id_predio }}">
+            <strong>Prédio:</strong> {{ predio.nome }} ({{ predio.sigla_codigo }})
+          </a>
+        </p>
       {% endfor %}
 
       {% for sala in salas %}
         <p>
-          <strong>{{ sala.nome_exibicao }}</strong> ({{ sala.codigo_sala }})<br>
+          <a href="{% url 'inicio' %}?local=sala&id={{ sala.id_sala }}">
+            <strong>{{ sala.nome_exibicao }}</strong> ({{ sala.codigo_sala }})
+          </a>
+          <br>
           {{ sala.predio.nome }} · {{ sala.andar }} · {{ sala.tipo_sala }}
         </p>
       {% endfor %}
@@ -70,3 +77,4 @@
 
 </body>
 </html>
+
