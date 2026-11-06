@@ -38,6 +38,7 @@ def requer_aluno(view):
     return view_protegida
 
 
+
 def inicio(request):
     form_busca = BuscaForm(request.GET or None)
     busca = ''
@@ -69,11 +70,34 @@ def inicio(request):
                 termo=busca
             )
 
+    local = None
+    coordenadas = None
+    nome_local = ''
+
+    tipo_local = request.GET.get('local')
+    id_local = request.GET.get('id')
+
+    if tipo_local == 'predio' and id_local:
+        local = Predio.objects.filter(id_predio=id_local).first()
+
+        if local:
+            coordenadas = local.coordenadas_entradas
+            nome_local = local.nome
+
+    elif tipo_local == 'sala' and id_local:
+        local = Sala.objects.filter(id_sala=id_local).first()
+
+        if local:
+            coordenadas = local.coordenadas
+            nome_local = local.nome_exibicao
+
     context = {
         'form_busca': form_busca,
         'busca': busca,
         'predios': predios,
         'salas': salas,
+        'coordenadas': coordenadas,
+        'nome_local': nome_local,
     }
 
     return render(request, "telainiciomelhorada.html", context)
