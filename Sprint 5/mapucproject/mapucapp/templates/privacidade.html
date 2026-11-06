@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="{% static 'css/privacidade.css' %}">
 </head>
 
-<body>
+<body class="pagina-privacidade">
 
     <div class="pagina">
 
@@ -19,41 +19,7 @@
             <h1>Política de privacidade</h1>
         </div>
 
-        <div class="conteudo">
-
-            <div class="cartao">
-                <h2>Dados que usamos</h2>
-                <div class="descricao">
-                    Nome, matrícula, curso e e-mail institucional servem apenas
-                    para identificar você e montar a sua grade de aulas.
-                </div>
-            </div>
-
-            <div class="cartao">
-                <h2>Localização no campus</h2>
-                <div class="descricao">
-                    A localização é usada somente enquanto o mapa está aberto,
-                    para traçar a rota a pé até a sala escolhida. Nada é gravado depois.
-                </div>
-            </div>
-
-            <div class="cartao">
-                <h2>Compartilhamento</h2>
-                <div class="descricao">
-                    Não compartilhamos seus dados com terceiros. Avisos de mudança
-                    de sala vêm dos professores e departamentos da PUC-Rio.
-                </div>
-            </div>
-
-            <div class="cartao">
-                <h2>Seus direitos</h2>
-                <div class="descricao">
-                    Você pode atualizar ou solicitar a exclusão dos seus dados
-                    a qualquer momento pela tela de perfil ou com o suporte do campus.
-                </div>
-            </div>
-
-        </div>
+        {% include "partials/privacidade_conteudo.html" %}
 
     </div>
 

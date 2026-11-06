@@ -129,15 +129,25 @@ a.voltar-rodape {
   color: inherit;
 }
 
+button.opcao {
+  appearance: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
 a.opcao:hover,
-form.opcao:hover {
+form.opcao:hover,
+button.opcao:hover {
   border-color: var(--azul);
   box-shadow: 0 4px 14px rgba(65, 80, 140, 0.12);
   transform: translateY(-1px);
 }
 
 a.opcao:hover .seta,
-form.opcao:hover .seta {
+form.opcao:hover .seta,
+button.opcao:hover .seta {
   color: var(--azul);
 }
 
@@ -167,6 +177,7 @@ form.opcao {
 /* ---------- Acessibilidade: foco via teclado ---------- */
 
 a:focus-visible,
+button:focus-visible,
 .botao-limpo:focus-visible {
   outline: 3px solid var(--azul);
   outline-offset: 2px;
