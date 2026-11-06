@@ -64,7 +64,7 @@ def _associar_salas_do_mapa(aulas):
 
 def _contexto_grade(aluno):
     aulas = list(AulaGrade.objects.filter(aluno=aluno)) if aluno else []
-     _associar_salas_do_mapa(aulas) 
+    _associar_salas_do_mapa(aulas)
     ordem_dias = {
         dia: indice
         for indice, (dia, _) in enumerate(AulaGrade.DIAS_SEMANA)
