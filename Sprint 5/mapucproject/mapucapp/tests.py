@@ -7,7 +7,7 @@ from django.urls import reverse
 from django.contrib.auth.hashers import check_password, make_password
 from django.core.cache import cache
 
-from .models import Aluno, Andar, Biblioteca, Notificacao, Predio, Restaurante
+from .models import Aluno, Andar, Biblioteca, Notificacao, Predio, Restaurante, Sala
 from .feriados_service import (
     criar_avisos_de_feriados,
     obter_feriados_proximos,
@@ -36,8 +36,88 @@ class MapaViewTests(TestCase):
         response = self.client.get(reverse('inicio'))
 
         self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'id="mapa-puc"')
+        self.assertContains(response, '/static/js/mapa-puc.js?v=3')
         self.assertNotContains(response, 'mapa-marcadores')
         self.assertNotContains(response, 'Prédio Cardeal Leme')
+
+    def test_resultado_da_busca_abre_mapa_com_pin_do_predio(self):
+        predio = Predio.objects.create(
+            nome='Prédio de teste',
+            sigla_codigo='PT',
+            coordenadas_entradas='-22.9785, -43.2324',
+            quantidade_andares=1,
+            horario_funcionamento='08:00-20:00',
+        )
+
+        resposta_busca = self.client.get(
+            reverse('inicio'),
+            {'busca': 'Prédio'},
+        )
+
+        self.assertEqual(resposta_busca.status_code, 200)
+        self.assertContains(
+            resposta_busca,
+            f'href="{reverse("mapa")}?local=predio&id={predio.pk}"',
+        )
+
+        resposta_mapa = self.client.get(
+            reverse('mapa'),
+            {'local': 'predio', 'id': predio.pk},
+        )
+        self.assertEqual(resposta_mapa.status_code, 200)
+        self.assertEqual(
+            resposta_mapa.context['local_selecionado'],
+            {
+                'latitude': -22.9785,
+                'longitude': -43.2324,
+                'nome': predio.nome,
+            },
+        )
+        self.assertContains(resposta_mapa, 'id="mapa-local-selecionado"')
+
+    def test_resultado_da_busca_abre_mapa_com_pin_da_sala(self):
+        predio = Predio.objects.create(
+            nome='Prédio de teste',
+            sigla_codigo='PT',
+            coordenadas_entradas='-22.9785, -43.2324',
+            quantidade_andares=1,
+            horario_funcionamento='08:00-20:00',
+        )
+        andar = Andar.objects.create(
+            predio=predio,
+            numero_andar=1,
+            nome_exibicao='Térreo',
+        )
+        sala = Sala.objects.create(
+            codigo_sala='S1',
+            nome_exibicao='Sala de teste',
+            predio=predio,
+            andar=andar,
+            coordenadas='-22.9786, -43.2325',
+            tipo_sala='Aula',
+            capacidade=20,
+        )
+
+        resposta_busca = self.client.get(reverse('inicio'), {'busca': 'Sala'})
+        self.assertContains(
+            resposta_busca,
+            f'href="{reverse("mapa")}?local=sala&id={sala.pk}"',
+        )
+
+        resposta_mapa = self.client.get(
+            reverse('mapa'),
+            {'local': 'sala', 'id': sala.pk},
+        )
+        self.assertEqual(resposta_mapa.status_code, 200)
+        self.assertEqual(
+            resposta_mapa.context['local_selecionado'],
+            {
+                'latitude': -22.9786,
+                'longitude': -43.2325,
+                'nome': sala.nome_exibicao,
+            },
+        )
 
     def test_mapa_de_bibliotecas_e_restaurantes_mostra_so_sua_categoria(self):
         predio = Predio.objects.create(

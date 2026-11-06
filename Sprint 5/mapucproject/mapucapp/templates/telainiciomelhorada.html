@@ -38,7 +38,7 @@
 
             {% for predio in predios %}
                 <p>
-                    <a href="{% url 'inicio' %}?busca={{ busca|urlencode }}&local=predio&id={{ predio.id_predio }}">
+                    <a href="{% url 'mapa' %}?local=predio&id={{ predio.id_predio }}">
                         <strong>Prédio:</strong> {{ predio.nome }} ({{ predio.sigla_codigo }})
                     </a>
                 </p>
@@ -46,7 +46,7 @@
 
             {% for sala in salas %}
                 <p>
-                    <a href="{% url 'inicio' %}?busca={{ busca|urlencode }}&local=sala&id={{ sala.id_sala }}">
+                    <a href="{% url 'mapa' %}?local=sala&id={{ sala.id_sala }}">
                         <strong>{{ sala.nome_exibicao }}</strong> ({{ sala.codigo_sala }})
                     </a>
                     <br>
@@ -81,12 +81,7 @@
         </div>
     </main>
 
-    {{ coordenadas|json_script:"coordenadas-selecionadas" }}
-    {{ nome_local|json_script:"nome-local-selecionado" }}
-
-    <script src="{% static 'js/mapuc.js' %}?v=3"></script>
+    <script src="{% static 'js/mapa-puc.js' %}?v=3"></script>
 
 </body>
 </html>
-
-

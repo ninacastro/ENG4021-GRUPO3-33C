@@ -24,6 +24,7 @@
     </p>
   {% endif %}
   {{ marcadores|json_script:"mapa-marcadores" }}
-  <script src="{% static 'js/mapa-puc.js' %}?v=2"></script>
+  {{ local_selecionado|json_script:"mapa-local-selecionado" }}
+  <script src="{% static 'js/mapa-puc.js' %}?v=3"></script>
 </body>
 </html>

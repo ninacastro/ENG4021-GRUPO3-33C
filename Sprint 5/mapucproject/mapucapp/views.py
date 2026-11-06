@@ -70,34 +70,11 @@ def inicio(request):
                 termo=busca
             )
 
-    local = None
-    coordenadas = None
-    nome_local = ''
-
-    tipo_local = request.GET.get('local')
-    id_local = request.GET.get('id')
-
-    if tipo_local == 'predio' and id_local:
-        local = Predio.objects.filter(id_predio=id_local).first()
-
-        if local:
-            coordenadas = local.coordenadas_entradas
-            nome_local = local.nome
-
-    elif tipo_local == 'sala' and id_local:
-        local = Sala.objects.filter(id_sala=id_local).first()
-
-        if local:
-            coordenadas = local.coordenadas
-            nome_local = local.nome_exibicao
-
     context = {
         'form_busca': form_busca,
         'busca': busca,
         'predios': predios,
         'salas': salas,
-        'coordenadas': coordenadas,
-        'nome_local': nome_local,
     }
 
     return render(request, "telainiciomelhorada.html", context)
@@ -123,6 +100,40 @@ def mapa(request):
 def render_mapa(request, categoria=None):
     marcadores = []
     coordenadas_invalidas = []
+    local_selecionado = None
+
+    tipo_local = request.GET.get('local')
+    id_local = request.GET.get('id')
+
+    if tipo_local == 'predio' and id_local:
+        local = Predio.objects.filter(pk=id_local).first()
+        if local:
+            nome_local = local.nome
+            coordenadas_local = local.coordenadas_entradas
+        else:
+            coordenadas_local = None
+    elif tipo_local == 'sala' and id_local:
+        local = Sala.objects.filter(pk=id_local).first()
+        if local:
+            nome_local = local.nome_exibicao
+            coordenadas_local = local.coordenadas
+        else:
+            coordenadas_local = None
+    else:
+        local = None
+        coordenadas_local = None
+
+    if local and coordenadas_local:
+        try:
+            latitude, longitude = parsear_coordenadas(coordenadas_local)
+        except ValueError:
+            coordenadas_invalidas.append(nome_local)
+        else:
+            local_selecionado = {
+                'latitude': latitude,
+                'longitude': longitude,
+                'nome': nome_local,
+            }
 
     if categoria == 'bibliotecas':
         locais = Biblioteca.objects.select_related('predio', 'andar')
@@ -169,6 +180,7 @@ def render_mapa(request, categoria=None):
         'marcadores': marcadores,
         'coordenadas_invalidas': coordenadas_invalidas,
         'titulo_mapa': titulos.get(categoria),
+        'local_selecionado': local_selecionado,
     })
 
 
