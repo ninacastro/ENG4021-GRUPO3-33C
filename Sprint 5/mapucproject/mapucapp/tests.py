@@ -14,7 +14,12 @@ from .feriados_service import (
     buscar_feriados,
 )
 from .mapa_utils import parsear_coordenadas
-from .admin import BibliotecaAdminForm, RestauranteAdminForm
+from .admin import (
+    BibliotecaAdminForm,
+    PredioAdminForm,
+    RestauranteAdminForm,
+    SalaAdminForm,
+)
 
 
 class MapaViewTests(TestCase):
@@ -95,15 +100,57 @@ class MapaViewTests(TestCase):
                     parsear_coordenadas(coordenadas)
 
     def test_formularios_admin_exibem_seletor_de_localizacao_no_mapa(self):
-        for form_class in (BibliotecaAdminForm, RestauranteAdminForm):
-            with self.subTest(form=form_class.__name__):
+        formularios = (
+            (BibliotecaAdminForm, 'coordenadas'),
+            (RestauranteAdminForm, 'coordenadas'),
+            (PredioAdminForm, 'coordenadas_entradas'),
+            (SalaAdminForm, 'coordenadas'),
+        )
+        for form_class, campo_nome in formularios:
+            with self.subTest(form=form_class.__name__, campo=campo_nome):
                 form = form_class()
-                campo = str(form['coordenadas'])
+                campo = str(form[campo_nome])
 
                 self.assertIn('coordenadas-seletor', campo)
+                self.assertIn(f'data-coordenadas-input="id_{campo_nome}"', campo)
                 self.assertIn('Clique no mapa', campo)
                 self.assertIn('leaflet@1.9.4/dist/leaflet.js', str(form.media))
                 self.assertIn('coordenadas-admin-v2.js', str(form.media))
+
+    def test_formularios_admin_validam_coordenadas_de_predio_e_sala(self):
+        predio_form = PredioAdminForm(data={
+            'nome': 'Prédio inválido',
+            'sigla_codigo': 'PI',
+            'coordenadas_entradas': 'coordenada inválida',
+            'quantidade_andares': 1,
+            'horario_funcionamento': '08:00-18:00',
+        })
+        self.assertFalse(predio_form.is_valid())
+        self.assertIn('coordenadas_entradas', predio_form.errors)
+
+        predio = Predio.objects.create(
+            nome='Prédio de teste',
+            sigla_codigo='PT',
+            coordenadas_entradas='-22.9785, -43.2324',
+            quantidade_andares=1,
+            horario_funcionamento='08:00-18:00',
+        )
+        andar = Andar.objects.create(
+            predio=predio,
+            numero_andar=1,
+            nome_exibicao='Térreo',
+        )
+        sala_form = SalaAdminForm(data={
+            'codigo_sala': 'S1',
+            'nome_exibicao': 'Sala de teste',
+            'predio': predio.pk,
+            'andar': andar.pk,
+            'coordenadas': 'coordenada inválida',
+            'tipo_sala': 'Aula',
+            'capacidade': 20,
+        })
+        self.assertFalse(sala_form.is_valid())
+        self.assertIn('coordenadas', sala_form.errors)
 
     def test_inicio_exibe_link_para_mapa_em_tela_cheia(self):
         response = self.client.get(reverse('inicio'))

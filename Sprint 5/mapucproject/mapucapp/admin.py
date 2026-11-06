@@ -22,21 +22,25 @@ class CoordenadasMapWidget(TextInput):
 
 
 class CoordenadasMapFormMixin:
+    coordenadas_field = 'coordenadas'
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['coordenadas'].widget = CoordenadasMapWidget()
-        self.fields['coordenadas'].help_text = (
+        self.fields[self.coordenadas_field].widget = CoordenadasMapWidget()
+        self.fields[self.coordenadas_field].help_text = (
             'Clique no mapa para escolher a localização ou arraste o marcador. '
             'Também é possível informar latitude e longitude em graus decimais.'
         )
 
-    def clean_coordenadas(self):
-        coordenadas = self.cleaned_data['coordenadas']
-        try:
-            parsear_coordenadas(coordenadas)
-        except ValueError as erro:
-            raise forms.ValidationError(str(erro)) from erro
-        return coordenadas
+    def clean(self):
+        cleaned_data = super().clean()
+        coordenadas = cleaned_data.get(self.coordenadas_field)
+        if coordenadas is not None:
+            try:
+                parsear_coordenadas(coordenadas)
+            except ValueError as erro:
+                self.add_error(self.coordenadas_field, str(erro))
+        return cleaned_data
 
 
 class BibliotecaAdminForm(CoordenadasMapFormMixin, forms.ModelForm):
@@ -51,6 +55,20 @@ class RestauranteAdminForm(CoordenadasMapFormMixin, forms.ModelForm):
         fields = '__all__'
 
 
+class PredioAdminForm(CoordenadasMapFormMixin, forms.ModelForm):
+    coordenadas_field = 'coordenadas_entradas'
+
+    class Meta:
+        model = Predio
+        fields = '__all__'
+
+
+class SalaAdminForm(CoordenadasMapFormMixin, forms.ModelForm):
+    class Meta:
+        model = Sala
+        fields = '__all__'
+
+
 @admin.register(Biblioteca)
 class BibliotecaAdmin(admin.ModelAdmin):
     form = BibliotecaAdminForm
@@ -62,12 +80,23 @@ class RestauranteAdmin(admin.ModelAdmin):
     form = RestauranteAdminForm
     list_display = ('nome', 'predio', 'telefone')
 
+
+@admin.register(Predio)
+class PredioAdmin(admin.ModelAdmin):
+    form = PredioAdminForm
+    list_display = ('nome', 'sigla_codigo', 'quantidade_andares', 'horario_funcionamento')
+
+
+@admin.register(Sala)
+class SalaAdmin(admin.ModelAdmin):
+    form = SalaAdminForm
+    list_display = ('codigo_sala', 'nome_exibicao', 'predio', 'andar', 'tipo_sala')
+
+
 admin.site.register(Professor)
 admin.site.register(Disciplina)
 admin.site.register(Aluno)
 admin.site.register(Turma)
-admin.site.register(Predio)
 admin.site.register(Andar)
-admin.site.register(Sala)
 admin.site.register(Departamento)
 admin.site.register(Notificacao)
