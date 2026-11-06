@@ -1,4 +1,6 @@
+
 const centroPUC = [-22.9785, -43.2324];
+
 const limitesCampus = [
   [-22.9810, -43.2360],
   [-22.9750, -43.2280],
@@ -20,6 +22,7 @@ L.tileLayer(
   }
 ).addTo(mapa);
 
+// Adiciona os marcadores gerais do mapa
 const dadosMarcadores = document.getElementById('mapa-marcadores');
 
 if (dadosMarcadores) {
@@ -32,10 +35,48 @@ if (dadosMarcadores) {
 
     nome.textContent = marcador.nome;
     detalhes.textContent = marcador.detalhes;
+
     conteudoPopup.append(nome, detalhes);
 
     L.marker([marcador.latitude, marcador.longitude])
       .addTo(mapa)
       .bindPopup(conteudoPopup);
   });
+}
+
+// Identifica o local selecionado na busca
+const dadosCoordenadas = document.getElementById('coordenadas-selecionadas');
+const dadosNomeLocal = document.getElementById('nome-local-selecionado');
+
+if (dadosCoordenadas && dadosNomeLocal) {
+  const coordenadas = JSON.parse(dadosCoordenadas.textContent);
+  const nomeLocal = JSON.parse(dadosNomeLocal.textContent);
+
+  if (coordenadas && nomeLocal) {
+    const correspondencia = coordenadas.match(
+      /^\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)\s*$/
+    );
+
+    if (correspondencia) {
+      const latitude = Number(correspondencia[1]);
+      const longitude = Number(correspondencia[2]);
+
+      if (
+        Number.isFinite(latitude) &&
+        Number.isFinite(longitude) &&
+        Math.abs(latitude) <= 90 &&
+        Math.abs(longitude) <= 180
+      ) {
+        mapa.setView([latitude, longitude], 19);
+
+        const conteudoPopup = document.createElement('strong');
+        conteudoPopup.textContent = nomeLocal;
+
+        L.marker([latitude, longitude])
+          .addTo(mapa)
+          .bindPopup(conteudoPopup)
+          .openPopup();
+      }
+    }
+  }
 }
