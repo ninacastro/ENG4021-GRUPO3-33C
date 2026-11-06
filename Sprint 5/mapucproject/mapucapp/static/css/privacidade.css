@@ -1,13 +1,17 @@
-* {
+ .pagina-privacidade,
+.pagina-privacidade *,
+.janela-privacidade,
+.janela-privacidade * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-body {
+.pagina-privacidade {
     font-family: Arial, sans-serif;
     background-color: #f1f5f8;
     color: #172b49;
+    min-height: 100vh;
 }
 
 .pagina {
@@ -76,3 +80,119 @@ body {
     color: #737d89;
 }
 
+.modal-privacidade {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background-color: rgba(15, 23, 42, 0.55);
+}
+
+.modal-privacidade[hidden] {
+    display: none;
+}
+
+.janela-privacidade {
+    display: flex;
+    flex-direction: column;
+    width: min(640px, 100%);
+    max-height: min(80vh, 760px);
+    overflow: hidden;
+    border-radius: 21px;
+    background-color: #f1f5f8;
+    color: #172b49;
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.25);
+}
+
+.janela-privacidade .cabecalho {
+    flex: 0 0 auto;
+}
+
+.janela-privacidade .conteudo {
+    min-height: 0;
+    overflow-y: auto;
+}
+
+.fechar-privacidade {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 37px;
+    width: 37px;
+    height: 37px;
+    margin-left: auto;
+    border: 1px solid #dce1e7;
+    border-radius: 50%;
+    background-color: #ffffff;
+    color: #172b49;
+    font-size: 25px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.fechar-privacidade:hover {
+    background-color: #edf1f5;
+}
+
+.fechar-privacidade:focus-visible {
+    outline: 3px solid #41508c;
+    outline-offset: 2px;
+}
+
+.janela-privacidade .confirmacao-deslogar {
+    gap: 20px;
+}
+
+.acoes-deslogar {
+    display: flex;
+    gap: 12px;
+}
+
+.acoes-deslogar form {
+    flex: 1;
+}
+
+.botao-sair-modal,
+.botao-cancelar-modal {
+    width: 100%;
+    padding: 14px;
+    border: 0;
+    border-radius: 12px;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.botao-sair-modal {
+    background-color: #d64545;
+    color: #ffffff;
+}
+
+.botao-cancelar-modal {
+    flex: 1;
+    background-color: #ffffff;
+    color: #172b49;
+}
+
+.botao-sair-modal:focus-visible,
+.botao-cancelar-modal:focus-visible {
+    outline: 3px solid #41508c;
+    outline-offset: 2px;
+}
+
+@media (max-width: 600px) {
+    .modal-privacidade {
+        padding: 14px;
+    }
+
+    .janela-privacidade {
+        max-height: 90vh;
+    }
+
+    .acoes-deslogar {
+        flex-direction: column;
+    }
+}

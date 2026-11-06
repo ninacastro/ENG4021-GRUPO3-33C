@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>MaPUC - Perfil</title>
     <link rel="stylesheet" href="{% static 'css/telaperfilmelhorado.css' %}?v=2">
+    <link rel="stylesheet" href="{% static 'css/privacidade.css' %}">
+    <script src="{% static 'js/privacidade-modal.js' %}" defer></script>
   </head>
   <body>
     <header class="topbar">
@@ -39,23 +41,25 @@
           <span class="seta" aria-hidden="true">›</span>
         </a>
 
-        <a class="caixa opcao" href="{% url 'privacidade' %}">
+        <button class="caixa opcao botao-privacidade" id="abrir-privacidade" type="button"
+                aria-haspopup="dialog" aria-controls="modal-privacidade">
           <div class="texto-opcao">
             <h3>POLÍTICA DE PRIVACIDADE</h3>
             <p class="meta">Proteção de dados e localização</p>
           </div>
           <span class="seta" aria-hidden="true">›</span>
-        </a>
+        </button>
       </nav>
 
       <nav class="linha" aria-label="Sessão e suporte">
-        <a class="caixa opcao" href="{% url 'deslogar' %}">
+        <button class="caixa opcao" id="abrir-deslogar" type="button"
+                aria-haspopup="dialog" aria-controls="modal-deslogar">
           <div class="texto-opcao">
             <h3 class="vermelho">DESLOGAR</h3>
             <p class="meta">Encerrar sessão no dispositivo</p>
           </div>
           <span class="seta" aria-hidden="true">›</span>
-        </a>
+        </button>
 
         <div class="caixa opcao">
           <div class="texto-opcao">
@@ -69,5 +73,41 @@
     <footer class="rodape">
       <a class="voltar-rodape" href="{% url 'inicio' %}">← VOLTAR</a>
     </footer>
+
+    <div class="modal-privacidade" id="modal-privacidade" hidden>
+      <section class="janela-privacidade" role="dialog" aria-modal="true"
+               aria-labelledby="titulo-privacidade" tabindex="-1">
+        <header class="cabecalho">
+          <h1 id="titulo-privacidade">Política de privacidade</h1>
+          <button class="fechar-privacidade" id="fechar-privacidade" type="button"
+                  aria-label="Fechar política de privacidade">×</button>
+        </header>
+        {% include "partials/privacidade_conteudo.html" %}
+      </section>
+    </div>
+
+    <div class="modal-privacidade" id="modal-deslogar" hidden>
+      <section class="janela-privacidade" role="dialog" aria-modal="true"
+               aria-labelledby="titulo-deslogar" tabindex="-1">
+        <header class="cabecalho">
+          <h1 id="titulo-deslogar">Sair da conta?</h1>
+        </header>
+        <div class="conteudo confirmacao-deslogar">
+          <p class="descricao">
+            Você será desconectado e precisará informar seu cadastro e senha
+            para acessar o MaPUC novamente.
+          </p>
+          <div class="acoes-deslogar">
+            <form method="post" action="{% url 'logout' %}">
+              {% csrf_token %}
+              <button type="submit" class="botao-sair-modal">Sair</button>
+            </form>
+            <button type="button" class="botao-cancelar-modal" id="cancelar-deslogar">
+              Cancelar
+            </button>
+          </div>
+        </div>
+      </section>
+    </div>
   </body>
 </html>

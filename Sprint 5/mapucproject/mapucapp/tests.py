@@ -527,8 +527,14 @@ class NavegacaoTelasTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'telaperfilmelhorado.html')
         self.assertContains(response, reverse('dados'))
-        self.assertContains(response, reverse('privacidade'))
-        self.assertContains(response, reverse('deslogar'))
+        self.assertContains(response, 'id="abrir-privacidade"')
+        self.assertContains(response, 'id="modal-privacidade" hidden')
+        self.assertContains(response, 'id="abrir-deslogar"')
+        self.assertContains(response, 'id="modal-deslogar" hidden')
+        self.assertContains(response, 'id="cancelar-deslogar"')
+        self.assertContains(response, f'action="{reverse("logout")}"')
+        self.assertContains(response, '/static/js/privacidade-modal.js')
+        self.assertContains(response, 'Dados que usamos')
         self.assertContains(response, self.aluno.nome)
 
     def test_perfil_exibe_o_aluno_da_sessao_e_nao_o_primeiro_cadastrado(self):
