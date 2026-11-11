@@ -5,13 +5,27 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Mapa - MaPUC</title>
-  <link rel="stylesheet" href="{% static 'css/mapa-puc.css' %}?v=2">
+  <link rel="stylesheet" href="{% static 'css/mapa-puc.css' %}?v=3">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 <body class="pagina-mapa">
   <main class="mapa-container mapa-container--tela-cheia">
     <div id="mapa-puc" class="mapa-puc"></div>
+    <section class="controles-localizacao" aria-label="Localização e rota">
+      <button id="botao-localizacao" class="botao-controle-mapa" type="button">
+        Usar minha localização
+      </button>
+      <button id="botao-rota" class="botao-controle-mapa" type="button" disabled>
+        Traçar rota a pé
+      </button>
+      <p class="privacidade-rota">
+        Ao traçar a rota, sua posição será enviada ao serviço público de roteamento Valhalla/OSM.
+      </p>
+      <p id="status-localizacao" class="status-localizacao" role="status" aria-live="polite">
+        Permita o acesso à localização para iniciar.
+      </p>
+    </section>
     {% if titulo_mapa %}
       <h1 class="titulo-categoria-mapa">{{ titulo_mapa }}</h1>
     {% endif %}
@@ -25,6 +39,6 @@
   {% endif %}
   {{ marcadores|json_script:"mapa-marcadores" }}
   {{ local_selecionado|json_script:"mapa-local-selecionado" }}
-  <script src="{% static 'js/mapa-puc.js' %}?v=3"></script>
+  <script src="{% static 'js/mapa-puc.js' %}?v=4"></script>
 </body>
 </html>

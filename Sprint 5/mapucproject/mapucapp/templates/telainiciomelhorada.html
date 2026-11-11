@@ -6,7 +6,7 @@
     <title>Início - MaPUC</title>
 
     <link rel="stylesheet" href="{% static 'css/telainicio-melhorada.css' %}?v=3">
-    <link rel="stylesheet" href="{% static 'css/mapa-puc.css' %}?v=2">
+    <link rel="stylesheet" href="{% static 'css/mapa-puc.css' %}?v=3">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
@@ -115,9 +115,7 @@
         </div>
     </main>
 
-    {{ aulas_notificacao|json_script:"dados-aulas" }}
-
-    <script src="{% static 'js/mapa-puc.js' %}?v=3"></script>
+    <script src="{% static 'js/mapa-puc.js' %}?v=4"></script>
 
     <script>
     (function () {
