@@ -8,8 +8,18 @@
     <link rel="stylesheet" href="{% static 'css/telainicio-melhorada.css' %}?v=3">
     <link rel="stylesheet" href="{% static 'css/mapa-puc.css' %}?v=2">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <style>
+      .botao-favoritar { background:none; border:none; cursor:pointer; font-size:20px; color:#f1b800; vertical-align:middle; }
+      .favoritos-inicio { background:#fff; border:1px solid #e0e5eb; border-radius:16px; padding:14px 18px; margin-bottom:14px; }
+      .favoritos-inicio h2 { font-size:18px; margin-bottom:8px; }
+      .lista-favoritos { list-style:none; padding:0; margin:0; }
+      .lista-favoritos li { padding:6px 0; border-bottom:1px solid #f0f0f0; }
+      .lista-favoritos li:last-child { border-bottom:none; }
+      .lista-favoritos a { text-decoration:none; }
+      .lista-favoritos button { background:none; border:none; color:#c0392b; cursor:pointer; font-size:13px; margin-left:8px; }
+    </style>
 </head>
 
 <body class="tela-inicio">
@@ -49,6 +59,12 @@
                     <a href="{% url 'mapa' %}?local=sala&id={{ sala.id_sala }}">
                         <strong>{{ sala.nome_exibicao }}</strong> ({{ sala.codigo_sala }})
                     </a>
+                    <form action="{% url 'favoritar_sala' sala.id_sala %}" method="post" style="display:inline">
+                        {% csrf_token %}
+                        <button type="submit" class="botao-favoritar" title="Favoritar / desfavoritar">
+                            {% if sala.id_sala in ids_favoritos %}★{% else %}☆{% endif %}
+                        </button>
+                    </form>
                     <br>
                     {{ sala.predio.nome }} · {{ sala.andar }} · {{ sala.tipo_sala }}
                 </p>
@@ -62,9 +78,27 @@
 
         <div class="conteudo-inicio">
 
+            {% if favoritos %}
+            <section class="favoritos-inicio">
+                <h2>★ Locais favoritos</h2>
+                <ul class="lista-favoritos">
+                    {% for sala in favoritos %}
+                    <li>
+                        <a href="{% url 'mapa' %}?local=sala&id={{ sala.id_sala }}">
+                            {{ sala.nome_exibicao }} ({{ sala.codigo_sala }}) — {{ sala.predio.nome }}
+                        </a>
+                        <form action="{% url 'favoritar_sala' sala.id_sala %}" method="post" style="display:inline">
+                            {% csrf_token %}
+                            <button type="submit" title="Remover dos favoritos">remover</button>
+                        </form>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </section>
+            {% endif %}
+
             <div class="mapa-container">
                 <div id="mapa-puc" class="mapa-puc"></div>
-
                 <a class="botao-acao botao-mapa-tela-cheia" href="{% url 'mapa' %}">
                     Abrir mapa em tela cheia
                 </a>
@@ -81,7 +115,68 @@
         </div>
     </main>
 
+    {{ aulas_notificacao|json_script:"dados-aulas" }}
+
     <script src="{% static 'js/mapa-puc.js' %}?v=3"></script>
+
+    <script>
+    (function () {
+      const el = document.getElementById('dados-aulas');
+      if (!el) return;
+      const aulas = JSON.parse(el.textContent);
+      if (!aulas.length) return;
+
+      const DIAS = { 'domingo':0, 'segunda-feira':1, 'terça-feira':2, 'quarta-feira':3, 'quinta-feira':4, 'sexta-feira':5, 'sábado':6 };
+
+      if ('Notification' in window && Notification.permission === 'default') {
+        Notification.requestPermission();
+      }
+
+      const jaAvisadas = new Set();
+
+      function proximaOcorrencia(dia, hora) {
+        const alvo = DIAS[dia];
+        if (alvo === undefined) return null;
+        const p = hora.split(':');
+        const agora = new Date();
+        const data = new Date(agora);
+        data.setHours(Number(p[0]), Number(p[1]), 0, 0);
+        let diff = (alvo - agora.getDay() + 7) % 7;
+        if (diff === 0 && data <= agora) diff = 7;
+        data.setDate(data.getDate() + diff);
+        return data;
+      }
+
+      function mostrarAviso(aula) {
+        const titulo = 'Aula em 1 hora: ' + aula.disciplina;
+        const corpo = 'Sala ' + aula.codigo_sala + ' — clique para ver o caminho.';
+        const url = aula.sala_id ? '/mapa/?local=sala&id=' + aula.sala_id : '/grade/';
+        if ('Notification' in window && Notification.permission === 'granted') {
+          const n = new Notification(titulo, { body: corpo });
+          n.onclick = function () { window.open(url, '_blank'); };
+        } else {
+          if (confirm(titulo + '\n' + corpo + '\n\nVer o caminho agora?')) window.open(url, '_blank');
+        }
+      }
+
+      function verificar() {
+        const agora = new Date();
+        aulas.forEach(function (aula) {
+          const inicio = proximaOcorrencia(aula.dia_semana, aula.hora_inicio);
+          if (!inicio) return;
+          const minutosAte = (inicio - agora) / 60000;
+          const chave = aula.disciplina + '|' + inicio.toDateString() + '|' + aula.hora_inicio;
+          if (minutosAte <= 61 && minutosAte >= 58 && !jaAvisadas.has(chave)) {
+            jaAvisadas.add(chave);
+            mostrarAviso(aula);
+          }
+        });
+      }
+
+      verificar();
+      setInterval(verificar, 30000);
+    })();
+    </script>
 
 </body>
 </html>

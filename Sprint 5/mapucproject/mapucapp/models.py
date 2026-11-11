@@ -160,3 +160,21 @@ class AulaGrade(models.Model):
 
     def __str__(self):
         return f'{self.codigo_disciplina} - {self.get_dia_semana_display()}'
+
+
+class LocalFavorito(models.Model):
+    id_favorito = models.AutoField(primary_key=True)
+    aluno = models.ForeignKey(Aluno, on_delete=models.CASCADE, related_name='locais_favoritos')
+    sala = models.ForeignKey(Sala, on_delete=models.CASCADE, related_name='favoritado_por')
+    data_criacao = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['aluno', 'sala'],
+                name='unique_favorito_aluno_sala',
+            ),
+        ]
+
+    def __str__(self):
+        return f'{self.sala.nome_exibicao} - {self.aluno.nome}'

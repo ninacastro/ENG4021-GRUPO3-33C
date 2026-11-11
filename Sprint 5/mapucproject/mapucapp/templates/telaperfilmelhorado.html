@@ -61,12 +61,14 @@
           <span class="seta" aria-hidden="true">›</span>
         </button>
 
-        <div class="caixa opcao">
+        <button class="caixa opcao" id="abrir-ajuda" type="button"
+                aria-haspopup="dialog" aria-controls="modal-ajuda">
           <div class="texto-opcao">
             <h3>AJUDA</h3>
-            <p class="meta">Para suporte, procure os canais oficiais da PUC-Rio.</p>
+            <p class="meta">Dúvidas e canais de suporte</p>
           </div>
-        </div>
+          <span class="seta" aria-hidden="true">›</span>
+        </button>
       </nav>
     </main>
 
@@ -109,5 +111,41 @@
         </div>
       </section>
     </div>
+
+    <div class="modal-privacidade" id="modal-ajuda" hidden>
+      <section class="janela-privacidade" role="dialog" aria-modal="true"
+               aria-labelledby="titulo-ajuda" tabindex="-1">
+        <header class="cabecalho">
+          <h1 id="titulo-ajuda">Ajuda</h1>
+          <button class="fechar-privacidade" id="fechar-ajuda" type="button"
+                  aria-label="Fechar ajuda">×</button>
+        </header>
+        <div class="conteudo">
+          <p class="descricao">Precisa de ajuda com o MaPUC? Aqui vão algumas orientações:</p>
+          <p class="descricao">
+            • Para mudar seus dados, use "Alterar dados" nesta tela.<br>
+            • Para encerrar a sessão, use "Deslogar".<br>
+            • Para ver salas, horários e rotas, volte para a tela de início.
+          </p>
+          <p class="descricao">
+            Suporte oficial: procure os canais da PUC-Rio (coordenação do seu curso
+            ou a central de atendimento ao aluno).
+          </p>
+        </div>
+      </section>
+    </div>
+
+    <script>
+      (function () {
+        const abrir = document.getElementById('abrir-ajuda');
+        const modal = document.getElementById('modal-ajuda');
+        const fechar = document.getElementById('fechar-ajuda');
+        if (abrir) abrir.addEventListener('click', () => { modal.hidden = false; });
+        if (fechar) fechar.addEventListener('click', () => { modal.hidden = true; });
+        if (modal) modal.addEventListener('click', (e) => {
+          if (e.target === modal) modal.hidden = true;
+        });
+      })();
+    </script>
   </body>
 </html>
