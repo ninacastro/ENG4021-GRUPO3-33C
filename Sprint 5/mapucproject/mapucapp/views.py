@@ -148,19 +148,6 @@ def inicio(request):
         favoritos = [f.sala for f in favoritos_qs]
         ids_favoritos = {f.sala_id for f in favoritos_qs}
 
-    # --- Aulas para a notificação de 1h antes ---
-    aulas = list(AulaGrade.objects.filter(aluno=aluno)) if aluno else []
-    _associar_salas_do_mapa(aulas)
-    aulas_notificacao = []
-    for a in aulas:
-        aulas_notificacao.append({
-            'dia_semana': a.dia_semana,
-            'hora_inicio': a.horario.split('-')[0].strip(),
-            'disciplina': a.nome_disciplina,
-            'codigo_sala': a.codigo_sala,
-            'sala_id': a.sala_mapa.id_sala if a.sala_mapa else None,
-        })
-
     context = {
         'form_busca': form_busca,
         'busca': busca,
@@ -168,13 +155,11 @@ def inicio(request):
         'salas': salas,
         'favoritos': favoritos,
         'ids_favoritos': ids_favoritos,
-        'aulas_notificacao': aulas_notificacao,
     }
 
     return render(request, "telainiciomelhorada.html", context)
 
 
-@require_POST
 @require_POST
 def favoritar_sala(request, sala_id):
     aluno = obter_aluno_logado(request)
@@ -468,7 +453,21 @@ def notificacoes(request):
         avisos_do_aluno = Notificacao.objects.none()
         notificacoes_nao_lidas = False
 
+    # --- Aulas para a notificação de 1h antes ---
+    aulas = list(AulaGrade.objects.filter(aluno=aluno_atual)) if aluno_atual else []
+    _associar_salas_do_mapa(aulas)
+    aulas_notificacao = []
+    for a in aulas:
+        aulas_notificacao.append({
+            'dia_semana': a.dia_semana,
+            'hora_inicio': a.horario.split('-')[0].strip(),
+            'disciplina': a.nome_disciplina,
+            'codigo_sala': a.codigo_sala,
+            'sala_id': a.sala_mapa.id_sala if a.sala_mapa else None,
+        })
+
     context = {
+        'aulas_notificacao': aulas_notificacao,
         'notificacoes': avisos_do_aluno,
         'notificacoes_nao_lidas': notificacoes_nao_lidas,
         'aluno': aluno_atual,

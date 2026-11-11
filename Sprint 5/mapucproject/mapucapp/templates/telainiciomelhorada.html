@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>Início - MaPUC</title>
 
-    <link rel="stylesheet" href="{% static 'css/telainicio-melhorada.css' %}?v=4">
+    <link rel="stylesheet" href="{% static 'css/telainicio-melhorada.css' %}?v=5">
     <link rel="stylesheet" href="{% static 'css/mapa-puc.css' %}?v=3">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -78,17 +78,17 @@
         <div class="conteudo-inicio">
 
             {% if favoritos %}
-            <section class="favoritos-inicio">
-                <h2>★ Locais favoritos</h2>
+            <section class="favoritos-inicio" aria-label="Locais favoritos">
+                <h2>★ Favoritos</h2>
                 <ul class="lista-favoritos">
                     {% for sala in favoritos %}
                     <li>
-                        <a href="{% url 'mapa' %}?local=sala&id={{ sala.id_sala }}">
-                            {{ sala.nome_exibicao }} ({{ sala.codigo_sala }}) — {{ sala.predio.nome }}
+                        <a href="{% url 'mapa' %}?local=sala&id={{ sala.id_sala }}" title="{{ sala.predio.nome }}">
+                            {{ sala.nome_exibicao }}
                         </a>
                         <form class="form-favoritar" action="{% url 'favoritar_sala' sala.id_sala %}" method="post">
                             {% csrf_token %}
-                            <button class="botao-remover-favorito" type="submit" title="Remover dos favoritos">remover</button>
+                            <button class="botao-remover-favorito" type="submit" aria-label="Remover {{ sala.nome_exibicao }} dos favoritos" title="Remover dos favoritos">×</button>
                         </form>
                     </li>
                     {% endfor %}
@@ -115,65 +115,6 @@
     </main>
 
     <script src="{% static 'js/mapa-puc.js' %}?v=4"></script>
-
-    <script>
-    (function () {
-      const el = document.getElementById('dados-aulas');
-      if (!el) return;
-      const aulas = JSON.parse(el.textContent);
-      if (!aulas.length) return;
-
-      const DIAS = { 'domingo':0, 'segunda-feira':1, 'terça-feira':2, 'quarta-feira':3, 'quinta-feira':4, 'sexta-feira':5, 'sábado':6 };
-
-      if ('Notification' in window && Notification.permission === 'default') {
-        Notification.requestPermission();
-      }
-
-      const jaAvisadas = new Set();
-
-      function proximaOcorrencia(dia, hora) {
-        const alvo = DIAS[dia];
-        if (alvo === undefined) return null;
-        const p = hora.split(':');
-        const agora = new Date();
-        const data = new Date(agora);
-        data.setHours(Number(p[0]), Number(p[1]), 0, 0);
-        let diff = (alvo - agora.getDay() + 7) % 7;
-        if (diff === 0 && data <= agora) diff = 7;
-        data.setDate(data.getDate() + diff);
-        return data;
-      }
-
-      function mostrarAviso(aula) {
-        const titulo = 'Aula em 1 hora: ' + aula.disciplina;
-        const corpo = 'Sala ' + aula.codigo_sala + ' — clique para ver o caminho.';
-        const url = aula.sala_id ? '/mapa/?local=sala&id=' + aula.sala_id : '/grade/';
-        if ('Notification' in window && Notification.permission === 'granted') {
-          const n = new Notification(titulo, { body: corpo });
-          n.onclick = function () { window.open(url, '_blank'); };
-        } else {
-          if (confirm(titulo + '\n' + corpo + '\n\nVer o caminho agora?')) window.open(url, '_blank');
-        }
-      }
-
-      function verificar() {
-        const agora = new Date();
-        aulas.forEach(function (aula) {
-          const inicio = proximaOcorrencia(aula.dia_semana, aula.hora_inicio);
-          if (!inicio) return;
-          const minutosAte = (inicio - agora) / 60000;
-          const chave = aula.disciplina + '|' + inicio.toDateString() + '|' + aula.hora_inicio;
-          if (minutosAte <= 61 && minutosAte >= 58 && !jaAvisadas.has(chave)) {
-            jaAvisadas.add(chave);
-            mostrarAviso(aula);
-          }
-        });
-      }
-
-      verificar();
-      setInterval(verificar, 30000);
-    })();
-    </script>
 
 </body>
 </html>
