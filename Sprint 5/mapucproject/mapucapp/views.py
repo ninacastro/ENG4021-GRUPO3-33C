@@ -115,6 +115,8 @@ def inicio(request):
     predios = Predio.objects.none()
     salas = Sala.objects.none()
 
+    aluno = obter_aluno_logado(request)
+
     if busca:
         predios = Predio.objects.filter(
             Q(nome__icontains=busca) |
@@ -128,22 +130,66 @@ def inicio(request):
             Q(predio__sigla_codigo__icontains=busca)
         )
 
-        aluno = obter_aluno_logado(request)
-
         if aluno:
-            HistoricoBusca.objects.create(
-                aluno=aluno,
-                termo=busca
-            )
+            HistoricoBusca.objects.create(aluno=aluno, termo=busca)
+
+    # --- Locais favoritos do aluno ---
+    favoritos = []
+    ids_favoritos = set()
+    if aluno:
+        favoritos_qs = (
+            LocalFavorito.objects
+            .filter(aluno=aluno)
+            .select_related('sala', 'sala__predio')
+            .order_by('-data_criacao')
+        )
+        favoritos = [f.sala for f in favoritos_qs]
+        ids_favoritos = {f.sala_id for f in favoritos_qs}
+
+    # --- Aulas para a notificação de 1h antes ---
+    aulas = list(AulaGrade.objects.filter(aluno=aluno)) if aluno else []
+    _associar_salas_do_mapa(aulas)
+    aulas_notificacao = []
+    for a in aulas:
+        aulas_notificacao.append({
+            'dia_semana': a.dia_semana,
+            'hora_inicio': a.horario.split('-')[0].strip(),
+            'disciplina': a.nome_disciplina,
+            'codigo_sala': a.codigo_sala,
+            'sala_id': a.sala_mapa.id_sala if a.sala_mapa else None,
+        })
 
     context = {
         'form_busca': form_busca,
         'busca': busca,
         'predios': predios,
         'salas': salas,
+        'favoritos': favoritos,
+        'ids_favoritos': ids_favoritos,
+        'aulas_notificacao': aulas_notificacao,
     }
 
     return render(request, "telainiciomelhorada.html", context)
+
+
+@require_POST
+def favoritar_sala(request, sala_id):
+    aluno = obter_aluno_logado(request)
+    if aluno is None:
+        return redirect('login')
+
+    sala = Sala.objects.filter(pk=sala_id).first()
+    if sala is None:
+        raise Http404('Sala não encontrada.')
+
+    favorito = LocalFavorito.objects.filter(aluno=aluno, sala=sala).first()
+    if favorito:
+        favorito.delete()
+    else:
+        LocalFavorito.objects.create(aluno=aluno, sala=sala)
+
+    return redirect('inicio')
+
 
 def historico(request):
     aluno = obter_aluno_logado(request)

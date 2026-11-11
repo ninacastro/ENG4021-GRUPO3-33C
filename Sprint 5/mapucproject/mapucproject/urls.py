@@ -1,19 +1,3 @@
-"""
-URL configuration for mapucproject project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/6.1/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
 from django.urls import path
 from mapucapp.views import *
@@ -31,7 +15,7 @@ urlpatterns = [
     path('grade/', grade, name='grade'),
     path('feriados/', feriados, name='feriados'),
     path('detalhes-aula/', aula, name='aula'),
-    path('deslogar/',deslogar, name='deslogar'),
+    path('deslogar/', deslogar, name='deslogar'),
     path('dados/', dados, name='dados'),
     path('avisos/', notificacoes, name='avisos'),
     path('notificacoes/', notificacoes, name='notificacoes'),
@@ -41,4 +25,5 @@ urlpatterns = [
     path('aulas/<int:aula_id>/excluir/', excluir_aula, name='excluir_aula'),
     path('historico/', historico, name='historico'),
 
+    path('favoritar/<int:sala_id>/', favoritar_sala, name='favoritar_sala'),
 ]
