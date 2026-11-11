@@ -1,11 +1,13 @@
 from functools import reduce, wraps
 import logging
 import operator
+from urllib.parse import urlencode
 
 from django.contrib import messages
 from django.contrib.auth.hashers import check_password, identify_hasher, make_password
 from django.http import Http404
 from django.shortcuts import redirect, render
+from django.urls import reverse
 from django.utils.crypto import constant_time_compare
 from django.views.decorators.http import require_POST
 from django.db.models import Q
@@ -173,6 +175,7 @@ def inicio(request):
 
 
 @require_POST
+@require_POST
 def favoritar_sala(request, sala_id):
     aluno = obter_aluno_logado(request)
     if aluno is None:
@@ -188,6 +191,9 @@ def favoritar_sala(request, sala_id):
     else:
         LocalFavorito.objects.create(aluno=aluno, sala=sala)
 
+    busca = request.POST.get('busca', '').strip()
+    if busca:
+        return redirect(f"{reverse('inicio')}?{urlencode({'busca': busca})}")
     return redirect('inicio')
 
 

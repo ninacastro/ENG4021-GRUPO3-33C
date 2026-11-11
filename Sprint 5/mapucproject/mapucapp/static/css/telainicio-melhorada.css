@@ -126,6 +126,101 @@ body {
   margin-top: 0;
 }
 
+.resultado-sala {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.resultado-sala:last-of-type {
+  border-bottom: 0;
+}
+
+.resultado-sala-info {
+  min-width: 0;
+}
+
+.resultado-sala-info a,
+.lista-favoritos a {
+  text-decoration: none;
+}
+
+.resultado-sala-detalhes {
+  margin-top: 4px;
+  color: #687586;
+  font-size: 14px;
+}
+
+.form-favoritar {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  margin: 0;
+}
+
+.botao-favoritar {
+  padding: 4px 8px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #b78100;
+  font: inherit;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.botao-favoritar:hover {
+  background: #fff5d6;
+}
+
+.botao-favoritar:focus-visible,
+.botao-remover-favorito:focus-visible {
+  outline: 3px solid #a5dec4;
+  outline-offset: 2px;
+}
+
+.favoritos-inicio {
+  margin-bottom: 14px;
+  padding: 14px 18px;
+  border: 1px solid #e0e5eb;
+  border-radius: 16px;
+  background: #fff;
+}
+
+.favoritos-inicio h2 {
+  margin: 0 0 8px;
+  font-size: 18px;
+}
+
+.lista-favoritos {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lista-favoritos li {
+  padding: 6px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.lista-favoritos li:last-child {
+  border-bottom: 0;
+}
+
+.botao-remover-favorito {
+  margin-left: 8px;
+  border: 0;
+  background: transparent;
+  color: #c0392b;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
 .mini-mapa {
   width: 600px;
   height: 350px;

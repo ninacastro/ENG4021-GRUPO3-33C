@@ -5,21 +5,11 @@
     <meta charset="UTF-8">
     <title>Início - MaPUC</title>
 
-    <link rel="stylesheet" href="{% static 'css/telainicio-melhorada.css' %}?v=3">
+    <link rel="stylesheet" href="{% static 'css/telainicio-melhorada.css' %}?v=4">
     <link rel="stylesheet" href="{% static 'css/mapa-puc.css' %}?v=3">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-    <style>
-      .botao-favoritar { background:none; border:none; cursor:pointer; font-size:20px; color:#f1b800; vertical-align:middle; }
-      .favoritos-inicio { background:#fff; border:1px solid #e0e5eb; border-radius:16px; padding:14px 18px; margin-bottom:14px; }
-      .favoritos-inicio h2 { font-size:18px; margin-bottom:8px; }
-      .lista-favoritos { list-style:none; padding:0; margin:0; }
-      .lista-favoritos li { padding:6px 0; border-bottom:1px solid #f0f0f0; }
-      .lista-favoritos li:last-child { border-bottom:none; }
-      .lista-favoritos a { text-decoration:none; }
-      .lista-favoritos button { background:none; border:none; color:#c0392b; cursor:pointer; font-size:13px; margin-left:8px; }
-    </style>
 </head>
 
 <body class="tela-inicio">
@@ -55,19 +45,28 @@
             {% endfor %}
 
             {% for sala in salas %}
-                <p>
-                    <a href="{% url 'mapa' %}?local=sala&id={{ sala.id_sala }}">
-                        <strong>{{ sala.nome_exibicao }}</strong> ({{ sala.codigo_sala }})
-                    </a>
-                    <form action="{% url 'favoritar_sala' sala.id_sala %}" method="post" style="display:inline">
+                <div class="resultado-sala">
+                    <div class="resultado-sala-info">
+                        <a href="{% url 'mapa' %}?local=sala&id={{ sala.id_sala }}">
+                            <strong>{{ sala.nome_exibicao }}</strong> ({{ sala.codigo_sala }})
+                        </a>
+                        <div class="resultado-sala-detalhes">
+                            {{ sala.predio.nome }} · {{ sala.andar }} · {{ sala.tipo_sala }}
+                        </div>
+                    </div>
+                    <form class="form-favoritar" action="{% url 'favoritar_sala' sala.id_sala %}" method="post">
                         {% csrf_token %}
-                        <button type="submit" class="botao-favoritar" title="Favoritar / desfavoritar">
+                        <input type="hidden" name="busca" value="{{ busca }}">
+                        <button
+                            type="submit"
+                            class="botao-favoritar"
+                            aria-label="{% if sala.id_sala in ids_favoritos %}Remover {{ sala.nome_exibicao }} dos favoritos{% else %}Adicionar {{ sala.nome_exibicao }} aos favoritos{% endif %}"
+                            title="{% if sala.id_sala in ids_favoritos %}Remover dos favoritos{% else %}Adicionar aos favoritos{% endif %}"
+                        >
                             {% if sala.id_sala in ids_favoritos %}★{% else %}☆{% endif %}
                         </button>
                     </form>
-                    <br>
-                    {{ sala.predio.nome }} · {{ sala.andar }} · {{ sala.tipo_sala }}
-                </p>
+                </div>
             {% endfor %}
 
             {% if not predios and not salas %}
@@ -87,9 +86,9 @@
                         <a href="{% url 'mapa' %}?local=sala&id={{ sala.id_sala }}">
                             {{ sala.nome_exibicao }} ({{ sala.codigo_sala }}) — {{ sala.predio.nome }}
                         </a>
-                        <form action="{% url 'favoritar_sala' sala.id_sala %}" method="post" style="display:inline">
+                        <form class="form-favoritar" action="{% url 'favoritar_sala' sala.id_sala %}" method="post">
                             {% csrf_token %}
-                            <button type="submit" title="Remover dos favoritos">remover</button>
+                            <button class="botao-remover-favorito" type="submit" title="Remover dos favoritos">remover</button>
                         </form>
                     </li>
                     {% endfor %}

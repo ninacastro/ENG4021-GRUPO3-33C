@@ -12,6 +12,7 @@ from .models import (
     Andar,
     AulaGrade,
     Biblioteca,
+    LocalFavorito,
     Notificacao,
     Predio,
     Restaurante,
@@ -251,6 +252,56 @@ class MapaViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, reverse('mapa'))
         self.assertContains(response, 'Abrir mapa em tela cheia')
+
+    def test_resultado_de_sala_exibe_botao_de_favorito_e_mantem_busca_apos_clique(self):
+        aluno = Aluno.objects.create(
+            nome='Ana Silva',
+            email='ana@example.com',
+            senha=make_password('senha123'),
+            matricula='12345',
+            curso='Engenharia',
+            periodo=3,
+        )
+        predio = Predio.objects.create(
+            nome='Prédio de teste',
+            sigla_codigo='PT',
+            coordenadas_entradas='-22.9785, -43.2324',
+            quantidade_andares=1,
+            horario_funcionamento='08:00-20:00',
+        )
+        andar = Andar.objects.create(
+            predio=predio,
+            numero_andar=1,
+            nome_exibicao='Térreo',
+        )
+        sala = Sala.objects.create(
+            codigo_sala='S1',
+            nome_exibicao='Sala de teste',
+            predio=predio,
+            andar=andar,
+            coordenadas='-22.9786, -43.2325',
+            tipo_sala='Aula',
+            capacidade=20,
+        )
+        session = self.client.session
+        session['aluno_id'] = aluno.pk
+        session.save()
+
+        resposta_busca = self.client.get(reverse('inicio'), {'busca': 'S1'})
+
+        self.assertEqual(resposta_busca.status_code, 200)
+        self.assertContains(resposta_busca, 'class="botao-favoritar"')
+        self.assertContains(resposta_busca, '☆')
+
+        resposta_favorito = self.client.post(
+            reverse('favoritar_sala', args=[sala.pk]),
+            {'busca': 'S1'},
+        )
+
+        self.assertRedirects(resposta_favorito, f"{reverse('inicio')}?busca=S1")
+        self.assertEqual(LocalFavorito.objects.get(aluno=aluno, sala=sala).sala, sala)
+        resposta_atualizada = self.client.get(resposta_favorito.url)
+        self.assertContains(resposta_atualizada, '★')
 
     def test_atalhos_de_biblioteca_e_alimentacao_abrem_o_mapa(self):
         response_inicio = self.client.get(reverse('inicio'))
