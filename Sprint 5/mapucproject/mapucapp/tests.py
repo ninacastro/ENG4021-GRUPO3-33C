@@ -38,6 +38,10 @@ class MapaViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'mapa.html')
         self.assertContains(response, 'id="mapa-puc"')
+        self.assertContains(response, 'id="botao-localizacao"')
+        self.assertContains(response, 'id="botao-rota"')
+        self.assertContains(response, 'Valhalla/OSM')
+        self.assertContains(response, '/static/js/mapa-puc.js?v=4')
         self.assertContains(response, reverse('inicio'))
         self.assertEqual(response.context['marcadores'], [])
 
@@ -46,7 +50,7 @@ class MapaViewTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'id="mapa-puc"')
-        self.assertContains(response, '/static/js/mapa-puc.js?v=3')
+        self.assertContains(response, '/static/js/mapa-puc.js?v=4')
         self.assertNotContains(response, 'mapa-marcadores')
         self.assertNotContains(response, 'Prédio Cardeal Leme')
 

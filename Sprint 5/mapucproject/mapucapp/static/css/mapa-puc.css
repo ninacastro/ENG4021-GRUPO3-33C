@@ -57,6 +57,78 @@
   left: 12px;
 }
 
+.controles-localizacao {
+  position: absolute;
+  top: 60px;
+  left: 12px;
+  z-index: 500;
+  display: grid;
+  gap: 8px;
+  width: min(320px, calc(100% - 24px));
+  padding: 12px;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.22);
+  font-family: system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+}
+
+.botao-controle-mapa {
+  min-height: 40px;
+  padding: 9px 12px;
+  border: 0;
+  border-radius: 6px;
+  background: #0A2240;
+  color: #fff;
+  font: 600 14px system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  cursor: pointer;
+}
+
+.botao-controle-mapa:hover:not(:disabled) {
+  background: #16365f;
+}
+
+.botao-controle-mapa:disabled {
+  background: #8b949e;
+  cursor: not-allowed;
+}
+
+.status-localizacao {
+  margin: 0;
+  color: #263238;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.privacidade-rota {
+  margin: 0;
+  color: #59636e;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.status-localizacao--erro {
+  color: #7f2929;
+}
+
+.marcador-usuario {
+  width: 18px;
+  height: 18px;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  background: #1677ff;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.6);
+}
+
+.botao-destino-mapa {
+  margin-top: 8px;
+  padding: 7px 10px;
+  border: 0;
+  border-radius: 5px;
+  background: #0A2240;
+  color: #fff;
+  cursor: pointer;
+}
+
 .titulo-categoria-mapa {
   position: absolute;
   top: 12px;
