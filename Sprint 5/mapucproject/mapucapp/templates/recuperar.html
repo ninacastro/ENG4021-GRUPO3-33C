@@ -2,10 +2,13 @@
 
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Recuperar senha - MaPUC</title>
+
     <link rel="stylesheet" href="{% static 'css/recuperar.css' %}">
 </head>
 
@@ -13,18 +16,38 @@
 
     <div class="container">
 
-        {% if etapa == 'nova_senha' %}
+        <div class="cabecalho">
 
-            <div class="cabecalho">
-                <a href="{% url 'recuperar' %}" class="voltar">←</a>
-                <h1>Recuperar senha</h1>
+            {% if etapa == 'nova_senha' %}
+                <a href="{% url 'recuperar' %}?reiniciar=1" class="voltar">←</a>
+            {% else %}
+                <a href="{% url 'login' %}" class="voltar">←</a>
+            {% endif %}
+
+            <h1>Recuperar senha</h1>
+
+        </div>
+
+        <div class="conteudo">
+
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="mensagem {{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+
+            <div class="aviso">
+                Recuperação demonstrativa. Verificação de identidade e envio de e-mail ainda não estão conectados.
             </div>
 
-            <div class="conteudo">
 
-                <div class="aviso">
-                    Recuperação demonstrativa. Verificação de identidade e envio de e-mail ainda não estão conectados.
-                </div>
+            {% if etapa == 'nova_senha' %}
+
+
 
                 <p class="descricao">
                     Crie uma nova senha para a sua conta acadêmica.
@@ -33,30 +56,62 @@
                 <form method="POST">
                     {% csrf_token %}
 
+
+                    {% if form.non_field_errors %}
+                        <div class="erros">
+                            {% for erro in form.non_field_errors %}
+                                <p>{{ erro }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
                     <div class="campo">
-                        <label for="nova_senha">Nova senha</label>
+
+                        <label for="nova_senha">
+                            Nova senha
+                        </label>
+
                         <input
                             type="password"
                             id="nova_senha"
                             name="nova_senha"
+                            minlength="8"
+                            autocomplete="new-password"
                             required
                         >
+
+                        {% for erro in form.nova_senha.errors %}
+                            <p class="erro-campo">{{ erro }}</p>
+                        {% endfor %}
+
                     </div>
 
                     <div class="campo">
-                        <label for="confirmar_senha">Confirmar nova senha</label>
+
+                        <label for="confirmar_senha">
+                            Confirmar nova senha
+                        </label>
+
                         <input
                             type="password"
                             id="confirmar_senha"
                             name="confirmar_senha"
+                            autocomplete="new-password"
                             required
                         >
+
+                        {% for erro in form.confirmar_senha.errors %}
+                            <p class="erro-campo">{{ erro }}</p>
+                        {% endfor %}
+
                     </div>
 
                     <div class="criterios">
+
                         <p>• Mínimo 8 caracteres</p>
                         <p>• Mínimo 2 símbolos</p>
                         <p>• Mínimo 1 número</p>
+
                     </div>
 
                     <button type="submit" class="botao">
@@ -65,20 +120,10 @@
 
                 </form>
 
-            </div>
 
-        {% else %}
+            {% else %}
 
-            <div class="cabecalho">
-                <a href="{% url 'login' %}" class="voltar">←</a>
-                <h1>Recuperar senha</h1>
-            </div>
-
-            <div class="conteudo">
-
-                <div class="aviso">
-                    Recuperação demonstrativa. Verificação de identidade e envio de e-mail ainda não estão conectados.
-                </div>
+    
 
                 <p class="descricao">
                     Confirme sua matrícula e o e-mail institucional cadastrado.
@@ -87,26 +132,55 @@
                 <form method="POST">
                     {% csrf_token %}
 
+   
+                    {% if form.non_field_errors %}
+                        <div class="erros">
+                            {% for erro in form.non_field_errors %}
+                                <p>{{ erro }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
                     <div class="campo">
-                        <label for="matricula">Matrícula</label>
+
+                        <label for="matricula">
+                            Matrícula
+                        </label>
+
                         <input
                             type="text"
                             id="matricula"
                             name="matricula"
                             placeholder="Ex: 2024108849"
+                            value="{{ form.matricula.value|default:'' }}"
                             required
                         >
+
+                        {% for erro in form.matricula.errors %}
+                            <p class="erro-campo">{{ erro }}</p>
+                        {% endfor %}
+
                     </div>
 
                     <div class="campo">
-                        <label for="email">E-mail institucional</label>
+
+                        <label for="email">
+                            E-mail institucional
+                        </label>
+
                         <input
                             type="email"
                             id="email"
                             name="email"
                             placeholder="aluno@aluno.puc-rio.br"
+                            value="{{ form.email.value|default:'' }}"
                             required
                         >
+
+                        {% for erro in form.email.errors %}
+                            <p class="erro-campo">{{ erro }}</p>
+                        {% endfor %}
+
                     </div>
 
                     <button type="submit" class="botao">
@@ -115,11 +189,12 @@
 
                 </form>
 
-            </div>
+            {% endif %}
 
-        {% endif %}
+        </div>
 
     </div>
 
 </body>
+
 </html>
