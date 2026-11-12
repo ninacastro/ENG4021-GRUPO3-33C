@@ -162,3 +162,183 @@ class AulaGradeForm(forms.ModelForm):
             )
 
         return cleaned_data
+
+
+from django import forms
+from mapucapp.models import Aluno
+import re
+
+
+class RecuperarSenhaForm(forms.Form):
+    matricula = forms.CharField(
+        max_length=20,
+        required=True
+    )
+
+    email = forms.EmailField(
+        required=True
+    )
+
+    def clean(self):
+        dados = super().clean()
+
+        matricula = dados.get('matricula')
+        email = dados.get('email')
+
+        if matricula and email:
+            aluno = Aluno.objects.filter(
+                matricula=matricula,
+                email__iexact=email
+            ).first()
+
+            if not aluno:
+                raise forms.ValidationError(
+                    'Matrícula ou e-mail institucional incorreto.'
+                )
+
+            dados['aluno'] = aluno
+
+        return dados
+
+
+class NovaSenhaForm(forms.Form):
+    nova_senha = forms.CharField(
+        required=True,
+        widget=forms.PasswordInput
+    )
+
+    confirmar_senha = forms.CharField(
+        required=True,
+        widget=forms.PasswordInput
+    )
+
+    def clean(self):
+        dados = super().clean()
+
+        senha = dados.get('nova_senha')
+        confirmar = dados.get('confirmar_senha')
+
+        if senha:
+            if len(senha) < 8:
+                self.add_error(
+                    'nova_senha',
+                    'A senha deve ter no mínimo 8 caracteres.'
+                )
+
+            if len(re.findall(r'[^a-zA-Z0-9]', senha)) < 2:
+                self.add_error(
+                    'nova_senha',
+                    'A senha deve possuir no mínimo 2 símbolos.'
+                )
+
+            if not re.search(r'[0-9]', senha):
+                self.add_error(
+                    'nova_senha',
+                    'A senha deve possuir no mínimo 1 número.'
+                )
+
+        if senha and confirmar and senha != confirmar:
+            self.add_error(
+                'confirmar_senha',
+                'As senhas não são iguais.'
+            )
+
+        return dados
+
+
+from django import forms
+
+
+class RecuperarSenhaForm(forms.Form):
+    matricula = forms.CharField(
+        max_length=20,
+        required=True
+    )
+
+    email = forms.EmailField(
+        required=True
+    )
+
+    def clean(self):
+        dados = super().clean()
+
+        matricula = dados.get('matricula')
+        email = dados.get('email')
+
+        if matricula and email:
+            from .models import Aluno
+
+            aluno = Aluno.objects.filter(
+                matricula=matricula,
+                email__iexact=email
+            ).first()
+
+            if not aluno:
+                raise forms.ValidationError(
+                    'Matrícula ou e-mail institucional incorreto.'
+                )
+
+            dados['aluno'] = aluno
+
+        return dados
+
+
+class NovaSenhaForm(forms.Form):
+    nova_senha = forms.CharField(
+        required=True,
+        widget=forms.PasswordInput
+    )
+
+    confirmar_senha = forms.CharField(
+        required=True,
+        widget=forms.PasswordInput
+    )
+
+    def clean(self):
+        dados = super().clean()
+
+        senha = dados.get('nova_senha')
+        confirmar = dados.get('confirmar_senha')
+
+        if senha:
+
+            if len(senha) < 8:
+                self.add_error(
+                    'nova_senha',
+                    'A senha deve ter no mínimo 8 caracteres.'
+                )
+
+
+            simbolos = 0
+
+            for caractere in senha:
+                if not caractere.isalnum():
+                    simbolos += 1
+
+            if simbolos < 2:
+                self.add_error(
+                    'nova_senha',
+                    'A senha deve possuir no mínimo 2 símbolos.'
+                )
+
+
+            tem_numero = False
+
+            for caractere in senha:
+                if caractere.isdigit():
+                    tem_numero = True
+
+            if not tem_numero:
+                self.add_error(
+                    'nova_senha',
+                    'A senha deve possuir no mínimo 1 número.'
+                )
+
+
+        if senha and confirmar and senha != confirmar:
+            self.add_error(
+                'confirmar_senha',
+                'As senhas não são iguais.'
+            )
+
+        return dados
