@@ -105,7 +105,7 @@ def _contexto_grade(aluno):
         'numero_disciplinas': len(disciplinas),
     }
 
-
+CAMPOS_BUSCA = ('busca', 'predio', 'andar', 'tipo_sala', 'capacidade_min', 'favoritas')
 
 def inicio(request):
     form_busca = BuscaForm(request.GET or None)
