@@ -1,7 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
-from .models import Aluno, AulaGrade
+from .models import Aluno, Andar, AulaGrade, Predio, Sala
 
 class LoginForm(forms.Form):
     matricula = forms.CharField(
