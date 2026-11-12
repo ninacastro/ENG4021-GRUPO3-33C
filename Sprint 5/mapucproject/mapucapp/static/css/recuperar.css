@@ -1,0 +1,176 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f5f6f5;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 15px;
+    color: #20232e;
+}
+
+.container {
+    background-color: #ffffff;
+    width: 100%;
+    max-width: 850px;
+    min-height: 600px;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+}
+
+.cabecalho {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    padding: 35px 45px;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.cabecalho h1 {
+    font-size: 25px;
+    font-weight: 700;
+    color: #20232e;
+}
+
+.voltar {
+    text-decoration: none;
+    color: #20232e;
+    font-size: 30px;
+    font-weight: 400;
+}
+
+.conteudo {
+    width: 100%;
+    max-width: 700px;
+    margin: 55px auto;
+    padding: 0 25px;
+}
+
+.aviso {
+    background-color: #f5efd9;
+    color: #565044;
+    padding: 18px;
+    border-radius: 18px;
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 28px;
+}
+
+.descricao {
+    color: #777d83;
+    font-size: 17px;
+    margin-bottom: 35px;
+    line-height: 1.5;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 28px;
+}
+
+.campo label {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: #252833;
+}
+
+.campo input {
+    width: 100%;
+    height: 66px;
+    border: 1px solid #eeeeee;
+    border-radius: 35px;
+    background-color: #ffffff;
+    padding: 0 22px;
+    font-size: 16px;
+    color: #252833;
+    outline: none;
+    transition: border 0.2s;
+}
+
+.campo input::placeholder {
+    color: #92979d;
+}
+
+.campo input:focus {
+    border: 1px solid #4b9b84;
+}
+
+.criterios {
+    margin-top: 5px;
+    margin-bottom: 30px;
+    color: #858b8d;
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+.botao {
+    width: 100%;
+    height: 58px;
+    border: none;
+    border-radius: 35px;
+    background-color: #388d78;
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.botao:hover {
+    background-color: #287762;
+}
+
+/* Ajustes para celulares */
+
+@media (max-width: 480px) {
+
+    body {
+        padding: 15px;
+    }
+
+    .container {
+        min-height: auto;
+    }
+
+    .cabecalho {
+        padding: 25px 20px;
+        gap: 15px;
+    }
+
+    .cabecalho h1 {
+        font-size: 21px;
+    }
+
+    .conteudo {
+        margin: 35px auto;
+        padding: 0 20px;
+    }
+
+    .aviso {
+        font-size: 14px;
+        padding: 15px;
+    }
+
+    .descricao {
+        font-size: 15px;
+    }
+
+    .campo input {
+        height: 58px;
+        font-size: 14px;
+    }
+
+    .botao {
+        height: 55px;
+        font-size: 16px;
+    }
+}
