@@ -1,17 +1,32 @@
+/* =========================================================
+   Design tokens
+   ========================================================= */
 :root {
   --fundo: #f4f6f8;
   --branco: #ffffff;
-  --borda: #dddddd;
+  --borda: #d8dde3;
+  --borda-hover: #b9c2cc;
   --marinho: #0b1f3a;
   --verde: #3fbfa5;
   --verde-escuro: #34a38c;
+  --verde-ativo: #2b8f7b;
   --azul-claro: #eaf5fd;
   --azul-borda: #cfe6f8;
-  --cinza: #6b7280;
+  --cinza: #5f6b7a;
   --vermelho: #d64545;
   --raio: 15px;
+  --raio-p: 12px;
+
+  --sombra-p: 0 1px 2px rgba(11, 31, 58, 0.06);
+  --sombra: 0 1px 2px rgba(11, 31, 58, 0.05), 0 8px 24px rgba(11, 31, 58, 0.08);
+
+  --foco-halo: 0 0 0 4px rgba(11, 31, 58, 0.12);
+  --transicao: 0.15s ease;
 }
 
+/* =========================================================
+   Base
+   ========================================================= */
 *,
 *::before,
 *::after {
@@ -24,7 +39,9 @@ body {
   background-color: var(--fundo);
   color: var(--marinho);
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 16px;
   line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
 }
 
 .container-celular {
@@ -41,19 +58,27 @@ body {
 
 .cabecalho h1 {
   margin: 12px 0 0;
-  font-size: 22px;
-  letter-spacing: 0.3px;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
 }
 
 .voltar {
-  display: inline-block;
-  color: var(--marinho);
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  color: var(--cinza);
   font-size: 14px;
+  font-weight: 500;
   text-decoration: none;
+  transition: color var(--transicao);
 }
 
 .voltar:hover {
+  color: var(--marinho);
   text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 /* ---------- Mensagens do Django ---------- */
@@ -65,10 +90,11 @@ body {
 .mensagem {
   margin: 0 0 8px;
   padding: 12px 14px;
-  border-radius: 12px;
-  font-size: 14px;
-  background-color: var(--azul-claro);
+  border-radius: var(--raio-p);
   border: 1px solid var(--azul-borda);
+  background-color: var(--azul-claro);
+  font-size: 14px;
+  line-height: 1.45;
 }
 
 .mensagem.success {
@@ -80,7 +106,7 @@ body {
 .mensagem.error {
   background-color: #fdeaea;
   border-color: #f4c2c2;
-  color: var(--vermelho);
+  color: #b43a3a; /* vermelho mais escuro: melhor contraste sobre o fundo claro */
 }
 
 /* ---------- Avatar ---------- */
@@ -91,22 +117,29 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: 0 auto;
   border: 3px solid var(--marinho);
   border-radius: 50%;
   background-color: var(--branco);
+  box-shadow: var(--sombra);
   font-size: 28px;
-  font-weight: bold;
-  margin: 0 auto;
+  font-weight: 700;
 }
 
 .centro {
+  margin: 12px 0 24px;
   text-align: center;
-  margin: 10px 0 24px;
   font-size: 14px;
 }
 
 .centro a {
   color: var(--marinho);
+  font-weight: 600;
+  text-underline-offset: 3px;
+}
+
+.centro a:hover {
+  color: var(--verde-ativo);
 }
 
 /* ---------- Campos ---------- */
@@ -125,12 +158,13 @@ body {
 
 .dica {
   font-size: 12px;
-  font-weight: normal;
+  font-weight: 400;
   color: var(--cinza);
 }
 
 input {
   width: 100%;
+  min-height: 48px;
   padding: 14px;
   border: 1px solid var(--borda);
   border-radius: var(--raio);
@@ -138,19 +172,35 @@ input {
   color: var(--marinho);
   font: inherit;
   font-size: 16px; /* 16px evita o zoom automático do iPhone */
-  transition: border-color 0.15s, box-shadow 0.15s;
+  box-shadow: var(--sombra-p);
+  transition: border-color var(--transicao), box-shadow var(--transicao);
+}
+
+input::placeholder {
+  color: #8b96a3;
+}
+
+input:hover {
+  border-color: var(--borda-hover);
 }
 
 input:focus {
   outline: none;
   border-color: var(--marinho);
-  box-shadow: 0 0 0 3px rgba(11, 31, 58, 0.12);
+  box-shadow: var(--foco-halo);
 }
 
 input[readonly] {
   background-color: #eceff2;
+  border-color: var(--borda);
+  box-shadow: none;
   color: var(--cinza);
   cursor: not-allowed;
+}
+
+input[readonly]:focus {
+  border-color: var(--borda);
+  box-shadow: none;
 }
 
 /* ---------- Cartão da senha ---------- */
@@ -166,12 +216,18 @@ input[readonly] {
   border-radius: var(--raio);
   color: var(--marinho);
   text-decoration: none;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  transition: border-color var(--transicao), box-shadow var(--transicao),
+    transform var(--transicao);
 }
 
 .cartao-senha:hover {
   border-color: var(--marinho);
   box-shadow: 0 4px 12px rgba(11, 31, 58, 0.1);
+}
+
+.cartao-senha:active {
+  transform: translateY(1px);
+  box-shadow: none;
 }
 
 .cartao-senha strong {
@@ -184,32 +240,54 @@ input[readonly] {
 
 .seta {
   font-size: 24px;
+  line-height: 1;
   color: var(--cinza);
+  transition: transform var(--transicao), color var(--transicao);
+}
+
+.cartao-senha:hover .seta {
+  color: var(--marinho);
+  transform: translateX(3px);
 }
 
 /* ---------- Botão salvar ---------- */
 
 .botao-salvar {
   width: 100%;
+  min-height: 52px;
   margin-top: 30px;
   padding: 16px;
-  background-color: var(--verde);
-  color: var(--branco);
-  font: inherit;
-  font-size: 17px;
-  font-weight: bold;
   border: none;
   border-radius: var(--raio);
+  background-color: var(--verde);
+  /* Texto marinho: branco sobre este verde tem contraste baixo (cerca de 2:1) */
+  color: var(--marinho);
+  font: inherit;
+  font-size: 17px;
+  font-weight: 700;
   cursor: pointer;
-  transition: background-color 0.15s, transform 0.1s;
+  box-shadow: var(--sombra-p);
+  transition: background-color var(--transicao), box-shadow var(--transicao),
+    transform var(--transicao);
 }
 
 .botao-salvar:hover {
   background-color: var(--verde-escuro);
+  box-shadow: 0 6px 16px rgba(63, 191, 165, 0.38);
 }
 
 .botao-salvar:active {
+  background-color: var(--verde-ativo);
+  box-shadow: var(--sombra-p);
   transform: translateY(1px);
+}
+
+.botao-salvar:disabled {
+  background-color: #cfd8dc;
+  color: #7a8794;
+  box-shadow: none;
+  cursor: not-allowed;
+  transform: none;
 }
 
 /* ---------- Foco via teclado ---------- */
@@ -218,4 +296,30 @@ a:focus-visible,
 .botao-salvar:focus-visible {
   outline: 3px solid var(--marinho);
   outline-offset: 2px;
+}
+
+.cartao-senha:focus-visible {
+  outline: 3px solid var(--marinho);
+  outline-offset: 2px;
+}
+
+/* =========================================================
+   Telas muito pequenas
+   ========================================================= */
+@media (max-width: 360px) {
+  body {
+    padding: 16px 12px 32px;
+  }
+}
+
+/* =========================================================
+   Acessibilidade: respeita quem reduz movimento
+   ========================================================= */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+  }
 }
