@@ -1,5 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
+from django.forms import BaseFormSet, formset_factory
 
 from .models import Aluno, Andar, AulaGrade, Predio, Sala
 
@@ -183,53 +184,82 @@ class AlterarDadosForm(forms.ModelForm):
         fields = ('nome', 'curso', 'email')
 
 
-class AulaGradeForm(forms.ModelForm):
-    class Meta:
-        model = AulaGrade
-        fields = (
-            'codigo_disciplina',
-            'nome_disciplina',
-            'dia_semana',
-            'horario',
-            'codigo_sala',
-            'cor',
-        )
-        labels = {
-            'codigo_disciplina': 'Código da disciplina',
-            'nome_disciplina': 'Nome da disciplina',
-            'dia_semana': 'Dia da semana',
-            'horario': 'Horário',
-            'codigo_sala': 'Sala',
-            'cor': 'Cor na grade',
-        }
-        widgets = {
-            'codigo_disciplina': forms.TextInput(attrs={'placeholder': 'Ex: INF1005'}),
-            'nome_disciplina': forms.TextInput(attrs={'placeholder': 'Ex: Introdução à Computação'}),
-            'codigo_sala': forms.TextInput(attrs={'placeholder': 'Ex: L318'}),
-        }
+class AulaGradeForm(forms.Form):
+    codigo_disciplina = forms.CharField(
+        label='Código da disciplina',
+        max_length=50,
+        widget=forms.TextInput(attrs={'placeholder': 'Ex: INF1005'}),
+    )
+    nome_disciplina = forms.CharField(
+        label='Nome da disciplina',
+        max_length=150,
+        widget=forms.TextInput(attrs={
+            'placeholder': 'Ex: Introdução à Computação',
+        }),
+    )
+    cor = forms.ChoiceField(
+        label='Cor na grade',
+        choices=AulaGrade.CORES,
+        initial='verde',
+    )
 
+
+class EncontroGradeForm(forms.Form):
+    dia_semana = forms.ChoiceField(
+        label='Dia',
+        choices=[('', 'Selecione um dia')] + AulaGrade.DIAS_SEMANA,
+    )
+    horario = forms.ChoiceField(
+        label='Horário',
+        choices=[('', 'Selecione um horário')] + AulaGrade.HORARIOS,
+    )
+    codigo_sala = forms.CharField(
+        label='Sala',
+        max_length=50,
+        widget=forms.TextInput(attrs={'placeholder': 'Ex: L318'}),
+    )
+
+
+class BaseEncontroGradeFormSet(BaseFormSet):
     def __init__(self, *args, aluno=None, **kwargs):
         self.aluno = aluno
-        kwargs.setdefault('initial', {'cor': 'verde'})
         super().__init__(*args, **kwargs)
 
     def clean(self):
-        cleaned_data = super().clean()
-        if self.aluno is None:
-            return cleaned_data
+        super().clean()
+        if any(self.errors):
+            return
 
-        dia_semana = cleaned_data.get('dia_semana')
-        horario = cleaned_data.get('horario')
-        if dia_semana and horario and AulaGrade.objects.filter(
-            aluno=self.aluno,
-            dia_semana=dia_semana,
-            horario=horario,
-        ).exists():
-            raise ValidationError(
-                'Você já cadastrou uma aula nesse dia e horário.'
-            )
+        encontros_cadastrados = set()
+        for form in self.forms:
+            dados = form.cleaned_data
+            if not dados:
+                continue
 
-        return cleaned_data
+            encontro = (dados['dia_semana'], dados['horario'])
+            if encontro in encontros_cadastrados:
+                raise ValidationError(
+                    'Você já cadastrou uma aula nesse dia e horário.'
+                )
+            encontros_cadastrados.add(encontro)
+
+            if self.aluno and AulaGrade.objects.filter(
+                aluno=self.aluno,
+                dia_semana=encontro[0],
+                horario=encontro[1],
+            ).exists():
+                raise ValidationError(
+                    'Você já cadastrou uma aula nesse dia e horário.'
+                )
+
+
+EncontroGradeFormSet = formset_factory(
+    EncontroGradeForm,
+    formset=BaseEncontroGradeFormSet,
+    extra=0,
+    min_num=1,
+    validate_min=True,
+)
 
 
 from django import forms

@@ -162,6 +162,17 @@ class Restaurante(models.Model):
         return self.nome
 
 
+class MateriaGrade(models.Model):
+    aluno = models.ForeignKey(
+        Aluno,
+        on_delete=models.CASCADE,
+        related_name='materias_grade',
+    )
+
+    def __str__(self):
+        return f'Matéria da grade de {self.aluno.nome}'
+
+
 class AulaGrade(models.Model):
     DIAS_SEMANA = [
         ('segunda-feira', 'Segunda-feira'),
@@ -188,6 +199,13 @@ class AulaGrade(models.Model):
         Aluno,
         on_delete=models.CASCADE,
         related_name='aulas_grade',
+    )
+    materia_grade = models.ForeignKey(
+        MateriaGrade,
+        on_delete=models.CASCADE,
+        related_name='aulas',
+        null=True,
+        blank=True,
     )
     codigo_disciplina = models.CharField(max_length=50)
     nome_disciplina = models.CharField(max_length=150)

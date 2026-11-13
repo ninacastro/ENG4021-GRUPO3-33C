@@ -135,6 +135,58 @@ body {
   border-color: #a5dec4;
 }
 
+.encontro-form {
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #e3e3e8;
+  border-radius: 9px;
+  background-color: #fafbfd;
+}
+
+.encontro-cabecalho {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+  color: #16384a;
+  font-size: 12px;
+}
+
+.encontro-campos {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 10px;
+}
+
+.encontro-campos .campo {
+  min-width: 0;
+}
+
+.encontro-campos .campo:last-child {
+  grid-column: 1 / -1;
+}
+
+.remover-encontro {
+  border: 0;
+  background: none;
+  color: #a23b3b;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.adicionar-encontro {
+  width: 100%;
+  padding: 8px;
+  border: 1px dashed #a5dec4;
+  border-radius: 8px;
+  background: #f5fbf8;
+  color: #178a5c;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
 .cores {
   display: flex;
   gap: 8px;

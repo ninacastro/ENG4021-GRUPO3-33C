@@ -13,6 +13,7 @@ from .models import (
     AulaGrade,
     Biblioteca,
     LocalFavorito,
+    MateriaGrade,
     Notificacao,
     Predio,
     Restaurante,
@@ -684,17 +685,50 @@ class AulaGradeViewsTests(TestCase):
         session['aluno_id'] = self.aluno.pk
         session.save()
 
-    def dados_aula(self, **alteracoes):
+    def dados_aula(self, aulas=None, **alteracoes):
+        if aulas is None:
+            aulas = ['segunda-feira|07:00 - 09:00']
+        codigo_sala = alteracoes.pop(
+            'codigo_sala',
+            'SALA-QUE-NAO-EXISTE',
+        )
         dados = {
             'codigo_disciplina': 'INF1005',
             'nome_disciplina': 'Introdução à Computação',
-            'dia_semana': 'segunda-feira',
-            'horario': '07:00 - 09:00',
-            'codigo_sala': 'SALA-QUE-NAO-EXISTE',
             'cor': 'azul',
+            'encontros-TOTAL_FORMS': str(len(aulas)),
+            'encontros-INITIAL_FORMS': '0',
+            'encontros-MIN_NUM_FORMS': '1',
+            'encontros-MAX_NUM_FORMS': '1000',
         }
+        for indice, selecao in enumerate(aulas):
+            dia_semana, horario = selecao.split('|', 1)
+            dados[f'encontros-{indice}-dia_semana'] = dia_semana
+            dados[f'encontros-{indice}-horario'] = horario
+            dados[f'encontros-{indice}-codigo_sala'] = codigo_sala
         dados.update(alteracoes)
         return dados
+
+    def criar_aula(self, aluno=None, **alteracoes):
+        dados = self.dados_aula(**alteracoes)
+        return AulaGrade.objects.create(
+            aluno=aluno or self.aluno,
+            codigo_disciplina=dados['codigo_disciplina'],
+            nome_disciplina=dados['nome_disciplina'],
+            dia_semana=dados['encontros-0-dia_semana'],
+            horario=dados['encontros-0-horario'],
+            codigo_sala=dados['encontros-0-codigo_sala'],
+            cor=dados['cor'],
+        )
+
+    def test_formulario_comeca_com_um_encontro_e_carrega_script_dinamico(self):
+        resposta = self.client.get(reverse('cadastrar_grade'))
+
+        self.assertContains(resposta, 'id="encontros-container"')
+        self.assertContains(resposta, 'id="id_encontros-0-dia_semana"')
+        self.assertContains(resposta, 'Adicionar outro encontro')
+        self.assertContains(resposta, '/static/js/cadastro-grade.js')
+        self.assertNotContains(resposta, 'type="checkbox"')
 
     def test_cadastra_aula_manual_e_exibe_na_grade(self):
         resposta = self.client.post(
@@ -702,7 +736,7 @@ class AulaGradeViewsTests(TestCase):
             self.dados_aula(),
         )
 
-        self.assertRedirects(resposta, reverse('grade'))
+        self.assertRedirects(resposta, reverse('cadastrar_grade'))
         aula = AulaGrade.objects.get(aluno=self.aluno)
         self.assertEqual(aula.codigo_sala, 'SALA-QUE-NAO-EXISTE')
         self.assertEqual(aula.nome_disciplina, 'Introdução à Computação')
@@ -716,10 +750,10 @@ class AulaGradeViewsTests(TestCase):
         self.client.post(reverse('cadastrar_grade'), self.dados_aula())
         resposta = self.client.post(
             reverse('cadastrar_grade'),
-            self.dados_aula(dia_semana='quarta-feira'),
+            self.dados_aula(aulas=['quarta-feira|07:00 - 09:00']),
         )
 
-        self.assertRedirects(resposta, reverse('grade'))
+        self.assertRedirects(resposta, reverse('cadastrar_grade'))
         self.assertEqual(AulaGrade.objects.filter(aluno=self.aluno).count(), 2)
         resposta_grade = self.client.get(reverse('grade'))
         self.assertContains(resposta_grade, '1 disciplina')
@@ -735,6 +769,30 @@ class AulaGradeViewsTests(TestCase):
         self.assertContains(resposta, 'Você já cadastrou uma aula nesse dia e horário.')
         self.assertEqual(AulaGrade.objects.filter(aluno=self.aluno).count(), 1)
 
+    def test_impede_repeticao_de_horario_na_mesma_disciplina(self):
+        resposta = self.client.post(
+            reverse('cadastrar_grade'),
+            self.dados_aula(aulas=[
+                'segunda-feira|07:00 - 09:00',
+                'segunda-feira|07:00 - 09:00',
+            ]),
+        )
+
+        self.assertEqual(resposta.status_code, 200)
+        self.assertContains(resposta, 'Você já cadastrou uma aula nesse dia e horário.')
+        self.assertFalse(AulaGrade.objects.filter(aluno=self.aluno).exists())
+        self.assertFalse(MateriaGrade.objects.filter(aluno=self.aluno).exists())
+
+    def test_exige_ao_menos_um_encontro(self):
+        resposta = self.client.post(
+            reverse('cadastrar_grade'),
+            self.dados_aula(aulas=[]),
+        )
+
+        self.assertEqual(resposta.status_code, 200)
+        self.assertTrue(resposta.context['formset'].non_form_errors())
+        self.assertFalse(AulaGrade.objects.filter(aluno=self.aluno).exists())
+
     def test_campos_obrigatorios_e_horarios_fora_das_opcoes_sao_rejeitados(self):
         resposta_sem_nome = self.client.post(
             reverse('cadastrar_grade'),
@@ -745,11 +803,74 @@ class AulaGradeViewsTests(TestCase):
 
         resposta_horario_invalido = self.client.post(
             reverse('cadastrar_grade'),
-            self.dados_aula(horario='13:00 - 15:00'),
+            self.dados_aula(aulas=['segunda-feira|20:00 - 22:00']),
         )
         self.assertEqual(resposta_horario_invalido.status_code, 200)
-        self.assertIn('horario', resposta_horario_invalido.context['form'].errors)
+        self.assertIn(
+            'horario',
+            resposta_horario_invalido.context['formset'].forms[0].errors,
+        )
         self.assertFalse(AulaGrade.objects.filter(aluno=self.aluno).exists())
+
+    def test_cadastra_varios_horarios_como_uma_materia_e_remove_todos_juntos(self):
+        horarios = [
+            'segunda-feira|07:00 - 09:00',
+            'quarta-feira|07:00 - 09:00',
+            'sexta-feira|09:00 - 11:00',
+        ]
+        dados = self.dados_aula(aulas=horarios)
+        dados['encontros-1-codigo_sala'] = 'SALA-2'
+        resposta = self.client.post(
+            reverse('cadastrar_grade'),
+            dados,
+        )
+
+        self.assertRedirects(resposta, reverse('cadastrar_grade'))
+        materia = MateriaGrade.objects.get(aluno=self.aluno)
+        aulas = list(AulaGrade.objects.filter(materia_grade=materia))
+        self.assertEqual(len(aulas), len(horarios))
+        self.assertEqual(
+            AulaGrade.objects.get(
+                materia_grade=materia,
+                dia_semana='quarta-feira',
+            ).codigo_sala,
+            'SALA-2',
+        )
+        resposta_grade = self.client.get(reverse('grade'))
+        celulas_preenchidas = [
+            celula['aula']
+            for linha in resposta_grade.context['grade_linhas']
+            for celula in linha
+            if celula['aula'] is not None
+        ]
+        self.assertEqual(len(celulas_preenchidas), len(horarios))
+
+        resposta_lista = self.client.get(reverse('cadastrar_grade'))
+        self.assertEqual(len(resposta_lista.context['materias']), 1)
+        self.assertContains(resposta_lista, 'class="remover" type="submit"', count=1)
+        self.assertContains(resposta_lista, 'Sala SALA-2')
+
+        resposta_exclusao = self.client.post(
+            reverse('excluir_aula', args=[aulas[0].pk])
+        )
+        self.assertRedirects(resposta_exclusao, reverse('cadastrar_grade'))
+        self.assertFalse(MateriaGrade.objects.filter(pk=materia.pk).exists())
+        self.assertFalse(AulaGrade.objects.filter(materia_grade=materia).exists())
+
+    def test_nao_cadastra_materia_se_algum_dos_horarios_ja_estiver_ocupado(self):
+        self.criar_aula()
+        resposta = self.client.post(
+            reverse('cadastrar_grade'),
+            self.dados_aula(aulas=[
+                'segunda-feira|07:00 - 09:00',
+                'quarta-feira|09:00 - 11:00',
+            ]),
+        )
+
+        self.assertEqual(resposta.status_code, 200)
+        self.assertContains(resposta, 'Você já cadastrou uma aula nesse dia e horário.')
+        self.assertEqual(AulaGrade.objects.filter(aluno=self.aluno).count(), 1)
+        self.assertFalse(MateriaGrade.objects.filter(aluno=self.aluno).exists())
 
     def test_grade_vazia_e_isolamento_e_exclusao_por_aluno(self):
         resposta_vazia = self.client.get(reverse('grade'))
@@ -757,13 +878,12 @@ class AulaGradeViewsTests(TestCase):
         self.assertContains(resposta_vazia, '0 disciplinas')
         self.assertNotContains(resposta_vazia, 'INF1005')
 
-        aula_propria = AulaGrade.objects.create(
-            aluno=self.aluno,
-            **self.dados_aula(codigo_disciplina='AULA-DO-ALUNO'),
+        aula_propria = self.criar_aula(
+            codigo_disciplina='AULA-DO-ALUNO',
         )
-        aula_alheia = AulaGrade.objects.create(
+        aula_alheia = self.criar_aula(
             aluno=self.outro_aluno,
-            **self.dados_aula(dia_semana='terça-feira'),
+            aulas=['terça-feira|07:00 - 09:00'],
         )
         resposta_grade = self.client.get(reverse('grade'))
         self.assertContains(resposta_grade, aula_propria.nome_disciplina)

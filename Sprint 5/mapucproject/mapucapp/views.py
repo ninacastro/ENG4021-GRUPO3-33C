@@ -10,6 +10,7 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils.crypto import constant_time_compare
 from django.views.decorators.http import require_POST
+from django.db import transaction
 from django.db.models import Q
 from .models import *
 from .forms import *
@@ -93,8 +94,29 @@ def _contexto_grade(aluno):
         (aula.codigo_disciplina, aula.nome_disciplina)
         for aula in aulas
     }
+    materias_por_grupo = {}
+    for aula in aulas:
+        chave = (
+            ('materia', aula.materia_grade_id)
+            if aula.materia_grade_id
+            else ('aula', aula.pk)
+        )
+        materia = materias_por_grupo.setdefault(chave, {
+            'aula': aula,
+            'horarios': [],
+        })
+        materia['horarios'].append(
+            {
+                'descricao': (
+                    f'{aula.get_dia_semana_display()} · {aula.horario}'
+                ),
+                'codigo_sala': aula.codigo_sala,
+            }
+        )
+
     return {
         'aulas': aulas,
+        'materias': list(materias_por_grupo.values()),
         'grade_linhas': grade_linhas,
         'numero_disciplinas': len(disciplinas),
     }
@@ -543,20 +565,39 @@ def cadastrar_grade(request):
         messages.error(request, 'Entre na sua conta para cadastrar aulas.')
         return redirect('login')
 
-    form = AulaGradeForm(
-        request.POST if request.method == 'POST' else None,
+    dados_enviados = request.POST if request.method == 'POST' else None
+    form = AulaGradeForm(dados_enviados)
+    formset = EncontroGradeFormSet(
+        dados_enviados,
+        prefix='encontros',
         aluno=aluno,
     )
-    if request.method == 'POST' and form.is_valid():
-        aula_grade = form.save(commit=False)
-        aula_grade.aluno = aluno
-        aula_grade.save()
+    if request.method == 'POST' and form.is_valid() and formset.is_valid():
+        dados = form.cleaned_data
+        with transaction.atomic():
+            materia_grade = MateriaGrade.objects.create(aluno=aluno)
+            aulas = []
+            for encontro in formset.cleaned_data:
+                if not encontro:
+                    continue
+                aulas.append(AulaGrade(
+                    aluno=aluno,
+                    materia_grade=materia_grade,
+                    codigo_disciplina=dados['codigo_disciplina'],
+                    nome_disciplina=dados['nome_disciplina'],
+                    dia_semana=encontro['dia_semana'],
+                    horario=encontro['horario'],
+                    codigo_sala=encontro['codigo_sala'],
+                    cor=dados['cor'],
+                ))
+            AulaGrade.objects.bulk_create(aulas)
         messages.success(request, 'Aula cadastrada na sua grade.')
         return redirect('cadastrar_grade')
 
     return render(request, 'cadastrograde.html', {
         'aluno': aluno,
         'form': form,
+        'formset': formset,
         **_contexto_grade(aluno),
     })
 
@@ -565,11 +606,17 @@ def cadastrar_grade(request):
 @require_POST
 def excluir_aula(request, aula_id):
     aluno = obter_aluno_logado(request)
-    aula = AulaGrade.objects.filter(pk=aula_id, aluno=aluno).first()
+    aula = AulaGrade.objects.filter(
+        pk=aula_id,
+        aluno=aluno,
+    ).select_related('materia_grade').first()
     if aula is None:
         raise Http404('Aula não encontrada.')
 
-    aula.delete()
+    if aula.materia_grade_id:
+        aula.materia_grade.delete()
+    else:
+        aula.delete()
     messages.success(request, 'Aula removida da sua grade.')
     return redirect('cadastrar_grade')
 
