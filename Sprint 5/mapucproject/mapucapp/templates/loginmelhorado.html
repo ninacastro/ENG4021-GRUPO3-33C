@@ -38,7 +38,7 @@
                 <p class="mensagem-login" role="status">{{ message }}</p>
             {% endfor %}
         {% endif %}
-        <button type="button" disabled>Esqueci minha senha</button>
+        <a class="botao-cadastro" href="{% url 'recuperar' %}">Esqueci minha senha</a>
         <a class="botao-cadastro" href="{% url 'cadastro' %}">Não tenho cadastro</a>
 
     </div>

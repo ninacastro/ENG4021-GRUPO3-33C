@@ -32,6 +32,42 @@ from .admin import (
 )
 
 
+class RecuperacaoSenhaTests(TestCase):
+    def setUp(self):
+        self.aluno = Aluno.objects.create(
+            nome='Ana Silva',
+            email='ana@aluno.puc-rio.br',
+            senha=make_password('SenhaAntiga1!'),
+            matricula='2024108849',
+            curso='Engenharia',
+            periodo=3,
+        )
+
+    def test_fluxo_de_recuperacao_altera_a_senha(self):
+        url = reverse('recuperar')
+
+        resposta_inicial = self.client.get(url)
+        self.assertEqual(resposta_inicial.status_code, 200)
+        self.assertTemplateUsed(resposta_inicial, 'recuperar.html')
+        self.assertEqual(resposta_inicial.context['etapa'], 'identificacao')
+
+        resposta_identificacao = self.client.post(url, {
+            'matricula': self.aluno.matricula,
+            'email': self.aluno.email,
+        })
+        self.assertEqual(resposta_identificacao.status_code, 200)
+        self.assertEqual(resposta_identificacao.context['etapa'], 'nova_senha')
+
+        resposta_nova_senha = self.client.post(url, {
+            'nova_senha': 'Nova!Senha1@',
+            'confirmar_senha': 'Nova!Senha1@',
+        })
+        self.assertRedirects(resposta_nova_senha, reverse('login'))
+
+        self.aluno.refresh_from_db()
+        self.assertTrue(check_password('Nova!Senha1@', self.aluno.senha))
+
+
 class MapaViewTests(TestCase):
     def test_mapa_em_tela_cheia_renderiza_mapa_e_link_de_volta(self):
         response = self.client.get(reverse('mapa'))

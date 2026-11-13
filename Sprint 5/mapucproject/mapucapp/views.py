@@ -12,14 +12,7 @@ from django.utils.crypto import constant_time_compare
 from django.views.decorators.http import require_POST
 from django.db.models import Q
 from .models import *
-from .forms import (
-    AlterarDadosForm,
-    AulaGradeForm,
-    BuscaForm,
-    CadastroForm,
-    FiltroBuscaForm,
-    LoginForm,
-)
+from .forms import *
 from .feriados_service import criar_avisos_de_feriados, obter_feriados_proximos
 from .mapa_utils import parsear_coordenadas
 

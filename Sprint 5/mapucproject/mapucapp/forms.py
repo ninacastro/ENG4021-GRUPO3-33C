@@ -318,22 +318,22 @@ from django import forms
 
 
 class RecuperarSenhaForm(forms.Form):
- matricula = forms.CharField(
-    max_length=20,
-    required=True,
-    widget=forms.TextInput(attrs={
-        'class': 'caixa-texto',
-        'placeholder': 'Ex: 2024108849'
-    })
-)
+    matricula = forms.CharField(
+        max_length=20,
+        required=True,
+        widget=forms.TextInput(attrs={
+            'class': 'caixa-texto',
+            'placeholder': 'Ex: 2024108849'
+        })
+    )
 
-email = forms.EmailField(
-    required=True,
-    widget=forms.EmailInput(attrs={
-        'class': 'caixa-texto',
-        'placeholder': 'aluno@aluno.puc-rio.br'
-    })
-)
+    email = forms.EmailField(
+        required=True,
+        widget=forms.EmailInput(attrs={
+            'class': 'caixa-texto',
+            'placeholder': 'aluno@aluno.puc-rio.br'
+        })
+    )
 
     def clean(self):
         dados = super().clean()
@@ -360,21 +360,22 @@ email = forms.EmailField(
 
 
 class NovaSenhaForm(forms.Form):
-  nova_senha = forms.CharField(
-    required=True,
-    widget=forms.PasswordInput(attrs={
-        'class': 'caixa-texto',
-        'placeholder': 'Digite sua nova senha'
-    })
-)
+    nova_senha = forms.CharField(
+        required=True,
+        widget=forms.PasswordInput(attrs={
+            'class': 'caixa-texto',
+            'placeholder': 'Digite sua nova senha'
+        })
+    )
 
-confirmar_senha = forms.CharField(
-    required=True,
-    widget=forms.PasswordInput(attrs={
-        'class': 'caixa-texto',
-        'placeholder': 'Confirme sua nova senha'
-    })
-)
+    confirmar_senha = forms.CharField(
+        required=True,
+        widget=forms.PasswordInput(attrs={
+            'class': 'caixa-texto',
+            'placeholder': 'Confirme sua nova senha'
+        })
+    )
+
     def clean(self):
         dados = super().clean()
 
