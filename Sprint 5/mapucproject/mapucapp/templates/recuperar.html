@@ -1,0 +1,166 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperar senha - MaPUC</title>
+
+    <link rel="stylesheet" href="{% static 'css/recuperar.css' %}">
+</head>
+
+<body class="tela-recuperar">
+
+    <main class="recuperar">
+
+        <header class="cabecalho-recuperar">
+
+            {% if etapa == 'nova_senha' %}
+                <a class="botao-voltar" href="{% url 'recuperar' %}?reiniciar=1" aria-label="Voltar">←</a>
+            {% else %}
+                <a class="botao-voltar" href="{% url 'login' %}" aria-label="Voltar">←</a>
+            {% endif %}
+
+            <div>
+                <h1>Recuperar senha</h1>
+                <p>Recupere o acesso à sua conta acadêmica.</p>
+            </div>
+
+        </header>
+
+        <div class="conteudo-recuperar">
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="mensagem {{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <div class="aviso-recuperar">
+                Recuperação demonstrativa. Verificação de identidade e envio de e-mail ainda não estão conectados.
+            </div>
+
+
+            {% if etapa == 'nova_senha' %}
+
+
+                <div class="introducao-recuperar">
+                    <h2>Nova senha</h2>
+                    <p>Crie uma nova senha para a sua conta acadêmica.</p>
+                </div>
+
+                <form class="form-recuperar" method="post">
+
+                    {% csrf_token %}
+
+                    {% if form.non_field_errors %}
+                        <div class="erros-recuperar">
+                            {% for erro in form.non_field_errors %}
+                                <p>{{ erro }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <div class="campo-recuperar">
+
+                        <label for="{{ form.nova_senha.id_for_label }}">Nova senha</label>
+
+                        {{ form.nova_senha }}
+
+                        {% for erro in form.nova_senha.errors %}
+                            <p class="erro-campo">{{ erro }}</p>
+                        {% endfor %}
+
+                    </div>
+
+                    <div class="campo-recuperar">
+
+                        <label for="{{ form.confirmar_senha.id_for_label }}">Confirmar nova senha</label>
+
+                        {{ form.confirmar_senha }}
+
+                        {% for erro in form.confirmar_senha.errors %}
+                            <p class="erro-campo">{{ erro }}</p>
+                        {% endfor %}
+
+                    </div>
+
+                    <div class="criterios-senha">
+                        <p>A senha deve conter:</p>
+                        <ul>
+                            <li>Mínimo de 8 caracteres</li>
+                            <li>Mínimo de 2 símbolos</li>
+                            <li>Mínimo de 1 número</li>
+                        </ul>
+                    </div>
+
+                    <button class="botao-acao botao-recuperar" type="submit">
+                        Salvar nova senha
+                    </button>
+
+                </form>
+
+
+            {% else %}
+
+
+                <div class="introducao-recuperar">
+                    <h2>Confirme seus dados</h2>
+                    <p>Informe sua matrícula e o e-mail institucional cadastrado.</p>
+                </div>
+
+                <form class="form-recuperar" method="post">
+
+                    {% csrf_token %}
+
+                    {% if form.non_field_errors %}
+                        <div class="erros-recuperar">
+                            {% for erro in form.non_field_errors %}
+                                <p>{{ erro }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <div class="campo-recuperar">
+
+                        <label for="{{ form.matricula.id_for_label }}">Matrícula</label>
+
+                        {{ form.matricula }}
+
+                        {% for erro in form.matricula.errors %}
+                            <p class="erro-campo">{{ erro }}</p>
+                        {% endfor %}
+
+                    </div>
+
+                    <div class="campo-recuperar">
+
+                        <label for="{{ form.email.id_for_label }}">E-mail institucional</label>
+
+                        {{ form.email }}
+
+                        {% for erro in form.email.errors %}
+                            <p class="erro-campo">{{ erro }}</p>
+                        {% endfor %}
+
+                    </div>
+
+                    <button class="botao-acao botao-recuperar" type="submit">
+                        Continuar
+                    </button>
+
+                </form>
+
+            {% endif %}
+
+        </div>
+
+    </main>
+
+</body>
+</html>
+
+

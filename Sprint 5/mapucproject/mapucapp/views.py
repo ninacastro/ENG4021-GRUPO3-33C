@@ -579,3 +579,64 @@ def excluir_aula(request, aula_id):
     aula.delete()
     messages.success(request, 'Aula removida da sua grade.')
     return redirect('cadastrar_grade')
+
+
+
+def recuperar(request):
+    
+    if request.GET.get('reiniciar') == '1':
+        request.session.pop('recuperacao_aluno_id', None)
+        return redirect('recuperar')
+
+    aluno_id = request.session.get('recuperacao_aluno_id')
+
+    if aluno_id:
+
+        aluno = Aluno.objects.filter(id_aluno=aluno_id).first()
+
+        if not aluno:
+            request.session.pop('recuperacao_aluno_id', None)
+
+            messages.error(request,
+                'Não foi possível localizar sua conta. Tente novamente.'
+            )
+
+            return redirect('recuperar')
+
+        form = NovaSenhaForm(request.POST or None)
+
+        if request.method == 'POST':
+
+            if form.is_valid():
+
+                nova_senha = form.cleaned_data['nova_senha']
+
+                aluno.senha = make_password(nova_senha)
+                aluno.save(update_fields=['senha'])
+
+
+                request.session.pop('recuperacao_aluno_id', None)
+
+                messages.success(request,
+                    'Sua senha foi alterada com sucesso!'
+                )
+
+                return redirect('login')
+
+        return render(request, 'recuperar.html', {'form': form, 'etapa': 'nova_senha'})
+
+    form = RecuperarSenhaForm(request.POST or None)
+
+    if request.method == 'POST':
+
+        if form.is_valid():
+
+            aluno = form.cleaned_data['aluno']
+
+            request.session['recuperacao_aluno_id'] = aluno.id_aluno
+
+            request.session.set_expiry(600)
+
+            return render(request,'recuperar.html', {'form': NovaSenhaForm(), 'etapa': 'nova_senha'})
+
+    return render(request, 'recuperar.html',{'form': form, 'etapa': 'identificacao'})

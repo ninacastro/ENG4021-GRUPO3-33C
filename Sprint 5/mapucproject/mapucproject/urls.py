@@ -24,6 +24,7 @@ urlpatterns = [
     path('cadastrar-grade/', cadastrar_grade, name='cadastrar_grade'),
     path('aulas/<int:aula_id>/excluir/', excluir_aula, name='excluir_aula'),
     path('historico/', historico, name='historico'),
-
     path('favoritar/<int:sala_id>/', favoritar_sala, name='favoritar_sala'),
+    path('recuperar/', recuperar, name='recuperar'),
+
 ]
