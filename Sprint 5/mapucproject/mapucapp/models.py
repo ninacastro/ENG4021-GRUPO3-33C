@@ -1,4 +1,22 @@
+from datetime import datetime
+
 from django.db import models
+from django.utils import timezone
+
+
+def _esta_aberto_no_horario(horario_funcionamento):
+    partes = horario_funcionamento.split('-')
+    if len(partes) != 2:
+        return None
+
+    try:
+        abertura = datetime.strptime(partes[0].strip(), '%H:%M').time()
+        fechamento = datetime.strptime(partes[1].strip(), '%H:%M').time()
+    except ValueError:
+        return None
+
+    horario_atual = timezone.localtime().time()
+    return abertura <= horario_atual < fechamento
 
 class Predio(models.Model):
     id_predio = models.AutoField(primary_key=True)
@@ -7,6 +25,10 @@ class Predio(models.Model):
     coordenadas_entradas = models.CharField(max_length=255)
     quantidade_andares = models.IntegerField()
     horario_funcionamento = models.CharField(max_length=100)
+
+    @property
+    def esta_aberto(self):
+        return _esta_aberto_no_horario(self.horario_funcionamento)
 
     def __str__(self):
         return self.nome

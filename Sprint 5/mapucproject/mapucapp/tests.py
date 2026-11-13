@@ -1,5 +1,5 @@
 from io import BytesIO
-from datetime import date
+from datetime import date, datetime
 from unittest.mock import patch
 
 from django.test import TestCase
@@ -69,6 +69,78 @@ class RecuperacaoSenhaTests(TestCase):
 
 
 class MapaViewTests(TestCase):
+    @patch('mapucapp.models.timezone.localtime')
+    def test_predio_informa_seu_status_de_acordo_com_horario_local(self, mock_localtime):
+        predio = Predio(
+            horario_funcionamento='08:00 - 20:00',
+        )
+
+        mock_localtime.return_value = datetime(2026, 11, 13, 8, 0)
+        self.assertTrue(predio.esta_aberto)
+
+        mock_localtime.return_value = datetime(2026, 11, 13, 20, 0)
+        self.assertFalse(predio.esta_aberto)
+
+    def test_predio_sem_horario_nao_informa_status(self):
+        predio = Predio(horario_funcionamento='')
+
+        self.assertIsNone(predio.esta_aberto)
+
+    @patch('mapucapp.models.timezone.localtime')
+    def test_resultado_da_busca_mostra_status_do_predio(self, mock_localtime):
+        predio = Predio.objects.create(
+            nome='Prédio de teste',
+            sigla_codigo='PT',
+            coordenadas_entradas='-22.9785, -43.2324',
+            quantidade_andares=1,
+            horario_funcionamento='08:00 - 20:00',
+        )
+        andar = Andar.objects.create(
+            predio=predio,
+            numero_andar=1,
+            nome_exibicao='Térreo',
+        )
+        Sala.objects.create(
+            codigo_sala='S1',
+            nome_exibicao='Sala de teste',
+            predio=predio,
+            andar=andar,
+            coordenadas='-22.9786, -43.2325',
+            tipo_sala='Aula',
+            capacidade=20,
+        )
+
+        for horario, status, status_do_predio in (
+            (datetime(2026, 11, 13, 8, 0), 'Aberto', 'aberto'),
+            (datetime(2026, 11, 13, 20, 0), 'Fechado', 'fechado'),
+        ):
+            with self.subTest(status=status):
+                mock_localtime.return_value = horario
+                resposta_predio = self.client.get(
+                    reverse('inicio'),
+                    {'busca': predio.nome},
+                )
+                resposta_sala = self.client.get(
+                    reverse('inicio'),
+                    {'busca': 'Sala de teste'},
+                )
+
+                self.assertContains(resposta_predio, status)
+                if status == 'Fechado':
+                    self.assertContains(
+                        resposta_predio,
+                        'class="status-local status-local--fechado"',
+                    )
+                classe_fechado = (
+                    ' status-local--fechado'
+                    if status_do_predio == 'fechado'
+                    else ''
+                )
+                self.assertContains(
+                    resposta_sala,
+                    f'class="status-local{classe_fechado}">{status_do_predio}</span>',
+                )
+
     def test_mapa_em_tela_cheia_renderiza_mapa_e_link_de_volta(self):
         response = self.client.get(reverse('mapa'))
 
