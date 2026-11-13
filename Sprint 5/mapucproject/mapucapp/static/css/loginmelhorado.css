@@ -245,7 +245,7 @@ button:focus-visible, .botao-cadastro:focus-visible {
   padding: clamp(28px, 4vw, 52px) clamp(24px, 6vw, 88px);
 }
 .container-celular form {
-  width: min(100%, 720px);
+  width: 100%;
   margin-left: auto;
   margin-right: auto;
 }
