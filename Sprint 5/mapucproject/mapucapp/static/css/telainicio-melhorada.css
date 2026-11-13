@@ -626,6 +626,7 @@ a:hover {
   margin: 0 0 8px;
   color: #687586;
   font-size: 14px;
+}
 /* =========================================================
    Acessibilidade: respeita quem reduz movimento
    ========================================================= */
@@ -635,5 +636,90 @@ a:hover {
   *::after {
     transition: none !important;
     animation: none !important;
+  }
+}
+
+/* =========================================================
+   Padronização final dos botões
+   ========================================================= */
+.botao-acao {
+  background-color: #1f9d6b;
+  border-color: #1f9d6b;
+  color: #fff;
+}
+.botao-acao:hover {
+  background-color: #178a5c;
+  border-color: #178a5c;
+  color: #fff;
+}
+.botao-acao:active {
+  background-color: #127a51;
+}
+.botao-favoritar, .botao-remover-favorito {
+  /* Ações de ícone permanecem discretas, sem competir com os botões principais. */
+}
+@media (min-width: 901px) {
+  .conteudo-inicio {
+    grid-template-columns: minmax(0, 1.7fr) minmax(320px, .9fr);
+    gap: 24px;
+  }
+}
+
+
+/* Melhor distribuição do conteúdo pela largura disponível */
+body {
+  padding-left: clamp(18px, 4vw, 64px);
+  padding-right: clamp(18px, 4vw, 64px);
+}
+.area-perfil,
+.inicio {
+  width: min(100%, 1600px);
+}
+.cabecalho-inicio {
+  margin-bottom: clamp(22px, 3vw, 38px);
+}
+.cabecalho-inicio p {
+  max-width: 90ch;
+}
+.form-pesquisa {
+  width: 100%;
+}
+.linha-busca .caixa-texto {
+  width: 100%;
+  max-width: none;
+}
+.filtros-grade {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px 24px;
+}
+.filtro-check {
+  grid-column: 1 / -1;
+}
+.conteudo-inicio {
+  grid-template-columns: minmax(0, 1.8fr) minmax(320px, 1fr);
+  gap: clamp(20px, 2.5vw, 36px);
+}
+.atalhos {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+@media (max-width: 900px) {
+  .filtros-grade {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .conteudo-inicio {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 560px) {
+  body {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  .filtros-grade {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .atalhos {
+    grid-template-columns: minmax(0, 1fr);
   }
 }

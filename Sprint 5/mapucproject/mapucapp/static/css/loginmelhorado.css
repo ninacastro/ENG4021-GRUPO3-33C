@@ -194,3 +194,69 @@ button:disabled {
     animation: none !important;
   }
 }
+
+
+/* =========================================================
+   Ajustes responsivos e padronização visual
+   ========================================================= */
+:root {
+  --turquesa: #1f9d6b;
+  --turquesa-hover: #178a5c;
+  --turquesa-ativo: #127a51;
+  --turquesa-foco: rgba(31, 157, 107, .22);
+}
+.container-celular {
+  width: min(100%, 760px);
+  max-width: 760px;
+  margin: clamp(20px, 5vh, 56px) auto;
+  padding: clamp(24px, 4vw, 48px);
+}
+button, .botao-cadastro {
+  background: var(--turquesa);
+  color: #fff;
+  border: 1px solid var(--turquesa);
+  border-radius: 9px;
+}
+button:hover, .botao-cadastro:hover {
+  background: var(--turquesa-hover);
+  border-color: var(--turquesa-hover);
+  color: #fff;
+}
+button:active, .botao-cadastro:active {
+  background: var(--turquesa-ativo);
+}
+button:focus-visible, .botao-cadastro:focus-visible {
+  outline: 3px solid var(--turquesa-foco);
+  outline-offset: 3px;
+}
+@media (max-width: 560px) {
+  .container-celular {
+    width: 100%;
+    margin: 8px auto;
+    padding: 24px 18px;
+  }
+}
+
+
+/* Melhor aproveitamento da largura sem perder o formulário centralizado */
+.container-celular {
+  width: min(100%, 960px);
+  max-width: 960px;
+  padding: clamp(28px, 4vw, 52px) clamp(24px, 6vw, 88px);
+}
+.container-celular form {
+  width: min(100%, 720px);
+  margin-left: auto;
+  margin-right: auto;
+}
+.container-celular h1,
+.container-celular h2,
+.container-celular h3 {
+  max-width: 100%;
+}
+@media (max-width: 560px) {
+  .container-celular {
+    width: 100%;
+    padding: 24px 18px;
+  }
+}
