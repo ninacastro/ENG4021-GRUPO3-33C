@@ -3,9 +3,10 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Início - MaPUC</title>
 
-    <link rel="stylesheet" href="{% static 'css/telainicio-melhorada.css' %}?v=5">
+    <link rel="stylesheet" href="{% static 'css/telainicio-melhorada.css' %}?v=6">
     <link rel="stylesheet" href="{% static 'css/mapa-puc.css' %}?v=3">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -28,13 +29,76 @@
         </header>
 
         <form class="form-pesquisa" action="/inicio/" method="get">
-            {{ form_busca.busca }}
-            <button class="botao-acao botao-busca" type="submit">Pesquisar</button>
+            <div class="linha-busca">
+                {{ form_busca.busca }}
+                <button class="botao-acao botao-busca" type="submit">Pesquisar</button>
+            </div>
+
+            <details class="filtros"{% if filtros_ativos or form_filtros.errors %} open{% endif %}>
+                <summary class="filtros-resumo">
+                    Filtros
+                    {% if total_filtros %}
+                        <span class="filtros-contador" aria-label="{{ total_filtros }} filtro{{ total_filtros|pluralize }} ativo{{ total_filtros|pluralize }}">{{ total_filtros }}</span>
+                    {% endif %}
+                </summary>
+
+                <div class="filtros-grade">
+                    <div class="filtro-campo">
+                        <label for="{{ form_filtros.predio.id_for_label }}">Prédio</label>
+                        {{ form_filtros.predio }}
+                    </div>
+
+                    <div class="filtro-campo">
+                        <label for="{{ form_filtros.andar.id_for_label }}">Andar</label>
+                        {{ form_filtros.andar }}
+                    </div>
+
+                    <div class="filtro-campo">
+                        <label for="{{ form_filtros.tipo_sala.id_for_label }}">Tipo de sala</label>
+                        {{ form_filtros.tipo_sala }}
+                    </div>
+
+                    <div class="filtro-campo">
+                        <label for="{{ form_filtros.capacidade_min.id_for_label }}">Capacidade mínima</label>
+                        {{ form_filtros.capacidade_min }}
+                    </div>
+
+                    <label class="filtro-check" for="{{ form_filtros.favoritas.id_for_label }}">
+                        {{ form_filtros.favoritas }}
+                        Só minhas favoritas
+                    </label>
+                </div>
+
+                {% if form_filtros.errors %}
+                    <p class="filtros-erro" role="alert">Confira os filtros: algum valor não é válido e foi ignorado.</p>
+                {% endif %}
+
+                <div class="filtros-acoes">
+                    <button class="botao-acao" type="submit">Aplicar filtros</button>
+                    {% if filtros_ativos %}
+                        <a class="filtros-limpar" href="{% url 'inicio' %}{% if busca %}?busca={{ busca|urlencode }}{% endif %}">Limpar filtros</a>
+                    {% endif %}
+                </div>
+            </details>
         </form>
 
-        {% if busca %}
+        {% if mostrar_resultados %}
         <div class="resultados">
-            <h3>Resultados para "{{ busca }}"</h3>
+            {% if busca %}
+                <h3>Resultados para "{{ busca }}"</h3>
+            {% else %}
+                <h3>Salas filtradas</h3>
+            {% endif %}
+
+            {% if filtros_ativos %}
+                <p class="resultados-resumo">
+                    {{ salas|length }} sala{{ salas|length|pluralize }} encontrada{{ salas|length|pluralize }}
+                </p>
+            {% endif %}
+
+            {% if favoritas_sem_login %}
+                <p class="resultados-aviso">Entre na sua conta para filtrar pelas salas favoritas.</p>
+            {% endif %}
 
             {% for predio in predios %}
                 <p>
@@ -51,12 +115,12 @@
                             <strong>{{ sala.nome_exibicao }}</strong> ({{ sala.codigo_sala }})
                         </a>
                         <div class="resultado-sala-detalhes">
-                            {{ sala.predio.nome }} · {{ sala.andar }} · {{ sala.tipo_sala }}
+                            {{ sala.predio.nome }} · {{ sala.andar.nome_exibicao }} · {{ sala.tipo_sala }} · {{ sala.capacidade }} lugares
                         </div>
                     </div>
                     <form class="form-favoritar" action="{% url 'favoritar_sala' sala.id_sala %}" method="post">
                         {% csrf_token %}
-                        <input type="hidden" name="busca" value="{{ busca }}">
+                        <input type="hidden" name="consulta" value="{{ consulta }}">
                         <button
                             type="submit"
                             class="botao-favoritar"
@@ -70,7 +134,10 @@
             {% endfor %}
 
             {% if not predios and not salas %}
-                <p>Nenhum resultado encontrado.</p>
+                <p>
+                    Nenhum resultado encontrado.
+                    {% if filtros_ativos %}Tente remover algum filtro.{% endif %}
+                </p>
             {% endif %}
         </div>
         {% endif %}
@@ -88,6 +155,7 @@
                         </a>
                         <form class="form-favoritar" action="{% url 'favoritar_sala' sala.id_sala %}" method="post">
                             {% csrf_token %}
+                            <input type="hidden" name="consulta" value="{{ consulta }}">
                             <button class="botao-remover-favorito" type="submit" aria-label="Remover {{ sala.nome_exibicao }} dos favoritos" title="Remover dos favoritos">×</button>
                         </form>
                     </li>

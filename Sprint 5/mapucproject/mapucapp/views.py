@@ -1,7 +1,7 @@
 from functools import reduce, wraps
 import logging
 import operator
-from urllib.parse import urlencode
+from urllib.parse import parse_qsl, urlencode
 
 from django.contrib import messages
 from django.contrib.auth.hashers import check_password, identify_hasher, make_password
@@ -17,6 +17,7 @@ from .forms import (
     AulaGradeForm,
     BuscaForm,
     CadastroForm,
+    FiltroBuscaForm,
     LoginForm,
 )
 from .feriados_service import criar_avisos_de_feriados, obter_feriados_proximos
@@ -105,35 +106,74 @@ def _contexto_grade(aluno):
         'numero_disciplinas': len(disciplinas),
     }
 
-
+CAMPOS_BUSCA = ('busca', 'predio', 'andar', 'tipo_sala', 'capacidade_min', 'favoritas')
 
 def inicio(request):
     form_busca = BuscaForm(request.GET or None)
+    form_filtros = FiltroBuscaForm(request.GET or None)
     busca = ''
 
     if form_busca.is_valid():
         busca = form_busca.cleaned_data['busca'].strip()
+
+    form_filtros.is_valid()
+    filtros = getattr(form_filtros, 'cleaned_data', {})
+
+    predio_filtro = filtros.get('predio')
+    andar_filtro = filtros.get('andar') or ''
+    tipo_filtro = filtros.get('tipo_sala') or ''
+    capacidade_min = filtros.get('capacidade_min')
+    so_favoritas = bool(filtros.get('favoritas'))
+
+    total_filtros = sum([
+        bool(predio_filtro),
+        andar_filtro != '',
+        bool(tipo_filtro),
+        capacidade_min is not None,
+        so_favoritas,
+    ])
+    filtros_ativos = total_filtros > 0
 
     predios = Predio.objects.none()
     salas = Sala.objects.none()
 
     aluno = obter_aluno_logado(request)
 
-    if busca:
-        predios = Predio.objects.filter(
-            Q(nome__icontains=busca) |
-            Q(sigla_codigo__icontains=busca)
-        )
+    favoritas_sem_login = so_favoritas and aluno is None
 
-        salas = Sala.objects.select_related('predio', 'andar').filter(
-            Q(codigo_sala__icontains=busca) |
-            Q(nome_exibicao__icontains=busca) |
-            Q(predio__nome__icontains=busca) |
-            Q(predio__sigla_codigo__icontains=busca)
-        )
+    if busca or filtros_ativos:
+        salas = Sala.objects.select_related('predio', 'andar')
 
-        if aluno:
-            HistoricoBusca.objects.create(aluno=aluno, termo=busca)
+        if busca:
+            salas = salas.filter(
+                Q(codigo_sala__icontains=busca) |
+                Q(nome_exibicao__icontains=busca) |
+                Q(predio__nome__icontains=busca) |
+                Q(predio__sigla_codigo__icontains=busca)
+            )
+            if not filtros_ativos:
+                predios = Predio.objects.filter(
+                    Q(nome__icontains=busca) |
+                    Q(sigla_codigo__icontains=busca)
+                )
+            if aluno:
+                HistoricoBusca.objects.create(aluno=aluno, termo=busca)
+
+        if predio_filtro:
+            salas = salas.filter(predio=predio_filtro)
+        if andar_filtro != '':
+            salas = salas.filter(andar__numero_andar=int(andar_filtro))
+        if tipo_filtro:
+            salas = salas.filter(tipo_sala=tipo_filtro)
+        if capacidade_min is not None:
+            salas = salas.filter(capacidade__gte=capacidade_min)
+        if so_favoritas:
+            if aluno:
+                salas = salas.filter(favoritado_por__aluno=aluno)
+            else:
+                salas = salas.none()
+
+        salas = salas.order_by('predio__nome', 'andar__numero_andar', 'nome_exibicao')
 
     # --- Locais favoritos do aluno ---
     favoritos = []
@@ -150,7 +190,13 @@ def inicio(request):
 
     context = {
         'form_busca': form_busca,
+        'form_filtros': form_filtros,
         'busca': busca,
+        'filtros_ativos': filtros_ativos,
+        'total_filtros': total_filtros,
+        'mostrar_resultados': bool(busca) or filtros_ativos,
+        'favoritas_sem_login': favoritas_sem_login,
+        'consulta': request.GET.urlencode(),
         'predios': predios,
         'salas': salas,
         'favoritos': favoritos,
@@ -176,9 +222,14 @@ def favoritar_sala(request, sala_id):
     else:
         LocalFavorito.objects.create(aluno=aluno, sala=sala)
 
-    busca = request.POST.get('busca', '').strip()
-    if busca:
-        return redirect(f"{reverse('inicio')}?{urlencode({'busca': busca})}")
+        consulta = request.POST.get('consulta', '')
+    parametros = [
+        (campo, valor)
+        for campo, valor in parse_qsl(consulta)
+        if campo in CAMPOS_BUSCA and valor != ''
+    ]
+    if parametros:
+        return redirect(f"{reverse('inicio')}?{urlencode(parametros)}")
     return redirect('inicio')
 
 

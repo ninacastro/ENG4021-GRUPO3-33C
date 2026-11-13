@@ -1,7 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
-from .models import Aluno, AulaGrade
+from .models import Aluno, Andar, AulaGrade, Predio, Sala
 
 class LoginForm(forms.Form):
     matricula = forms.CharField(
@@ -33,6 +33,74 @@ class BuscaForm(forms.Form):
             'placeholder': 'Buscar sala ou prédio'
         })
     )
+
+class FiltroBuscaForm(forms.Form):
+    """Filtros opcionais da busca da tela inicial (enviados por GET)."""
+
+    predio = forms.ModelChoiceField(
+        queryset=Predio.objects.none(),
+        required=False,
+        empty_label='Todos os prédios',
+        label='Prédio',
+        widget=forms.Select(attrs={'class': 'filtro-controle'}),
+    )
+    andar = forms.ChoiceField(
+        required=False,
+        label='Andar',
+        widget=forms.Select(attrs={'class': 'filtro-controle'}),
+    )
+    tipo_sala = forms.ChoiceField(
+        required=False,
+        label='Tipo de sala',
+        widget=forms.Select(attrs={'class': 'filtro-controle'}),
+    )
+    capacidade_min = forms.IntegerField(
+        required=False,
+        min_value=1,
+        label='Capacidade mínima',
+        widget=forms.NumberInput(attrs={
+            'class': 'filtro-controle',
+            'min': 1,
+            'inputmode': 'numeric',
+            'placeholder': 'Ex.: 30',
+        }),
+    )
+    favoritas = forms.BooleanField(
+        required=False,
+        label='Só minhas favoritas',
+        widget=forms.CheckboxInput(attrs={'class': 'filtro-checkbox'}),
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields['predio'].queryset = Predio.objects.order_by('nome')
+
+        # Andares: um por número, com o nome do primeiro encontrado.
+        andares = {}
+        linhas = (
+            Andar.objects
+            .order_by('numero_andar')
+            .values_list('numero_andar', 'nome_exibicao')
+        )
+        for numero, nome in linhas:
+            andares.setdefault(numero, nome)
+        self.fields['andar'].choices = (
+            [('', 'Todos os andares')]
+            + [(str(numero), nome) for numero, nome in andares.items()]
+        )
+
+        # Tipos de sala: valores distintos que existem no banco.
+        tipos = (
+            Sala.objects
+            .exclude(tipo_sala='')
+            .order_by('tipo_sala')
+            .values_list('tipo_sala', flat=True)
+            .distinct()
+        )
+        self.fields['tipo_sala'].choices = (
+            [('', 'Todos os tipos')] + [(tipo, tipo) for tipo in tipos]
+        )
 
 
 class CadastroForm(forms.ModelForm):
