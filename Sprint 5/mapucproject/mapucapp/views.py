@@ -1,7 +1,7 @@
 from functools import reduce, wraps
 import logging
 import operator
-from urllib.parse import urlencode
+from urllib.parse import parse_qsl, urlencode
 
 from django.contrib import messages
 from django.contrib.auth.hashers import check_password, identify_hasher, make_password
@@ -17,6 +17,7 @@ from .forms import (
     AulaGradeForm,
     BuscaForm,
     CadastroForm,
+    FiltroBuscaForm,
     LoginForm,
 )
 from .feriados_service import criar_avisos_de_feriados, obter_feriados_proximos
