@@ -1,190 +1,368 @@
+/* =========================================================
+   Design tokens
+   ========================================================= */
+:root {
+  --fundo: #f7f9f9;
+  --branco: #ffffff;
+  --borda: #e3e8eb;
+  --marinho: #102a49;
+  --marinho-hover: #1b3d68;
 
+  --turquesa: #43bfae;
+  --turquesa-hover: #38ab9b;
+  --turquesa-ativo: #2f9686;
+  --turquesa-claro: #e5f6f3;
+  --turquesa-texto: #187a6a; /* turquesa escuro, legível sobre fundo claro */
+
+  --cinza: #667789;
+
+  --raio-p: 12px;
+  --raio: 18px;
+  --raio-g: 20px;
+  --raio-pilula: 999px;
+
+  --sombra-p: 0 1px 2px rgba(16, 42, 73, 0.05);
+  --sombra: 0 1px 2px rgba(16, 42, 73, 0.05), 0 6px 18px rgba(16, 42, 73, 0.07);
+
+  --transicao: 0.15s ease;
+}
+
+/* =========================================================
+   Base
+   ========================================================= */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-    background: #f7f9f9;
-    font-family: Arial, sans-serif;
-    color: #102a49;
-    padding: 20px;
+  background: var(--fundo);
+  font-family: system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  color: var(--marinho);
+  line-height: 1.5;
+  padding: 20px;
+  -webkit-font-smoothing: antialiased;
 }
 
+/* =========================================================
+   Cabeçalho
+   ========================================================= */
 .cabecalho {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 15px 5px 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  max-width: 650px;
+  margin: 0 auto;
+  padding: 15px 5px 30px;
 }
 
 .botao-voltar {
-    color: #102a49;
-    font-size: 30px;
-    font-weight: bold;
-    text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: 50%;
+  color: var(--marinho);
+  font-size: 30px;
+  font-weight: bold;
+  line-height: 1;
+  text-decoration: none;
+  transition: background-color var(--transicao);
+}
+
+.botao-voltar:hover {
+  background-color: rgba(16, 42, 73, 0.07);
 }
 
 .logo {
-    color: #43bfae;
-    font-size: 27px;
-    font-weight: bold;
+  color: var(--turquesa-texto);
+  font-size: 27px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
 }
 
 .botao-perfil {
-    background: #102a49;
-    color: white;
-    padding: 10px 15px;
-    border-radius: 25px;
-    text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 10px 16px;
+  border-radius: 25px;
+  background: var(--marinho);
+  color: var(--branco);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: var(--sombra-p);
+  transition: background-color var(--transicao), box-shadow var(--transicao),
+    transform var(--transicao);
 }
 
+.botao-perfil:hover {
+  background: var(--marinho-hover);
+  box-shadow: 0 4px 12px rgba(16, 42, 73, 0.25);
+}
+
+.botao-perfil:active {
+  transform: translateY(1px);
+  box-shadow: var(--sombra-p);
+}
+
+/* =========================================================
+   Conteúdo e título
+   ========================================================= */
 .conteudo {
-    max-width: 650px;
-    margin: auto;
+  max-width: 650px;
+  margin: auto;
 }
 
 .titulo {
-    text-align: center;
-    margin: 25px 0 40px;
+  text-align: center;
+  margin: 25px 0 40px;
 }
 
 .titulo h2 {
-    font-size: 27px;
-    margin-bottom: 15px;
-    text-transform: uppercase;
+  font-size: 27px;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+  margin-bottom: 15px;
+  text-transform: uppercase;
 }
 
-.titulo div, .descricao-vazia {
-    color: #8493a3;
-    line-height: 1.5;
+.titulo div,
+.descricao-vazia {
+  color: var(--cinza);
+  line-height: 1.55;
+}
+
+.titulo div {
+  max-width: 48ch;
+  margin: 0 auto;
 }
 
 .subtitulo {
-    font-size: 19px;
-    font-weight: bold;
-    margin-bottom: 18px;
+  font-size: 19px;
+  font-weight: bold;
+  margin-bottom: 18px;
 }
 
+/* =========================================================
+   Lista de histórico
+   ========================================================= */
 .lista-historico {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
 }
 
 .item-historico {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    background: white;
-    border: 1px solid #e3e8eb;
-    border-radius: 18px;
-    padding: 18px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background: var(--branco);
+  border: 1px solid var(--borda);
+  border-radius: var(--raio);
+  padding: 18px;
+  box-shadow: var(--sombra-p);
+  transition: border-color var(--transicao), box-shadow var(--transicao);
+}
+
+.item-historico:hover {
+  border-color: #cfe9e4;
+  box-shadow: var(--sombra);
 }
 
 .icone-busca {
-    background: #e5f6f3;
-    color: #43bfae;
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 30px;
+  flex: 0 0 auto;
+  background: var(--turquesa-claro);
+  color: var(--turquesa-texto);
+  width: 48px;
+  height: 48px;
+  border-radius: var(--raio-p);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
 }
 
 .informacoes-busca {
-    flex: 1;
+  flex: 1;
+  min-width: 0;
 }
 
 .nome-busca {
-    font-size: 17px;
-    font-weight: bold;
-    margin-bottom: 7px;
+  font-size: 17px;
+  font-weight: bold;
+  line-height: 1.3;
+  margin-bottom: 4px;
+  overflow-wrap: anywhere;
 }
 
 .data-busca {
-    color: #8996a5;
-    font-size: 13px;
+  color: var(--cinza);
+  font-size: 13px;
 }
 
 .botao-pesquisar {
-    background: #43bfae;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 38px;
-    height: 38px;
-    font-size: 23px;
-    cursor: pointer;
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--turquesa);
+  color: var(--marinho);
+  border: none;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  font-size: 23px;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: var(--sombra-p);
+  transition: background-color var(--transicao), box-shadow var(--transicao),
+    transform var(--transicao);
 }
 
 .botao-pesquisar:hover {
-    background: #32a995;
+  background: var(--turquesa-hover);
+  box-shadow: 0 4px 12px rgba(67, 191, 174, 0.4);
 }
 
+.botao-pesquisar:active {
+  background: var(--turquesa-ativo);
+  box-shadow: var(--sombra-p);
+  transform: scale(0.95);
+}
+
+/* =========================================================
+   Estado vazio
+   ========================================================= */
 .historico-vazio {
-    background: white;
-    border: 1px solid #e3e8eb;
-    border-radius: 20px;
-    padding: 40px 25px;
-    text-align: center;
+  background: var(--branco);
+  border: 1px solid var(--borda);
+  border-radius: var(--raio-g);
+  padding: 40px 25px;
+  text-align: center;
+  box-shadow: var(--sombra);
 }
 
 .icone-vazio {
-    color: #43bfae;
-    font-size: 45px;
-    margin-bottom: 15px;
+  color: var(--turquesa);
+  font-size: 45px;
+  line-height: 1;
+  margin-bottom: 15px;
 }
 
 .mensagem-vazia {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 12px;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 12px;
 }
 
 .descricao-vazia {
-    font-size: 14px;
-    margin-bottom: 25px;
+  font-size: 14px;
+  max-width: 40ch;
+  margin: 0 auto 25px;
 }
 
 .botao-inicio {
-    display: inline-block;
-    background: #43bfae;
-    color: white;
-    padding: 13px 22px;
-    border-radius: 30px;
-    text-decoration: none;
-    font-weight: bold;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  background: var(--turquesa);
+  /* Texto marinho: branco sobre este turquesa tem contraste baixo */
+  color: var(--marinho);
+  padding: 13px 24px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: bold;
+  box-shadow: var(--sombra-p);
+  transition: background-color var(--transicao), box-shadow var(--transicao),
+    transform var(--transicao);
 }
 
+.botao-inicio:hover {
+  background: var(--turquesa-hover);
+  box-shadow: 0 4px 12px rgba(67, 191, 174, 0.4);
+}
+
+.botao-inicio:active {
+  background: var(--turquesa-ativo);
+  box-shadow: var(--sombra-p);
+  transform: translateY(1px);
+}
+
+/* =========================================================
+   Atalho para o mapa
+   ========================================================= */
 .atalho-mapa {
-    text-align: center;
-    margin-top: 35px;
+  text-align: center;
+  margin-top: 35px;
 }
 
 .atalho-mapa a {
-    color: #43bfae;
-    text-decoration: none;
-    font-weight: bold;
+  display: inline-block;
+  padding: 6px 4px;
+  color: var(--turquesa-texto);
+  text-decoration: none;
+  font-weight: bold;
+  transition: color var(--transicao);
 }
 
+.atalho-mapa a:hover {
+  color: var(--marinho);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* =========================================================
+   Foco via teclado
+   ========================================================= */
+.botao-voltar:focus-visible,
+.botao-perfil:focus-visible,
+.botao-pesquisar:focus-visible,
+.botao-inicio:focus-visible,
+.atalho-mapa a:focus-visible {
+  outline: 3px solid var(--marinho);
+  outline-offset: 3px;
+}
+
+/* =========================================================
+   Responsivo
+   ========================================================= */
 @media (max-width: 480px) {
-    body {
-        padding: 15px;
-    }
+  body {
+    padding: 15px;
+  }
 
-    .titulo h2 {
-        font-size: 23px;
-    }
+  .titulo h2 {
+    font-size: 23px;
+  }
 
-    .item-historico {
-        padding: 14px;
-    }
+  .item-historico {
+    padding: 14px;
+    gap: 12px;
+  }
 
-    .nome-busca {
-        font-size: 15px;
-    }
+  .nome-busca {
+    font-size: 15px;
+  }
+
+  .historico-vazio {
+    padding: 32px 20px;
+  }
+}
+
+/* =========================================================
+   Acessibilidade: respeita quem reduz movimento
+   ========================================================= */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+  }
 }
