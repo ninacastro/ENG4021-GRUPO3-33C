@@ -1,4 +1,22 @@
+from datetime import datetime
+
 from django.db import models
+from django.utils import timezone
+
+
+def _esta_aberto_no_horario(horario_funcionamento):
+    partes = horario_funcionamento.split('-')
+    if len(partes) != 2:
+        return None
+
+    try:
+        abertura = datetime.strptime(partes[0].strip(), '%H:%M').time()
+        fechamento = datetime.strptime(partes[1].strip(), '%H:%M').time()
+    except ValueError:
+        return None
+
+    horario_atual = timezone.localtime().time()
+    return abertura <= horario_atual < fechamento
 
 class Predio(models.Model):
     id_predio = models.AutoField(primary_key=True)
@@ -8,12 +26,22 @@ class Predio(models.Model):
     quantidade_andares = models.IntegerField()
     horario_funcionamento = models.CharField(max_length=100)
 
+    @property
+    def esta_aberto(self):
+        return _esta_aberto_no_horario(self.horario_funcionamento)
+
+    def __str__(self):
+        return self.nome
+
 class Andar(models.Model):
     id_andar = models.AutoField(primary_key=True)
     predio = models.ForeignKey(Predio, on_delete=models.CASCADE, related_name='andares')
     numero_andar = models.IntegerField()
     nome_exibicao = models.CharField(max_length=100)
     possui_elevador = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f'{self.predio.nome} - {self.nome_exibicao}'
 
 class Sala(models.Model):
     id_sala = models.AutoField(primary_key=True)
@@ -25,6 +53,9 @@ class Sala(models.Model):
     tipo_sala = models.CharField(max_length=100)
     capacidade = models.IntegerField()
 
+    def __str__(self):
+        return f'{self.codigo_sala} - {self.nome_exibicao}'
+
 class Departamento(models.Model):
     id_departamento = models.AutoField(primary_key=True)
     sigla = models.CharField(max_length=20)
@@ -32,6 +63,9 @@ class Departamento(models.Model):
     sala_secretaria = models.CharField(max_length=100)
     telefone = models.CharField(max_length=20)
     email = models.EmailField()
+
+    def __str__(self):
+        return self.nome
 
 class Professor(models.Model):
     id_professor = models.AutoField(primary_key=True)
@@ -41,6 +75,9 @@ class Professor(models.Model):
     matricula = models.CharField(max_length=50, unique=True)
     departamento = models.ForeignKey(Departamento, on_delete=models.SET_NULL, null=True, related_name='professores')
 
+    def __str__(self):
+        return self.nome
+
 class Disciplina(models.Model):
     id_disciplina = models.AutoField(primary_key=True)
     codigo_disciplina = models.CharField(max_length=50, unique=True)
@@ -49,6 +86,9 @@ class Disciplina(models.Model):
     departamento = models.ForeignKey(Departamento, on_delete=models.CASCADE, related_name='disciplinas')
     tipo_disciplina = models.CharField(max_length=100)
     nivel_disciplina = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f'{self.codigo_disciplina} - {self.nome}'
 
 class Aluno(models.Model):
     id_aluno = models.AutoField(primary_key=True)
@@ -61,6 +101,9 @@ class Aluno(models.Model):
     cep = models.CharField(max_length=9, blank=True, null=True)
     receber_noticias = models.BooleanField(default=False)
 
+    def __str__(self):
+        return self.nome
+
 class Turma(models.Model):
     id_turma = models.AutoField(primary_key=True)
     codigo_turma = models.CharField(max_length=50)
@@ -71,6 +114,9 @@ class Turma(models.Model):
     horario = models.CharField(max_length=100)
     salas = models.ManyToManyField(Sala, related_name='turmas')
     alunos = models.ManyToManyField(Aluno, related_name='turmas')
+
+    def __str__(self):
+        return f'{self.codigo_turma} - {self.codigo_disciplina.nome}'
 
 
 class Notificacao(models.Model):
@@ -116,6 +162,17 @@ class Restaurante(models.Model):
         return self.nome
 
 
+class MateriaGrade(models.Model):
+    aluno = models.ForeignKey(
+        Aluno,
+        on_delete=models.CASCADE,
+        related_name='materias_grade',
+    )
+
+    def __str__(self):
+        return f'Matéria da grade de {self.aluno.nome}'
+
+
 class AulaGrade(models.Model):
     DIAS_SEMANA = [
         ('segunda-feira', 'Segunda-feira'),
@@ -129,8 +186,8 @@ class AulaGrade(models.Model):
         ('07:00 - 09:00', '07:00 - 09:00'),
         ('09:00 - 11:00', '09:00 - 11:00'),
         ('11:00 - 13:00', '11:00 - 13:00'),
-        ('14:00 - 16:00', '14:00 - 16:00'),
-        ('16:00 - 18:00', '16:00 - 18:00'),
+        ('13:00 - 15:00', '13:00 - 15:00'),
+        ('15:00 - 17:00', '15:00 - 17:00'),
     ]
     CORES = [
         ('verde', 'Verde'),
@@ -142,6 +199,13 @@ class AulaGrade(models.Model):
         Aluno,
         on_delete=models.CASCADE,
         related_name='aulas_grade',
+    )
+    materia_grade = models.ForeignKey(
+        MateriaGrade,
+        on_delete=models.CASCADE,
+        related_name='aulas',
+        null=True,
+        blank=True,
     )
     codigo_disciplina = models.CharField(max_length=50)
     nome_disciplina = models.CharField(max_length=150)

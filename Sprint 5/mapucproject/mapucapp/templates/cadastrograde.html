@@ -42,22 +42,63 @@
             </div>
 
             <div class="campo">
-              <label for="{{ form.dia_semana.id_for_label }}">Dia da semana</label>
-              {{ form.dia_semana }}
-              {{ form.dia_semana.errors }}
+              <span class="rotulo-campo">Encontros</span>
+              {% if formset.non_form_errors %}
+                <div class="erro-formulario">{{ formset.non_form_errors }}</div>
+              {% endif %}
+              {{ formset.management_form }}
+              <div id="encontros-container">
+                {% for encontro in formset %}
+                  <div class="encontro-form">
+                    <div class="encontro-cabecalho">
+                      <strong data-encontro-titulo>Encontro {{ forloop.counter }}</strong>
+                      <button class="remover-encontro" type="button" {% if forloop.first and forloop.last %}hidden{% endif %}>Remover encontro</button>
+                    </div>
+                    <div class="encontro-campos">
+                      <div class="campo">
+                        <label for="{{ encontro.dia_semana.id_for_label }}">{{ encontro.dia_semana.label }}</label>
+                        {{ encontro.dia_semana }}
+                        {{ encontro.dia_semana.errors }}
+                      </div>
+                      <div class="campo">
+                        <label for="{{ encontro.horario.id_for_label }}">{{ encontro.horario.label }}</label>
+                        {{ encontro.horario }}
+                        {{ encontro.horario.errors }}
+                      </div>
+                      <div class="campo">
+                        <label for="{{ encontro.codigo_sala.id_for_label }}">{{ encontro.codigo_sala.label }}</label>
+                        {{ encontro.codigo_sala }}
+                        {{ encontro.codigo_sala.errors }}
+                      </div>
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+              <button class="adicionar-encontro" id="adicionar-encontro" type="button">Adicionar outro encontro</button>
             </div>
 
-            <div class="campo">
-              <label for="{{ form.horario.id_for_label }}">Horário</label>
-              {{ form.horario }}
-              {{ form.horario.errors }}
-            </div>
-
-            <div class="campo">
-              <label for="{{ form.codigo_sala.id_for_label }}">Sala</label>
-              {{ form.codigo_sala }}
-              {{ form.codigo_sala.errors }}
-            </div>
+            <template id="encontro-template">
+              <div class="encontro-form">
+                <div class="encontro-cabecalho">
+                  <strong data-encontro-titulo>Encontro</strong>
+                  <button class="remover-encontro" type="button">Remover encontro</button>
+                </div>
+                <div class="encontro-campos">
+                  <div class="campo">
+                    <label for="{{ formset.empty_form.dia_semana.id_for_label }}">{{ formset.empty_form.dia_semana.label }}</label>
+                    {{ formset.empty_form.dia_semana }}
+                  </div>
+                  <div class="campo">
+                    <label for="{{ formset.empty_form.horario.id_for_label }}">{{ formset.empty_form.horario.label }}</label>
+                    {{ formset.empty_form.horario }}
+                  </div>
+                  <div class="campo">
+                    <label for="{{ formset.empty_form.codigo_sala.id_for_label }}">{{ formset.empty_form.codigo_sala.label }}</label>
+                    {{ formset.empty_form.codigo_sala }}
+                  </div>
+                </div>
+              </div>
+            </template>
 
             <div class="campo">
               <span class="rotulo-campo">{{ form.cor.label }}</span>
@@ -106,13 +147,17 @@
           <div class="painel-card">
             <div class="lista-titulo">DISCIPLINAS CADASTRADAS</div>
 
-            {% for aula in aulas %}
+            {% for materia in materias %}
               <div class="item-disciplina">
                 <div>
-                  <strong>{{ aula.codigo_disciplina }} — {{ aula.nome_disciplina }}</strong>
-                  <p>{{ aula.get_dia_semana_display }} • {{ aula.horario }} • Sala {{ aula.codigo_sala }}</p>
+                  <strong>{{ materia.aula.codigo_disciplina }} — {{ materia.aula.nome_disciplina }}</strong>
+                  <p>
+                    {% for encontro in materia.horarios %}
+                      {{ encontro.descricao }} • Sala {{ encontro.codigo_sala }}{% if not forloop.last %}<br>{% endif %}
+                    {% endfor %}
+                  </p>
                 </div>
-                <form method="post" action="{% url 'excluir_aula' aula.id_aula_grade %}">
+                <form method="post" action="{% url 'excluir_aula' materia.aula.id_aula_grade %}">
                   {% csrf_token %}
                   <button class="remover" type="submit">Remover</button>
                 </form>
@@ -129,5 +174,6 @@
         <a class="rodape-item ativo" href="{% url 'grade' %}">HORÁRIO</a>
       </footer>
     </div>
+    <script src="{% static 'js/cadastro-grade.js' %}"></script>
   </body>
 </html>

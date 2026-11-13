@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Início - MaPUC</title>
 
-    <link rel="stylesheet" href="{% static 'css/telainicio-melhorada.css' %}?v=6">
+    <link rel="stylesheet" href="{% static 'css/telainicio-melhorada.css' %}?v=7">
     <link rel="stylesheet" href="{% static 'css/mapa-puc.css' %}?v=3">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -105,6 +105,11 @@
                     <a href="{% url 'mapa' %}?local=predio&id={{ predio.id_predio }}">
                         <strong>Prédio:</strong> {{ predio.nome }} ({{ predio.sigla_codigo }})
                     </a>
+                    {% with aberto=predio.esta_aberto %}
+                        {% if aberto != None %}
+                            · <span class="status-local{% if not aberto %} status-local--fechado{% endif %}">{% if aberto %}Aberto{% else %}Fechado{% endif %}</span>
+                        {% endif %}
+                    {% endwith %}
                 </p>
             {% endfor %}
 
@@ -116,6 +121,11 @@
                         </a>
                         <div class="resultado-sala-detalhes">
                             {{ sala.predio.nome }} · {{ sala.andar.nome_exibicao }} · {{ sala.tipo_sala }} · {{ sala.capacidade }} lugares
+                            {% with aberto=sala.predio.esta_aberto %}
+                                {% if aberto != None %}
+                                    · Prédio <span class="status-local{% if not aberto %} status-local--fechado{% endif %}">{% if aberto %}aberto{% else %}fechado{% endif %}</span>
+                                {% endif %}
+                            {% endwith %}
                         </div>
                     </div>
                     <form class="form-favoritar" action="{% url 'favoritar_sala' sala.id_sala %}" method="post">
