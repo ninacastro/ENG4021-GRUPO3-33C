@@ -6,6 +6,7 @@ from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth.hashers import check_password, make_password
 from django.core.cache import cache
+from django.utils import timezone
 
 from .models import (
     Aluno,
@@ -86,6 +87,32 @@ class MapaViewTests(TestCase):
         predio = Predio(horario_funcionamento='')
 
         self.assertIsNone(predio.esta_aberto)
+
+    @patch('mapucapp.models.timezone.localtime')
+    def test_predio_entende_horario_cadastrado_no_formato_7h_21h(
+        self,
+        mock_localtime,
+    ):
+        predio = Predio(horario_funcionamento='7h-21h')
+
+        mock_localtime.return_value = datetime(2026, 11, 13, 10, 0)
+        self.assertTrue(predio.esta_aberto)
+
+        mock_localtime.return_value = datetime(2026, 11, 13, 21, 0)
+        self.assertFalse(predio.esta_aberto)
+
+    @patch('mapucapp.models.timezone.localtime')
+    def test_predio_entende_horario_que_termina_no_dia_seguinte(
+        self,
+        mock_localtime,
+    ):
+        predio = Predio(horario_funcionamento='22h-2h')
+
+        mock_localtime.return_value = datetime(2026, 11, 13, 23, 0)
+        self.assertTrue(predio.esta_aberto)
+
+        mock_localtime.return_value = datetime(2026, 11, 13, 2, 0)
+        self.assertFalse(predio.esta_aberto)
 
     @patch('mapucapp.models.timezone.localtime')
     def test_resultado_da_busca_mostra_status_do_predio(self, mock_localtime):
@@ -477,6 +504,45 @@ class AvisosViewTests(TestCase):
         self.assertContains(response, aviso.titulo)
         self.assertContains(response, aviso.mensagem)
         self.assertContains(response, 'Marcar tudo como lido')
+
+    @patch(
+        'mapucapp.views.timezone.localtime',
+        return_value=timezone.make_aware(datetime(2026, 11, 13, 10, 0)),
+    )
+    def test_aula_de_sexta_as_11_gera_aviso_as_10(self, _mock_agora):
+        AulaGrade.objects.create(
+            aluno=self.aluno,
+            codigo_disciplina='ENG4021',
+            nome_disciplina='Projeto de Software',
+            dia_semana='sexta-feira',
+            horario='11:00 - 13:00',
+            codigo_sala='L150',
+        )
+
+        response = self.client.get(reverse('avisos'))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Aula em 1 hora: Projeto de Software')
+        self.assertContains(
+            response,
+            'começa em 13/11/2026 às 11:00, na sala L150.',
+        )
+        self.assertEqual(
+            Notificacao.objects.filter(
+                aluno=self.aluno,
+                titulo='Aula em 1 hora: Projeto de Software',
+            ).count(),
+            1,
+        )
+
+        self.client.get(reverse('avisos'))
+        self.assertEqual(
+            Notificacao.objects.filter(
+                aluno=self.aluno,
+                titulo='Aula em 1 hora: Projeto de Software',
+            ).count(),
+            1,
+        )
 
     def test_avisos_tambem_estao_disponiveis_na_url_antiga(self):
         response = self.client.get(reverse('notificacoes'))

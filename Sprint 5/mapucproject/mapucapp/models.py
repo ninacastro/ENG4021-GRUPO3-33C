@@ -1,22 +1,43 @@
 from datetime import datetime
+import re
 
 from django.db import models
 from django.utils import timezone
 
 
 def _esta_aberto_no_horario(horario_funcionamento):
-    partes = horario_funcionamento.split('-')
+    partes = re.split(r'\s*[-–—]\s*', horario_funcionamento.strip())
     if len(partes) != 2:
         return None
 
     try:
-        abertura = datetime.strptime(partes[0].strip(), '%H:%M').time()
-        fechamento = datetime.strptime(partes[1].strip(), '%H:%M').time()
-    except ValueError:
+        abertura = _parse_horario_funcionamento(partes[0])
+        fechamento = _parse_horario_funcionamento(partes[1])
+    except (TypeError, ValueError):
         return None
 
     horario_atual = timezone.localtime().time()
+    if abertura > fechamento:
+        return horario_atual >= abertura or horario_atual < fechamento
     return abertura <= horario_atual < fechamento
+
+
+def _parse_horario_funcionamento(valor):
+    valor = valor.strip().lower()
+    if re.fullmatch(r'\d{1,2}:\d{2}', valor):
+        return datetime.strptime(valor, '%H:%M').time()
+
+    correspondencia = re.fullmatch(r'(\d{1,2})h(?:(\d{2}))?', valor)
+    if not correspondencia:
+        raise ValueError('Formato de horário inválido.')
+
+    hora = int(correspondencia.group(1))
+    minuto = int(correspondencia.group(2) or 0)
+    if hora > 23 or minuto > 59:
+        raise ValueError('Horário fora do intervalo válido.')
+
+    return datetime.strptime(f'{hora:02d}:{minuto:02d}', '%H:%M').time()
+
 
 class Predio(models.Model):
     id_predio = models.AutoField(primary_key=True)

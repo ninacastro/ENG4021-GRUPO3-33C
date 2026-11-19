@@ -1,4 +1,5 @@
 from functools import reduce, wraps
+from datetime import datetime, timedelta
 import logging
 import operator
 from urllib.parse import parse_qsl, urlencode
@@ -9,6 +10,7 @@ from django.http import Http404
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils.crypto import constant_time_compare
+from django.utils import timezone
 from django.views.decorators.http import require_POST
 from django.db import transaction
 from django.db.models import Q
@@ -493,6 +495,40 @@ def dados(request):
     return render(request, 'dados.html', {'perfil': perfil, 'form': form})
 
 
+def criar_avisos_de_aulas(aluno, agora=None):
+    if aluno is None:
+        return
+
+    agora = timezone.localtime(agora) if agora else timezone.localtime()
+    dia_semana = AulaGrade.DIAS_SEMANA[agora.weekday()][0]
+    aulas = AulaGrade.objects.filter(aluno=aluno, dia_semana=dia_semana)
+
+    for aula in aulas:
+        hora_inicio = datetime.strptime(
+            aula.horario.split('-', 1)[0].strip(),
+            '%H:%M',
+        ).time()
+        inicio = timezone.make_aware(
+            datetime.combine(agora.date(), hora_inicio),
+            timezone.get_current_timezone(),
+        )
+        tempo_restante = inicio - agora
+        if not timedelta(0) < tempo_restante <= timedelta(hours=1):
+            continue
+
+        titulo = f'Aula em 1 hora: {aula.nome_disciplina}'
+        mensagem = (
+            f'A aula de {aula.nome_disciplina} ({aula.codigo_disciplina}) '
+            f'começa em {agora:%d/%m/%Y} às {hora_inicio:%H:%M}, '
+            f'na sala {aula.codigo_sala}.'
+        )
+        Notificacao.objects.get_or_create(
+            aluno=aluno,
+            titulo=titulo,
+            mensagem=mensagem,
+        )
+
+
 def notificacoes(request):
     erro_feriados = None
     try:
@@ -507,6 +543,7 @@ def notificacoes(request):
     aluno_atual = obter_aluno_logado(request)
 
     if aluno_atual:
+        criar_avisos_de_aulas(aluno_atual)
         avisos_do_aluno = Notificacao.objects.filter(aluno=aluno_atual)
 
         if request.method == 'POST' and request.POST.get('acao') == 'marcar_todas_lidas':
@@ -519,21 +556,7 @@ def notificacoes(request):
         avisos_do_aluno = Notificacao.objects.none()
         notificacoes_nao_lidas = False
 
-    # --- Aulas para a notificação de 1h antes ---
-    aulas = list(AulaGrade.objects.filter(aluno=aluno_atual)) if aluno_atual else []
-    _associar_salas_do_mapa(aulas)
-    aulas_notificacao = []
-    for a in aulas:
-        aulas_notificacao.append({
-            'dia_semana': a.dia_semana,
-            'hora_inicio': a.horario.split('-')[0].strip(),
-            'disciplina': a.nome_disciplina,
-            'codigo_sala': a.codigo_sala,
-            'sala_id': a.sala_mapa.id_sala if a.sala_mapa else None,
-        })
-
     context = {
-        'aulas_notificacao': aulas_notificacao,
         'notificacoes': avisos_do_aluno,
         'notificacoes_nao_lidas': notificacoes_nao_lidas,
         'aluno': aluno_atual,
