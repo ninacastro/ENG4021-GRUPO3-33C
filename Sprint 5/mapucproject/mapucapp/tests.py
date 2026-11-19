@@ -178,7 +178,7 @@ class MapaViewTests(TestCase):
         self.assertContains(response, 'id="botao-localizacao"')
         self.assertContains(response, 'id="botao-rota"')
         self.assertContains(response, 'Valhalla/OSM')
-        self.assertContains(response, '/static/js/mapa-puc.js?v=4')
+        self.assertContains(response, '/static/js/mapa-puc.js?v=5')
         self.assertContains(response, reverse('inicio'))
         self.assertEqual(response.context['marcadores'], [])
 
@@ -187,7 +187,7 @@ class MapaViewTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'id="mapa-puc"')
-        self.assertContains(response, '/static/js/mapa-puc.js?v=4')
+        self.assertContains(response, '/static/js/mapa-puc.js?v=5')
         self.assertNotContains(response, 'mapa-marcadores')
         self.assertNotContains(response, 'Prédio Cardeal Leme')
 
@@ -580,6 +580,87 @@ class AvisosViewTests(TestCase):
         aviso_de_outro_aluno.refresh_from_db()
         self.assertTrue(aviso.lida)
         self.assertFalse(aviso_de_outro_aluno.lida)
+
+    def test_tela_inicial_disponibiliza_popup_de_notificacoes(self):
+        response = self.client.get(reverse('inicio'))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'id="notificacoes-popup"')
+        self.assertContains(response, reverse('notificacoes_novas'))
+
+    def test_endpoint_retorna_apenas_notificacoes_novas_do_aluno(self):
+        cursor = Notificacao.objects.create(
+            aluno=self.aluno,
+            titulo='Aviso antigo',
+            mensagem='Não deve aparecer no popup.',
+        ).pk
+        outro_aluno = Aluno.objects.create(
+            nome='Bruno Souza',
+            email='bruno@example.com',
+            senha='senha',
+            matricula='67890',
+            curso='Direito',
+            periodo=2,
+        )
+        Notificacao.objects.create(
+            aluno=outro_aluno,
+            titulo='Aviso de outra pessoa',
+            mensagem='Não deve aparecer para Ana.',
+        )
+        aviso_novo = Notificacao.objects.create(
+            aluno=self.aluno,
+            titulo='Nova mudança de sala',
+            mensagem='A aula será na sala F309.',
+        )
+
+        response = self.client.get(
+            reverse('notificacoes_novas'),
+            {'since': cursor},
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json()['notificacoes'],
+            [{
+                'id': aviso_novo.pk,
+                'titulo': aviso_novo.titulo,
+                'mensagem': aviso_novo.mensagem,
+            }],
+        )
+        self.assertEqual(response.json()['cursor'], aviso_novo.pk)
+
+    @patch(
+        'mapucapp.views.timezone.localtime',
+        return_value=timezone.make_aware(datetime(2026, 11, 13, 10, 0)),
+    )
+    def test_endpoint_gera_aviso_de_aula_em_outra_tela(self, _mock_agora):
+        AulaGrade.objects.create(
+            aluno=self.aluno,
+            codigo_disciplina='ENG4021',
+            nome_disciplina='Projeto de Software',
+            dia_semana='sexta-feira',
+            horario='11:00 - 13:00',
+            codigo_sala='L150',
+        )
+
+        response = self.client.get(
+            reverse('notificacoes_novas'),
+            {'since': 0},
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json()['notificacoes'][0]['titulo'],
+            'Aula em 1 hora: Projeto de Software',
+        )
+
+    def test_endpoint_rejeita_cursor_invalido(self):
+        response = self.client.get(
+            reverse('notificacoes_novas'),
+            {'since': 'invalido'},
+        )
+
+        self.assertEqual(response.status_code, 400)
 
 
 class FeriadosViewTests(TestCase):

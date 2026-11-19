@@ -19,6 +19,7 @@ urlpatterns = [
     path('dados/', dados, name='dados'),
     path('avisos/', notificacoes, name='avisos'),
     path('notificacoes/', notificacoes, name='notificacoes'),
+    path('notificacoes/novas/', notificacoes_novas, name='notificacoes_novas'),
     path('cadastro/', cadastro, name='cadastro'),
     path('privacidade/', privacidade, name='privacidade'),
     path('cadastrar-grade/', cadastrar_grade, name='cadastrar_grade'),

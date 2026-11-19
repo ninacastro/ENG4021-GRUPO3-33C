@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Mapa - MaPUC</title>
-  <link rel="stylesheet" href="{% static 'css/mapa-puc.css' %}?v=3">
+  <link rel="stylesheet" href="{% static 'css/mapa-puc.css' %}?v=4">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
@@ -39,6 +39,7 @@
   {% endif %}
   {{ marcadores|json_script:"mapa-marcadores" }}
   {{ local_selecionado|json_script:"mapa-local-selecionado" }}
-  <script src="{% static 'js/mapa-puc.js' %}?v=4"></script>
+  <script src="{% static 'js/mapa-puc.js' %}?v=5"></script>
+  {% include "partials/notificacoes_popup.html" %}
 </body>
 </html>

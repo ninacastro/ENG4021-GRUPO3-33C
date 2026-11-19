@@ -1,0 +1,15 @@
+{% load static %}
+{% if notificacoes_popup %}
+  <section
+    id="notificacoes-popup"
+    class="notificacoes-popup"
+    data-endpoint="{% url 'notificacoes_novas' %}"
+    data-avisos-url="{% url 'avisos' %}"
+    data-css-url="{% static 'css/notificacoes-popup.css' %}"
+    data-aluno-id="{{ notificacoes_popup.aluno_id }}"
+    data-cursor="{{ notificacoes_popup.cursor }}"
+    aria-live="polite"
+    aria-label="Notificações do aplicativo"
+  ></section>
+  <script src="{% static 'js/notificacoes-popup.js' %}" defer></script>
+{% endif %}

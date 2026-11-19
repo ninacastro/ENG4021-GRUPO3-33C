@@ -110,13 +110,60 @@
   color: #7f2929;
 }
 
+.icone-usuario-mapa {
+  border: 0;
+  background: transparent;
+}
+
 .marcador-usuario {
-  width: 18px;
-  height: 18px;
-  border: 3px solid #fff;
+  position: relative;
+  display: grid;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  filter: drop-shadow(0 3px 5px rgba(4, 33, 75, 0.35));
+}
+
+.marcador-usuario::before {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.8);
   border-radius: 50%;
-  background: #1677ff;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.6);
+  background: rgba(37, 115, 235, 0.14);
+  content: "";
+}
+
+.marcador-usuario__seta {
+  position: relative;
+  z-index: 1;
+  width: 34px;
+  height: 34px;
+  overflow: visible;
+  transform: rotate(var(--direcao-usuario, 0deg));
+  transform-origin: center;
+  transition: transform 220ms ease-out;
+}
+
+.marcador-usuario__sombra {
+  fill: #0c3470;
+}
+
+.marcador-usuario__forma {
+  fill: #2377ed;
+  stroke: #fff;
+  stroke-linejoin: round;
+  stroke-width: 3px;
+}
+
+.marcador-usuario__brilho {
+  fill: rgba(255, 255, 255, 0.42);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marcador-usuario__seta {
+    transition: none;
+  }
 }
 
 .botao-destino-mapa {

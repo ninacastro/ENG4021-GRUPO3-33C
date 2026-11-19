@@ -1,0 +1,65 @@
+.notificacoes-popup {
+  position: fixed;
+  z-index: 2000;
+  right: max(1rem, env(safe-area-inset-right));
+  bottom: max(1rem, env(safe-area-inset-bottom));
+  display: grid;
+  gap: 0.75rem;
+  width: min(24rem, calc(100vw - 2rem));
+  pointer-events: none;
+}
+
+.notificacao-popup-card {
+  padding: 1rem 1.1rem;
+  color: #17304d;
+  background: #fff;
+  border: 1px solid #d7e2ef;
+  border-left: 5px solid #2674c8;
+  border-radius: 0.85rem;
+  box-shadow: 0 0.7rem 2rem rgb(18 42 70 / 22%);
+  pointer-events: auto;
+  animation: notificacao-popup-entrada 180ms ease-out;
+}
+
+.notificacao-popup-card h2 {
+  margin: 0 2rem 0.45rem 0;
+  font-size: 1rem;
+}
+
+.notificacao-popup-card p {
+  margin: 0 0 0.75rem;
+  line-height: 1.45;
+}
+
+.notificacao-popup-card a {
+  color: #155da8;
+  font-weight: 700;
+}
+
+.notificacao-popup-fechar {
+  float: right;
+  padding: 0.1rem 0.35rem;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  font-size: 1.35rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+@keyframes notificacao-popup-entrada {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .notificacao-popup-card {
+    animation: none;
+  }
+}

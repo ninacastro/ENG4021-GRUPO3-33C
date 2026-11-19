@@ -27,15 +27,23 @@ const botaoRota = document.getElementById('botao-rota');
 const statusLocalizacao = document.getElementById('status-localizacao');
 const camadaRota = L.layerGroup().addTo(mapa);
 const iconeUsuario = L.divIcon({
-  className: '',
-  html: '<span class="marcador-usuario"></span>',
-  iconSize: [18, 18],
-  iconAnchor: [9, 9],
+  className: 'icone-usuario-mapa',
+  html: [
+    '<span class="marcador-usuario">',
+    '<svg class="marcador-usuario__seta" viewBox="0 0 48 48" aria-hidden="true">',
+    '<path class="marcador-usuario__sombra" d="M24 3 5 44l19-10 19 10L24 3Z" transform="translate(0 2)"/>',
+    '<path class="marcador-usuario__forma" d="M24 3 5 44l19-10 19 10L24 3Z"/>',
+    '<path class="marcador-usuario__brilho" d="m24 8-14 30 14-7V8Z"/>',
+    '</svg></span>',
+  ].join(''),
+  iconSize: [40, 40],
+  iconAnchor: [20, 20],
 });
 
 let marcadorUsuario = null;
 let circuloPrecisao = null;
 let posicaoUsuario = null;
+let direcaoUsuario = 0;
 let destinoAtual = null;
 let observadorLocalizacao = null;
 
@@ -57,6 +65,9 @@ function atualizarLocalizacao(resultado) {
     latitude: resultado.coords.latitude,
     longitude: resultado.coords.longitude,
   };
+  if (Number.isFinite(resultado.coords.heading)) {
+    direcaoUsuario = resultado.coords.heading;
+  }
   const { latitude, longitude } = posicaoUsuario;
   const foraDosLimites = !estaDentroDosLimites(latitude, longitude);
 
@@ -75,6 +86,13 @@ function atualizarLocalizacao(resultado) {
   marcadorUsuario = L.marker([latitude, longitude], { icon: iconeUsuario })
     .addTo(mapa)
     .bindPopup('Você está aqui.');
+  const elementoMarcador = marcadorUsuario.getElement();
+  const elementoSeta = elementoMarcador
+    ? elementoMarcador.querySelector('.marcador-usuario__seta')
+    : null;
+  if (elementoSeta) {
+    elementoSeta.style.setProperty('--direcao-usuario', `${direcaoUsuario}deg`);
+  }
 
   if (foraDosLimites) {
     mapa.setMaxBounds(null);

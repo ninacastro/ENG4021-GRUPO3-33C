@@ -6,12 +6,12 @@ from urllib.parse import parse_qsl, urlencode
 
 from django.contrib import messages
 from django.contrib.auth.hashers import check_password, identify_hasher, make_password
-from django.http import Http404
+from django.http import Http404, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils.crypto import constant_time_compare
 from django.utils import timezone
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_GET, require_POST
 from django.db import transaction
 from django.db.models import Q
 from .models import *
@@ -563,6 +563,54 @@ def notificacoes(request):
         'erro_feriados': erro_feriados,
     }
     return render(request, 'notificacoesmelhorado.html', context)
+
+
+@require_GET
+def notificacoes_novas(request):
+    aluno = obter_aluno_logado(request)
+    if aluno is None:
+        return JsonResponse({'notificacoes': [], 'cursor': 0})
+
+    since = request.GET.get('since')
+    if since is None or not since.isdecimal():
+        return JsonResponse(
+            {'erro': 'O cursor de notificações é inválido.'},
+            status=400,
+        )
+    cursor = int(since)
+
+    criar_avisos_de_aulas(aluno)
+    erro_feriados = None
+    try:
+        criar_avisos_de_feriados()
+    except (OSError, ValueError):
+        logger.exception("Não foi possível sincronizar avisos de feriados.")
+        erro_feriados = (
+            "Não foi possível atualizar os avisos de feriados agora."
+        )
+
+    avisos = list(
+        Notificacao.objects
+        .filter(aluno=aluno, id_notificacao__gt=cursor)
+        .order_by('id_notificacao')
+    )
+    resposta = {
+        'notificacoes': [
+            {
+                'id': aviso.id_notificacao,
+                'titulo': aviso.titulo,
+                'mensagem': aviso.mensagem,
+            }
+            for aviso in avisos
+        ],
+        'cursor': max(
+            [cursor, *(aviso.id_notificacao for aviso in avisos)]
+        ),
+    }
+    if erro_feriados:
+        resposta['erro'] = erro_feriados
+        return JsonResponse(resposta, status=503)
+    return JsonResponse(resposta)
 
 
 
