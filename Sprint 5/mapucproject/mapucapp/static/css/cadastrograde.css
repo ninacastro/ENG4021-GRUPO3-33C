@@ -220,6 +220,20 @@ body {
   font-weight: bold;
 }
 
+.cor input:checked + .cor-vermelho {
+  background-color: #fdeaea;
+  border-color: #f3c4c4;
+  color: #a23b3b;
+  font-weight: bold;
+}
+
+.cor input:checked + .cor-amarelo {
+  background-color: #fff7db;
+  border-color: #f1d98a;
+  color: #8a6d1d;
+  font-weight: bold;
+}
+
 .errorlist,
 .erro-formulario {
   margin: 4px 0 0;
@@ -304,6 +318,18 @@ body {
   background-color: #eef1fd;
   border-color: #bcc6f0;
   color: #3a4ea8;
+}
+
+.celula.vermelho {
+  background-color: #fdeaea;
+  border-color: #f3c4c4;
+  color: #a23b3b;
+}
+
+.celula.amarelo {
+  background-color: #fff7db;
+  border-color: #f1d98a;
+  color: #8a6d1d;
 }
 
 /* lista de disciplinas */

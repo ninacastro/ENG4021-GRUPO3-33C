@@ -111,6 +111,14 @@
                   <input type="radio" id="id_cor_azul" name="cor" value="azul" {% if form.cor.value == 'azul' %}checked{% endif %} />
                   <span class="cor-chip cor-azul">Azul</span>
                 </label>
+                <label class="cor" for="id_cor_vermelho">
+                  <input type="radio" id="id_cor_vermelho" name="cor" value="vermelho" {% if form.cor.value == 'vermelho' %}checked{% endif %} />
+                  <span class="cor-chip cor-vermelho">Vermelho</span>
+                </label>
+                <label class="cor" for="id_cor_amarelo">
+                  <input type="radio" id="id_cor_amarelo" name="cor" value="amarelo" {% if form.cor.value == 'amarelo' %}checked{% endif %} />
+                  <span class="cor-chip cor-amarelo">Amarelo</span>
+                </label>
               </div>
               {{ form.cor.errors }}
             </div>
