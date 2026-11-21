@@ -239,7 +239,7 @@ def favoritar_sala(request, sala_id):
     else:
         LocalFavorito.objects.create(aluno=aluno, sala=sala)
 
-        consulta = request.POST.get('consulta', '')
+    consulta = request.POST.get('consulta', '')
     parametros = [
         (campo, valor)
         for campo, valor in parse_qsl(consulta)
