@@ -1,24 +1,18 @@
+{% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Início - MaPUC</title>
 
+{% block title %}Início - MaPUC{% endblock %}
+{% block body_class %}tela-inicio{% endblock %}
+{% block styles %}
     <link rel="stylesheet" href="{% static 'css/telainicio-melhorada.css' %}?v=7">
     <link rel="stylesheet" href="{% static 'css/mapa-puc.css' %}?v=4">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+{% endblock %}
+{% block head_scripts %}
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+{% endblock %}
 
-</head>
-
-<body class="tela-inicio">
-
-    <div class="area-perfil">
-        <a class="botao-acao botao-perfil" href="{% url 'perfil' %}">Perfil</a>
-    </div>
-
+{% block content %}
     <main class="inicio">
 
         <header class="cabecalho-inicio">
@@ -193,7 +187,8 @@
         </div>
     </main>
 
+{% endblock %}
+{% block scripts %}
     <script src="{% static 'js/mapa-puc.js' %}?v=5"></script>
     {% include "partials/notificacoes_popup.html" %}
-</body>
-</html>
+{% endblock %}

@@ -189,6 +189,32 @@ a.celula.com-mapa:focus-visible {
   color: #5566bb;
 }
 
+.celula.vermelho {
+  background-color: #fdeaea;
+  border-color: #f3c4c4;
+}
+
+.celula.vermelho .aula-codigo {
+  color: #a23b3b;
+}
+
+.celula.vermelho .aula-hora {
+  color: #b94a4a;
+}
+
+.celula.amarelo {
+  background-color: #fff7db;
+  border-color: #f1d98a;
+}
+
+.celula.amarelo .aula-codigo {
+  color: #8a6d1d;
+}
+
+.celula.amarelo .aula-hora {
+  color: #a17d22;
+}
+
 .card-dica {
   margin-top: 20px;
   background-color: #fff;

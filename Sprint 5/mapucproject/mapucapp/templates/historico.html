@@ -1,20 +1,15 @@
+{% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Histórico de Buscas - MaPUC</title>
+
+{% block title %}Histórico de Buscas - MaPUC{% endblock %}
+{% block styles %}
     <link rel="stylesheet" href="{% static 'css/historico.css' %}">
-</head>
+{% endblock %}
+{% block back_link %}
+    <a class="mapuc-topbar__back" href="{% url 'inicio' %}" aria-label="Voltar para o início">←</a>
+{% endblock %}
 
-<body>
-
-    <div class="cabecalho">
-        <a class="botao-voltar" href="{% url 'inicio' %}">←</a>
-        <div class="logo">MaPUC</div>
-        <a class="botao-perfil" href="{% url 'perfil' %}">Perfil</a>
-    </div>
+{% block content %}
 
     <div class="conteudo">
 
@@ -81,5 +76,4 @@
     </div>
 
     {% include "partials/notificacoes_popup.html" %}
-</body>
-</html>
+{% endblock %}

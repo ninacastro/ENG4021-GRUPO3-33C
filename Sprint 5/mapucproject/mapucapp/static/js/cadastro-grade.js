@@ -37,9 +37,24 @@
   }
 
   adicionarBotao.addEventListener('click', function () {
+    const encontroAnterior = container.querySelector('.encontro-form:last-child');
+    const campos = ['dia_semana', 'horario', 'codigo_sala'];
+    const valoresAnteriores = {};
+
+    campos.forEach(function (campo) {
+      const elemento = encontroAnterior.querySelector(`[name$="-${campo}"]`);
+      valoresAnteriores[campo] = elemento.value;
+    });
+
     const encontroNovo = template.content.cloneNode(true);
     container.appendChild(encontroNovo);
     atualizarEncontros();
+
+    const novoEncontro = container.querySelector('.encontro-form:last-child');
+    campos.forEach(function (campo) {
+      const elemento = novoEncontro.querySelector(`[name$="-${campo}"]`);
+      elemento.value = valoresAnteriores[campo];
+    });
   });
 
   container.addEventListener('click', function (event) {

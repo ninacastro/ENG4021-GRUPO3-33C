@@ -213,6 +213,8 @@ class AulaGrade(models.Model):
     CORES = [
         ('verde', 'Verde'),
         ('azul', 'Azul'),
+        ('vermelho', 'Vermelho'),
+        ('amarelo', 'Amarelo'),
     ]
 
     id_aula_grade = models.AutoField(primary_key=True)

@@ -1,16 +1,17 @@
+{% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Feriados do ano - MaPUC</title>
+
+{% block title %}Feriados do ano - MaPUC{% endblock %}
+{% block styles %}
   <link rel="stylesheet" href="{% static 'css/feriadoAPI.css' %}">
-</head>
-<body>
+{% endblock %}
+{% block back_link %}
+  <a class="mapuc-topbar__back" href="{% url 'grade' %}" aria-label="Voltar para a grade de aulas">←</a>
+{% endblock %}
+
+{% block content %}
   <main class="pagina-feriados">
     <header class="cabecalho-feriados">
-      <a class="botao-voltar" href="{% url 'grade' %}" aria-label="Voltar para a grade de aulas">←</a>
       <div>
         <p class="sobretitulo">MaPUC · Calendário</p>
         <h1>Próximos feriados em dias úteis</h1>
@@ -42,5 +43,4 @@
     <a class="botao-grade" href="{% url 'grade' %}">Voltar para a grade de aulas</a>
   </main>
     {% include "partials/notificacoes_popup.html" %}
-</body>
-</html>
+{% endblock %}
