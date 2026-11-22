@@ -1,16 +1,17 @@
+{% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="pt-br">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>MaPUC - Avisos</title>
+
+{% block title %}MaPUC - Avisos{% endblock %}
+{% block styles %}
     <link rel="stylesheet" href="{% static 'css/notificacoesmelhorado.css' %}" />
-  </head>
-  <body>
+{% endblock %}
+{% block back_link %}
+      <a class="mapuc-topbar__back" href="{% url 'inicio' %}" aria-label="Voltar para o mapa">←</a>
+{% endblock %}
+
+{% block content %}
     <header class="topbar">
       <div class="topbar-left">
-        <a class="voltar" href="{% url 'inicio' %}" aria-label="Voltar para o mapa">←</a>
         <h1>Avisos e Recados</h1>
       </div>
       {% if notificacoes_nao_lidas %}
@@ -46,11 +47,5 @@
       {% endif %}
     </main>
 
-    <footer class="rodape">
-      <a href="{% url 'inicio' %}" class="rodape-item">MAPA</a>
-      <a href="{% url 'grade' %}" class="rodape-item">HORÁRIO</a>
-    </footer>
-
     {% include "partials/notificacoes_popup.html" %}
-  </body>
-</html>
+{% endblock %}

@@ -16,8 +16,20 @@ body {
 }
 
 .voltar {
-    color: #0a2240;
-    font-size: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    flex: 0 0 auto;
+    border-radius: 9px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #0A2240;
+    background-color: #f0f4f8;
+    color: #0A2240;
+    font-size: 27px;
+    text-decoration: none;
 }
 
 .titulo {

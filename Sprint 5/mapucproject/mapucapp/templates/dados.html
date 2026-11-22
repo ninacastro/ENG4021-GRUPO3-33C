@@ -1,17 +1,18 @@
+{% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Alterar Dados - MaPUC</title>
+
+{% block title %}Alterar Dados - MaPUC{% endblock %}
+{% block styles %}
     <link rel="stylesheet" href="{% static 'css/alterar-dados.css' %}">
-</head>
-<body>
+{% endblock %}
+{% block back_link %}
+    <a class="mapuc-topbar__back" href="{% url 'perfil' %}" aria-label="Voltar para o perfil">←</a>
+{% endblock %}
+
+{% block content %}
     <div class="container-celular">
 
         <header class="cabecalho">
-            <a class="voltar" href="{% url 'perfil' %}">← Voltar</a>
             <h1>ALTERAR DADOS</h1>
         </header>
 
@@ -68,5 +69,4 @@
 
     </div>
     {% include "partials/notificacoes_popup.html" %}
-</body>
-</html>
+{% endblock %}

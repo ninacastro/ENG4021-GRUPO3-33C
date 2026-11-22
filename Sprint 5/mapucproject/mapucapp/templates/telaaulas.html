@@ -1,14 +1,17 @@
+{% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>MaPUC - Horário</title>
+
+{% block title %}MaPUC - Horário{% endblock %}
+{% block styles %}
     <link rel="stylesheet" href="{% static 'css/telaaulas.css' %}" />
-  </head>
-  <body>
+{% endblock %}
+{% block back_link %}
+      <a class="mapuc-topbar__back" href="{% url 'inicio' %}" aria-label="Voltar para a tela de início">←</a>
+{% endblock %}
+
+{% block content %}
     <header class="topbar">
       <div class="topbar-left">
-        <a class="botao-voltar" href="{% url 'inicio' %}" aria-label="Voltar para a tela de início">←</a>
         <h1>Horário de Aulas</h1>
       </div>
       <span class="badge-disciplinas">{{ numero_disciplinas }} disciplina{% if numero_disciplinas != 1 %}s{% endif %}</span>
@@ -62,5 +65,4 @@
       <span class="rodape-item ativo">HORÁRIO</span>
     </footer>
     {% include "partials/notificacoes_popup.html" %}
-  </body>
-</html>
+{% endblock %}
