@@ -544,6 +544,16 @@ class AvisosViewTests(TestCase):
             1,
         )
 
+    @patch(
+        'mapucapp.views.timezone.localtime',
+        return_value=timezone.make_aware(datetime(2026, 11, 22, 10, 0)),
+    )
+    def test_avisos_abrem_no_domingo_sem_erro_de_indice(self, _mock_agora):
+        response = self.client.get(reverse('avisos'))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Você não tem novas notificações')
+
     def test_avisos_tambem_estao_disponiveis_na_url_antiga(self):
         response = self.client.get(reverse('notificacoes'))
 
@@ -594,6 +604,12 @@ class AvisosViewTests(TestCase):
             titulo='Aviso antigo',
             mensagem='Não deve aparecer no popup.',
         ).pk
+        Notificacao.objects.create(
+            aluno=self.aluno,
+            titulo='Aviso já lido',
+            mensagem='Também não deve aparecer no popup.',
+            lida=True,
+        )
         outro_aluno = Aluno.objects.create(
             nome='Bruno Souza',
             email='bruno@example.com',

@@ -500,7 +500,11 @@ def criar_avisos_de_aulas(aluno, agora=None):
         return
 
     agora = timezone.localtime(agora) if agora else timezone.localtime()
-    dia_semana = AulaGrade.DIAS_SEMANA[agora.weekday()][0]
+    indice_dia = agora.weekday()
+    if indice_dia >= len(AulaGrade.DIAS_SEMANA):
+        return
+
+    dia_semana = AulaGrade.DIAS_SEMANA[indice_dia][0]
     aulas = AulaGrade.objects.filter(aluno=aluno, dia_semana=dia_semana)
 
     for aula in aulas:
@@ -602,6 +606,7 @@ def notificacoes_novas(request):
                 'mensagem': aviso.mensagem,
             }
             for aviso in avisos
+            if not aviso.lida
         ],
         'cursor': max(
             [cursor, *(aviso.id_notificacao for aviso in avisos)]
