@@ -1,14 +1,28 @@
 :root {
-  --fundo: #f6f6f7;
+  --fundo: #f0f4f8;
   --branco: #ffffff;
-  --borda: #e3e3e8;
-  --borda-forte: rgb(158, 148, 177);
-  --azul: #41508c;
-  --azul-claro: #e8ecfb;
-  --cinza: #8a8a8a;
-  --vermelho: #d64545;
-  --texto: #1f2230;
+  --borda: #e0e5eb;
+  --borda-forte: #e0e5eb;
+
+  --azul: #0a2240;
+  --azul-claro: #e6f6ef;
+
+  --verde: #1f9d6b;
+  --verde-hover: #178a5c;
+  --verde-ativo: #127a51;
+  --verde-foco: #a5dec4;
+
+  --cinza: #687586;
+
+  --vermelho: #c0392b;
+  --vermelho-hover: #a93226;
+
+  --texto: #2b2b33;
   --largura: 860px;
+
+  --raio: 14px;
+  --sombra: 0 3px 10px rgba(10, 34, 64, 0.08);
+  --sombra-hover: 0 5px 14px rgba(10, 34, 64, 0.14);
 }
 
 *,
@@ -25,8 +39,6 @@ body {
   font-family: system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
   line-height: 1.5;
 }
-
-/* ---------- Topo ---------- */
 
 .topbar {
   display: flex;
@@ -45,11 +57,9 @@ body {
   border-radius: 999px;
 }
 
-/* ---------- Layout ---------- */
-
 .linha {
   display: flex;
-  flex-wrap: wrap; /* no celular as caixas empilham */
+  flex-wrap: wrap;
   justify-content: center;
   gap: 20px;
   max-width: var(--largura);
@@ -59,11 +69,10 @@ body {
 .caixa {
   background-color: var(--branco);
   border: 1px solid var(--borda);
-  border-radius: 12px;
+  border-radius: var(--raio);
   padding: 20px;
+  box-shadow: var(--sombra);
 }
-
-/* ---------- Perfil ---------- */
 
 .perfil {
   width: 100%;
@@ -87,7 +96,7 @@ body {
   font-size: 12px;
   font-weight: bold;
   background-color: var(--azul-claro);
-  color: var(--azul);
+  color: var(--verde-ativo);
 }
 
 .meta {
@@ -101,26 +110,31 @@ body {
   color: var(--cinza);
 }
 
-/* ---------- Opções clicáveis ---------- */
-
 .opcao {
-  flex: 1 1 300px; /* duas por linha no PC, uma no celular */
+  flex: 1 1 300px;
   display: flex;
   align-items: center;
   gap: 15px;
-  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+
+  background-color: var(--verde);
+  border-color: var(--verde);
+  color: #ffffff;
+
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s,
+              background-color 0.15s;
 }
 
 .opcao h3 {
   margin: 0;
   font-size: 15px;
   letter-spacing: 0.3px;
+  color: #ffffff;
 }
 
 .seta {
-  margin-left: auto; /* empurra a seta pro canto direito */
+  margin-left: auto;
   font-size: 24px;
-  color: var(--cinza);
+  color: #ffffff;
 }
 
 a.caixa,
@@ -131,7 +145,7 @@ a.voltar-rodape {
 
 button.opcao {
   appearance: none;
-  color: inherit;
+  color: #ffffff;
   font: inherit;
   text-align: left;
   cursor: pointer;
@@ -140,22 +154,43 @@ button.opcao {
 a.opcao:hover,
 form.opcao:hover,
 button.opcao:hover {
-  border-color: var(--azul);
-  box-shadow: 0 4px 14px rgba(65, 80, 140, 0.12);
+  background-color: var(--verde-hover);
+  border-color: var(--verde-hover);
+  box-shadow: var(--sombra-hover);
   transform: translateY(-1px);
 }
 
 a.opcao:hover .seta,
 form.opcao:hover .seta,
 button.opcao:hover .seta {
-  color: var(--azul);
+  color: #ffffff;
+}
+
+.opcao:active {
+  background-color: var(--verde-ativo);
+  border-color: var(--verde-ativo);
 }
 
 .vermelho {
   color: var(--vermelho);
 }
 
-/* Botão de deslogar: a caixa inteira vira área de clique */
+.opcao.vermelho {
+  background-color: var(--vermelho);
+  border-color: var(--vermelho);
+  color: #ffffff;
+}
+
+.opcao.vermelho h3,
+.opcao.vermelho .seta {
+  color: #ffffff;
+}
+
+.opcao.vermelho:hover {
+  background-color: var(--vermelho-hover);
+  border-color: var(--vermelho-hover);
+}
+
 form.opcao {
   padding: 0;
 }
@@ -168,22 +203,23 @@ form.opcao {
   gap: 15px;
   width: 100%;
   padding: 20px;
-  border-radius: 12px;
+  border-radius: var(--raio);
   font: inherit;
   text-align: left;
+  color: #ffffff;
   cursor: pointer;
 }
 
-/* ---------- Acessibilidade: foco via teclado ---------- */
+.opcao.vermelho .botao-limpo {
+  color: #ffffff;
+}
 
 a:focus-visible,
 button:focus-visible,
 .botao-limpo:focus-visible {
-  outline: 3px solid var(--azul);
+  outline: 3px solid var(--verde-foco);
   outline-offset: 2px;
 }
-
-/* ---------- Rodapé ---------- */
 
 .rodape {
   display: flex;
@@ -197,7 +233,7 @@ button:focus-visible,
 
 .voltar-rodape {
   display: inline-block;
-  border: 1px solid #ddd;
+  border: 1px solid var(--borda);
   background-color: var(--branco);
   border-radius: 8px;
   padding: 8px 14px;
@@ -208,10 +244,8 @@ button:focus-visible,
 
 .voltar-rodape:hover {
   background-color: var(--azul-claro);
-  border-color: var(--azul);
+  border-color: var(--verde);
 }
-
-/* ---------- Celular ---------- */
 
 @media (max-width: 600px) {
   body {
