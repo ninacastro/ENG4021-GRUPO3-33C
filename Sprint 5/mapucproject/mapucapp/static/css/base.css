@@ -66,9 +66,9 @@ body {
   justify-content: center;
   min-height: 40px;
   padding: 8px 18px;
-  border: 1px solid #009395;
+  border: 1px solid #1f9d6b;
   border-radius: 9px;
-  background: #009395;
+  background: #1f9d6b;
   color: #fff;
   font-size: 14px;
   font-weight: 600;
@@ -76,8 +76,8 @@ body {
 }
 
 .mapuc-topbar__profile:hover {
-  border-color: #007f81;
-  background: #007f81;
+  border-color: #1f9d6b;
+  background: #1f9d6b;
   color: #fff;
 }
 
@@ -89,7 +89,7 @@ body {
   width: 44px;
   height: 44px;
   border-radius: 9px;
-  background: #009395;
+  background: #1f9d6b;
   color: #fff;
   font-size: 25px;
   font-weight: 700;
@@ -98,7 +98,7 @@ body {
 }
 
 .mapuc-topbar__back:hover {
-  background: #007f81;
+  background: #1f9d6b;
   color: #fff;
 }
 
