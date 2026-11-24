@@ -708,6 +708,10 @@ body {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px;
 }
+/* São 5 atalhos: o último ocupa a linha inteira para não deixar um vão */
+.atalhos .botao-acao:last-child {
+  grid-column: 1 / -1;
+}
 @media (max-width: 900px) {
   .filtros-grade {
     grid-template-columns: repeat(2, minmax(0, 1fr));
