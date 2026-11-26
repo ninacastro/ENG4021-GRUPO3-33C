@@ -28,7 +28,7 @@
             {% csrf_token %}
 
             <div class="avatar" aria-hidden="true">
-                {{ perfil.nome|slice:":2"|upper }}
+                {{ aluno_iniciais|default:"?" }}
             </div>
 
             <p class="centro">
