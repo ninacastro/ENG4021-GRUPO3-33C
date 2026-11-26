@@ -21,14 +21,14 @@
   z-index: 500;
   padding: 10px 14px;
   border-radius: 8px;
-  background-color: #0A2240;
+  background-color: #1f9d6b;
   color: #fff;
   font: bold 14px Arial, sans-serif;
   text-decoration: none;
 }
 
 .botao-mapa-tela-cheia:hover {
-  background-color: #16365f;
+  background-color: #1f9d6b;
 }
 
 .pagina-mapa {
@@ -77,14 +77,14 @@
   padding: 9px 12px;
   border: 0;
   border-radius: 6px;
-  background: #0A2240;
+  background: #1f9d6b;
   color: #fff;
   font: 600 14px system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
   cursor: pointer;
 }
 
 .botao-controle-mapa:hover:not(:disabled) {
-  background: #16365f;
+  background: #1f9d6b;
 }
 
 .botao-controle-mapa:disabled {
@@ -130,7 +130,7 @@
   height: 32px;
   border: 1px solid rgba(255, 255, 255, 0.8);
   border-radius: 50%;
-  background: rgba(37, 115, 235, 0.14);
+  background: rgba(31, 157, 107, 0.14);
   content: "";
 }
 
@@ -146,11 +146,11 @@
 }
 
 .marcador-usuario__sombra {
-  fill: #0c3470;
+  fill: #127a51;
 }
 
 .marcador-usuario__forma {
-  fill: #2377ed;
+  fill: #1f9d6b;
   stroke: #fff;
   stroke-linejoin: round;
   stroke-width: 3px;
@@ -171,7 +171,7 @@
   padding: 7px 10px;
   border: 0;
   border-radius: 5px;
-  background: #0A2240;
+  background: #1f9d6b;
   color: #fff;
   cursor: pointer;
 }
@@ -185,7 +185,7 @@
   padding: 10px 14px;
   border-radius: 8px;
   background-color: #fff;
-  color: #16384a;
+  color: #1f9d6b;
   font: 600 16px system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }

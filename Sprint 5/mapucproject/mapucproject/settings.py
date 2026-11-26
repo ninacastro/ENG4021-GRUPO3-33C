@@ -63,11 +63,11 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'mapucapp.context_processors.notificacoes_popup',
+                'mapucapp.context_processors.aluno_iniciais',
             ],
         },
     },
 ]
-
 WSGI_APPLICATION = 'mapucproject.wsgi.application'
 
 
