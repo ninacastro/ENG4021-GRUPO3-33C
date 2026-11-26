@@ -78,8 +78,8 @@ function atualizarLocalizacao(resultado) {
 
   circuloPrecisao = L.circle([latitude, longitude], {
     radius: resultado.coords.accuracy,
-    color: '#1677ff',
-    fillColor: '#1677ff',
+    color: '#1f9d6b',
+    fillColor: '#1f9d6b',
     fillOpacity: 0.12,
     weight: 1,
   }).addTo(mapa);
@@ -101,7 +101,7 @@ function atualizarLocalizacao(resultado) {
       mapa.setView([latitude, longitude], 17);
     }
     definirStatus(
-      'Você está fora dos limites definidos para o mapa do campus. A posição foi marcada em azul.'
+      'Você está fora dos limites definidos para o mapa do campus. A posição foi marcada em verde.'
     );
   } else {
     mapa.setMaxBounds(limitesCampus);
@@ -245,7 +245,7 @@ function tracarRota() {
       }
 
       const linhaRota = L.polyline(coordenadasRota, {
-        color: '#1769d2',
+        color: '#1f9d6b',
         weight: 6,
         opacity: 0.85,
       }).addTo(camadaRota);
