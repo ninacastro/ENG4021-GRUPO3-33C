@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}MaPUC{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'css/base.css' %}?v=2">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}?v=3">
     {% block styles %}{% endblock %}
     {% block head_scripts %}{% endblock %}
 </head>
@@ -18,7 +18,7 @@
             <img class="mapuc-topbar__logo" src="{% static 'images/logo-mapuc.png' %}" alt="">
             <span>MaPUC</span>
         </span>
-        <a class="mapuc-topbar__profile" href="{% url 'perfil' %}">Perfil</a>
+        <a class="mapuc-topbar__profile" href="{% url 'perfil' %}" aria-label="Meu perfil">{{ aluno_iniciais|default:"?" }}</a>
     </header>
     <div class="mapuc-topbar-spacer" aria-hidden="true"></div>
 
